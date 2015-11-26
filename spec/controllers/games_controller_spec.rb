@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe GamesController, type: :controller do
-
   describe "GET new" do
     it "has a 200 status code" do
       get :new
@@ -19,6 +18,15 @@ RSpec.describe GamesController, type: :controller do
       get :new
 
       expect(response).to render_template :new
+    end
+  end
+
+  describe "POST create" do
+    context 'after creation' do
+      it 'redirects to show page' do
+        post :create
+        expect(response).to redirect_to(Game.last)
+      end
     end
   end
 end

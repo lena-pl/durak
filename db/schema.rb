@@ -14,7 +14,7 @@
 ActiveRecord::Schema.define(version: 20151126040731) do
 
   create_table "actions", force: :cascade do |t|
-    t.integer  "type"
+    t.integer  "kind"
     t.integer  "game_id"
     t.integer  "player_id"
     t.integer  "card_id"

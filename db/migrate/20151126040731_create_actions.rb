@@ -4,7 +4,8 @@ class CreateActions < ActiveRecord::Migration
       t.integer :kind
       t.references :game, index: true
       t.references :player, index: true
-      t.references :card, index: true
+      t.references :active_card, index: true
+      t.references :passive_card, index: true
       t.timestamps null: false
     end
   end

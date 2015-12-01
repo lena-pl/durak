@@ -29,12 +29,25 @@ RSpec.describe BuildGameState do
     end
   end
 
+  def defend_against_cards(player, card_pairs)
+    card_pairs.each do |card_pair|
+      create_action(:defend_against_card, game, player, card_pair[:with], card_pair[:against])
+    end
+  end
+
+  def discard_cards(player, cards)
+    cards.each do |card|
+      create_action(:discard, game, player, card)
+    end
+  end
+
   before(:all) do
     initialize_deck
   end
 
   subject(:game_state) { BuildGameState.new(game).call }
-  let!(:game) { Game.create!(:trump_card => card(9, "clubs")) }
+  let(:trump_card) { card(9, "hearts") }
+  let!(:game) { Game.create!(:trump_card => trump_card) }
   let!(:player_one) { Player.create!(:game => game) }
   let!(:player_two) { Player.create!(:game => game) }
 
@@ -79,6 +92,116 @@ RSpec.describe BuildGameState do
       before do
         draw_cards_from_deck(player_one, player_one_start_hand)
         draw_cards_from_deck(player_two, player_two_start_hand)
+      end
+
+      context "when player one has the lowest trump suit" do
+        let(:trump_card) { card(8, "hearts") }
+
+        let(:player_one_start_hand) {[
+          card(7, "hearts"),
+          card(11, "hearts"),
+          card(10, "hearts"),
+          card(14, "diamonds")
+        ]}
+
+        let(:player_two_start_hand) {[
+          card(12, "hearts"),
+          card(11, "spades"),
+          card(7, "spades"),
+          card(14, "clubs")
+        ]}
+
+        it "makes player one the first attacker" do
+          expect(game_state.attacker).to eq player_one
+        end
+      end
+
+      context "when player two has the lowest trump suit" do
+        let(:trump_card) { card(8, "spades") }
+
+        let(:player_one_start_hand) {[
+          card(7, "hearts"),
+          card(11, "hearts"),
+          card(10, "hearts"),
+          card(14, "spades")
+        ]}
+
+        let(:player_two_start_hand) {[
+          card(12, "hearts"),
+          card(11, "spades"),
+          card(7, "spades"),
+          card(14, "clubs")
+        ]}
+
+        it "makes player two the first attacker" do
+          expect(game_state.attacker).to eq player_two
+        end
+      end
+
+      context "when only player one has a trump card" do
+        let(:trump_card) { card(8, "spades") }
+
+        let(:player_one_start_hand) {[
+          card(7, "hearts"),
+          card(11, "hearts"),
+          card(10, "hearts"),
+          card(14, "spades")
+        ]}
+
+        let(:player_two_start_hand) {[
+          card(12, "hearts"),
+          card(11, "diamonds"),
+          card(7, "diamonds"),
+          card(14, "clubs")
+        ]}
+
+        it "makes player one the first attacker" do
+          expect(game_state.attacker).to eq player_one
+        end
+      end
+
+      context "when only player two has a trump card" do
+        let(:trump_card) { card(8, "spades") }
+
+        let(:player_one_start_hand) {[
+          card(7, "hearts"),
+          card(11, "hearts"),
+          card(10, "hearts"),
+          card(14, "clubs")
+        ]}
+
+        let(:player_two_start_hand) {[
+          card(12, "hearts"),
+          card(11, "diamonds"),
+          card(7, "diamonds"),
+          card(14, "spades")
+        ]}
+
+        it "makes player two the first attacker" do
+          expect(game_state.attacker).to eq player_two
+        end
+      end
+
+      context "when neither player has a trump card" do
+        let(:trump_card) { card(8, "spades") }
+
+        let(:player_one_start_hand) {[
+          card(7, "hearts"),
+          card(11, "hearts"),
+          card(10, "hearts"),
+          card(14, "diamonds")
+        ]}
+
+        let(:player_two_start_hand) {[
+          card(12, "hearts"),
+          card(11, "diamonds"),
+          card(7, "diamonds"),
+          card(14, "clubs")
+        ]}
+
+        it "makes player one the first attacker" do
+          expect(game_state.attacker).to eq player_one
+        end
       end
 
       it "has 12 less cards in the deck" do
@@ -172,6 +295,97 @@ RSpec.describe BuildGameState do
 
       it "doesn't affect the discard pile" do
         expect(game_state.discard_pile).to be_empty
+      end
+    end
+
+    context "when player one defends against 2 cards that player two attacked with" do
+      let(:cards_to_attack_with) {[
+        player_two_start_hand[0],
+        player_two_start_hand[1],
+      ]}
+
+      let(:cards_to_defend_with) {[
+        { :with => player_one_start_hand[0], :against => player_two_start_hand[0] },
+        { :with => player_one_start_hand[1], :against => player_two_start_hand[1] },
+      ]}
+
+      before do
+        draw_cards_from_deck(player_one, player_one_start_hand)
+        draw_cards_from_deck(player_two, player_two_start_hand)
+
+        attack_with_cards(player_two, cards_to_attack_with)
+        defend_against_cards(player_one, cards_to_defend_with)
+      end
+
+      it "removes 2 cards from player_two's hand" do
+        expect(game_state.player_two_hand.length).to eq player_two_start_hand.length - 2
+      end
+
+      it "removes 2 cards from player_one's hand" do
+        expect(game_state.player_one_hand.length).to eq player_one_start_hand.length - 2
+      end
+
+      it "puts 4 cards onto the table" do
+        expect(game_state.cards_on_table.length).to eq cards_to_attack_with.length + cards_to_defend_with.length
+      end
+
+      it "puts those cards onto the table" do
+        expect(game_state.cards_on_table).to include(cards_to_attack_with[0], cards_to_attack_with[1],
+                  cards_to_defend_with[0][:with], cards_to_defend_with[1][:with])
+      end
+
+      it "doesn't affect the discard pile" do
+        expect(game_state.discard_pile).to be_empty
+      end
+
+      context "when player two discards the play" do
+       let(:cards_to_discard) {[
+         cards_to_attack_with[0],
+         cards_to_attack_with[1],
+         cards_to_defend_with[0][:with],
+         cards_to_defend_with[1][:with]
+       ]}
+
+        before do
+          discard_cards(player_two, cards_to_discard)
+        end
+
+        it "puts 4 cards in the discard pile" do
+          expect(game_state.discard_pile.length).to eq cards_to_discard.length
+        end
+
+        it "puts those cards in the discard pile" do
+          expect(game_state.discard_pile).to include(cards_to_discard[0], cards_to_discard[1], cards_to_discard[2], cards_to_discard[3])
+        end
+
+        it "makes player one the attacker" do
+          expect(game_state.attacker).to eq player_one
+        end
+      end
+
+      context "when player one discards the play" do
+       let(:cards_to_discard) {[
+         cards_to_attack_with[0],
+         cards_to_attack_with[1],
+         cards_to_defend_with[0][:with],
+         cards_to_defend_with[1][:with]
+       ]}
+
+        before do
+          discard_cards(player_one, cards_to_discard)
+        end
+
+        it "puts 4 cards in the discard pile" do
+          expect(game_state.discard_pile.length).to eq cards_to_discard.length
+        end
+
+        it "puts those cards in the discard pile" do
+          expect(game_state.discard_pile).to include(cards_to_discard[0], cards_to_discard[1], cards_to_discard[2], cards_to_discard[3])
+        end
+
+        it "makes player two the attacker" do
+          expect(game_state.attacker).to eq player_two
+        end
       end
     end
   end

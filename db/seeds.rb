@@ -5,3 +5,14 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+def seed_initial_cards
+  Card.suits.each do |suit, enumeration|
+    6.upto(14) do |rank|
+      Card.create!(rank: rank, suit: suit)
+    end
+  end
+end
+
+seed_initial_cards
+

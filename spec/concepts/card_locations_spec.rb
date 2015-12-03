@@ -4,7 +4,7 @@ RSpec.describe CardLocations do
   def card(rank, suit)
     Card.find_by!(rank: rank, suit: Card.suits[suit])
   end
-  
+
   def initialize_deck
     Card.suits.each do |suit, enumeration|
       6.upto(14) do |rank|
@@ -13,7 +13,7 @@ RSpec.describe CardLocations do
     end
   end
 
-  before(:all) do 
+  before(:all) do
     initialize_deck
   end
 
@@ -22,12 +22,12 @@ RSpec.describe CardLocations do
       card(10, "hearts"),
       card(11, "diamonds"),
       card(14, "clubs"),
-    ]} 
+    ]}
     let(:card_locations) { CardLocations.new(deck: cards) }
-    
+
 
     describe "#at" do
-      it "returns the cards at that given location" do 
+      it "returns the cards at that given location" do
         expect(card_locations.at(:deck)).to eq cards
       end
     end
@@ -35,9 +35,9 @@ RSpec.describe CardLocations do
     describe "#move" do
       context "when a card is moved from one location to a new location" do
         before do
-          card_locations.move(:deck, :hand, cards[0]) 
+          card_locations.move(:deck, :hand, cards[0])
         end
-        
+
         it "moves the card to that new location" do
           expect(card_locations.at(:hand)).to eq [cards[0]]
         end
@@ -86,6 +86,15 @@ RSpec.describe CardLocations do
         end
       end
     end
+  end
 
+  context "when the location hasn't been initialised" do
+    let(:card_locations) { CardLocations.new() }
+
+    describe "#at" do
+      it "returns an empty array" do
+        expect(card_locations.at(:back_pocket)).to eq []
+      end
+    end
   end
 end

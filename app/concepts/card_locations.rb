@@ -10,7 +10,7 @@ class CardLocations
   def move(from, to, card)
     @locations[from].delete(card)
 
-    if !@locations[to] 
+    if !@locations[to]
       @locations[to] = []
     end
 

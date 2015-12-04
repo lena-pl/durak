@@ -7,17 +7,16 @@ class ApplyPickUpFromTableAction
   def call
     card = @action.active_card
 
-    if !@game_state.card_locations.at(:table).include?(card)
+    if !@game_state.table.include?(card)
       raise "Card must be on table before it is picked up"
     end
 
     if @action.initiating_player == @game_state.player(1)
-      hand = :player_one_hand
+      @game_state.table.move_to(@game_state.player_hand(1), card)
     elsif @action.initiating_player == @game_state.player(2)
-      hand = :player_two_hand
+      @game_state.table.move_to(@game_state.player_hand(2), card)
     end
-    
-    @game_state.card_locations.move(:table, hand, card) 
+
     @game_state
   end
 end

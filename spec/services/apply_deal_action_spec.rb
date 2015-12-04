@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe ApplyDealAction do
+  fixtures :cards
 
-  let(:card) { Card.create!(:rank => 7, :suit => :hearts) }
+  let(:card) { cards(:hearts_7) }
   let(:game) { Game.create!(:trump_card => card) }
   let!(:player_one) { Player.create!(:game => game) }
   let!(:player_two) { Player.create!(:game => game) }
@@ -14,7 +15,7 @@ RSpec.describe ApplyDealAction do
 
       it "moves the card to player one's hand" do
         game_state = ApplyDealAction.new(base_game_state, deal_action).call
-        expect(game_state.card_locations.at(:player_one_hand)).to eq [card]
+        expect(game_state.player_hand(1).include?(card)).to be_truthy
       end
     end
 
@@ -23,7 +24,7 @@ RSpec.describe ApplyDealAction do
 
       it "moves the card to player two's hand" do
         game_state = ApplyDealAction.new(base_game_state, deal_action).call
-        expect(game_state.card_locations.at(:player_two_hand)).to eq [card]
+        expect(game_state.player_hand(2).include?(card)).to be_truthy
       end
     end
   end

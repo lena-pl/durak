@@ -27,10 +27,22 @@ class GameState
   end
 
   def player(player_number)
+    check_valid_player_number(player_number)
+
+    @players[player_number - 1]
+  end
+
+  def player_hand(player_number)
+    check_valid_player_number(player_number)
+
+    @player_hands[player_number - 1]
+  end
+
+  private
+
+  def check_valid_player_number(player_number)
     if !player_number.between?(1, MAX_PLAYERS)
       raise "Invalid player_number. Must be between 1 and #{MAX_PLAYERS}"
     end
-
-    @players[player_number - 1]
   end
 end

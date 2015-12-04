@@ -1,13 +1,7 @@
 class TableArrangement
   def arrange(cards)
-    pairs = []
-    index = 0
-
-    while index < cards.length
-      pairs.push({ :attacking_card => cards[index], :defending_card => cards[index + 1] })
-      index += 2
+    cards.in_groups_of(2).map do |attacking_card, defending_card|
+      {attacking_card: attacking_card, defending_card: defending_card}
     end
-
-    pairs
   end
 end

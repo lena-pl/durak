@@ -24,7 +24,7 @@ class CardLocation
   end
 
   def move_to(location, card)
-    self.delete(card)
+    delete(card)
     location.add(card)
   end
 

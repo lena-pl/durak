@@ -1,0 +1,7 @@
+<% Card.suits.each do |suit, enumeration| %>
+  <% 6.upto(14) do |rank| %>
+    <%= suit %>_<%= rank %>:
+      rank: <%= rank %>
+      suit: <%= enumeration %>
+  <% end %>
+<% end %>

@@ -1,7 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe GameState do
-  let(:trump_card) { Card.create!(:rank => 6, :suit => :hearts) }
+  fixtures :cards
+
+  let(:trump_card) { cards(:hearts_6) }
   let(:game) { Game.create!(:trump_card => trump_card) }
   let!(:player_one) { Player.create!(:game => game) }
   let!(:player_two) { Player.create!(:game => game) }
@@ -12,8 +14,8 @@ RSpec.describe GameState do
       expect(subject.trump_card).to eq game.trump_card
     end
 
-    it "returns GameState with complete deck at :deck location" do
-      expect(subject.card_locations.at(:deck)).to eq Card.all
+    it "returns GameState with all cards in deck location" do
+      expect(subject.deck.all).to eq Card.all
     end
 
     it "returns GameState with nil attacker" do

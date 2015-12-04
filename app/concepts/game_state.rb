@@ -1,22 +1,29 @@
 class GameState
   MAX_PLAYERS = 2
 
-  attr_reader :card_locations, :players
-  attr_accessor :trump_card, :attacker
+  attr_reader :players
+  attr_accessor :trump_card, :deck, :table, :discard_pile, :attacker
 
-  def initialize(trump_card, card_locations, attacker, players)
+  def initialize(trump_card, deck, players, player_hands, table, discard_pile, attacker)
     @trump_card = trump_card
-    @card_locations = card_locations
-    @attacker = attacker
+    @deck = deck
     @players = players
+    @player_hands = player_hands
+    @table = table
+    @discard_pile = discard_pile
+    @attacker = attacker
   end
 
   def self.base_state(game)
     trump_card = game.trump_card
-    card_locations = CardLocations.new(deck: Card.all)
+    deck = CardLocation.with_cards(Card.all)
     attacker = nil
     players = game.players.all
-    GameState.new(trump_card, card_locations, attacker, players)
+    player_hands = []
+    players.count.times { player_hands.push(CardLocation.new) }
+    table = CardLocation.new(TableArrangement.new)
+    discard_pile = CardLocation.new
+    GameState.new(trump_card, deck, players, player_hands, table, discard_pile, attacker)
   end
 
   def player(player_number)

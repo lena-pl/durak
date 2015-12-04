@@ -5,19 +5,20 @@ class ApplyAttackAction
   end
 
   def call
-    if @action.initiating_player == @game_state.player(1)
-      hand = :player_one_hand
-    elsif @action.initiating_player == @game_state.player(2)
-      hand = :player_two_hand
-    end
-
     card = @action.active_card
 
-    if !@game_state.card_locations.at(hand).include? card
+    if @action.initiating_player == @game_state.player(1)
+      player_number = 1
+    elsif @action.initiating_player == @game_state.player(2)
+      player_number = 2
+    end
+
+    if !@game_state.player_hand(player_number).include?(card)
       raise "Card must be in player's hand to attack"
     end
 
-    @game_state.card_locations.move(hand, :table, card)
+    @game_state.table.add(card)
+
     @game_state
   end
 end

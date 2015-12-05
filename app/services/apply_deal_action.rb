@@ -23,7 +23,13 @@ class ApplyDealAction
   private
 
   def find_new_attacker
-    if lowest_trump(1) < lowest_trump(2)
+    if !lowest_trump(1) && !lowest_trump(2)
+      @game_state.player(1)
+    elsif !lowest_trump(2) && lowest_trump(1)
+      @game_state.player(1)
+    elsif !lowest_trump(1) && lowest_trump(2)
+      @game_state.player(2)
+    elsif lowest_trump(1) < lowest_trump(2)
       @game_state.player(1)
     elsif lowest_trump(2) < lowest_trump(1)
       @game_state.player(2)
@@ -33,7 +39,11 @@ class ApplyDealAction
   end
 
   def lowest_trump(player_number)
-    trump_suit_cards(player_number).sort.first.rank
+    if trump_suit_cards(player_number)
+      trump_suit_cards(player_number).sort.first.rank
+    else
+      false
+    end
   end
 
   def trump_suit_cards(player_number)

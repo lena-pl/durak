@@ -33,7 +33,7 @@ class ApplyDealAction
   end
 
   def lowest_trump(player_number)
-    trump_suit_cards(player_number).sort.first
+    trump_suit_cards(player_number).sort.first.rank
   end
 
   def trump_suit_cards(player_number)

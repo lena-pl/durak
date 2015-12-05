@@ -39,7 +39,7 @@ class ApplyDealAction
   end
 
   def lowest_trump(player_number)
-    if trump_suit_cards(player_number)
+    if !trump_suit_cards(player_number).empty?
       trump_suit_cards(player_number).sort.first.rank
     else
       false

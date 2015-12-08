@@ -1,13 +1,10 @@
 class CardLocation
-
   def self.with_cards(cards)
-    card_location = CardLocation.new
-
-    cards.each do |card|
-      card_location.add(card)
+    CardLocation.new.tap do |card_location|
+      cards.each do |card|
+        card_location.add(card)
+      end
     end
-
-    card_location
   end
 
   def initialize(arranger = DefaultArrangement.new)

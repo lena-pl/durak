@@ -51,7 +51,7 @@ RSpec.describe ApplyDiscardAction do
       end
 
       context "when player one is the attacker" do
-        let(:discard_action) { Action.new(:kind => :discard, :active_card => attacking_card, :initiating_player => player_one) }
+        let(:discard_action) { Action.new(:kind => :discard, :active_card => attacking_card, :player => player_one) }
 
         before do
           initial_game_state.attacker = player_one
@@ -64,7 +64,7 @@ RSpec.describe ApplyDiscardAction do
       end
 
       context "when player two is the attacker" do
-        let(:discard_action) { Action.new(:kind => :discard, :active_card => attacking_card, :initiating_player => player_two) }
+        let(:discard_action) { Action.new(:kind => :discard, :active_card => attacking_card, :player => player_two) }
 
         before do
           initial_game_state.attacker = player_two
@@ -77,7 +77,7 @@ RSpec.describe ApplyDiscardAction do
       end
 
       context "when two discard actions are made by the same attacker" do
-        let(:another_discard_action) { Action.new(:kind => :discard, :active_card => defending_card, :initiating_player => player_two) }
+        let(:another_discard_action) { Action.new(:kind => :discard, :active_card => defending_card, :player => player_two) }
 
         before do
           initial_game_state.attacker = player_two

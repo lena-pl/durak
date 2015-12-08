@@ -3,6 +3,6 @@ class Action < ActiveRecord::Base
 
   belongs_to :game
   belongs_to :player
-  belongs_to :active_card, :class_name => 'Card'
-  belongs_to :passive_card, :class_name => 'Card'
+  belongs_to :card
+  belongs_to :in_response_to_action, :class_name => 'Action'
 end

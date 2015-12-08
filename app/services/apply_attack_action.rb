@@ -17,7 +17,7 @@ class ApplyAttackAction
       raise "Card must be in player's hand to attack"
     end
 
-    @game_state.table.add(card)
+    @game_state.player_hand(player_number).move_to(@game_state.table, card)
 
     @game_state
   end

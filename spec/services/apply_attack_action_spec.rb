@@ -30,7 +30,12 @@ RSpec.describe ApplyAttackAction do
 
       it "moves the card to the table" do
         game_state = ApplyAttackAction.new(initial_game_state, attack_action).call
-        expect(game_state.table.include?(card)).to be_truthy
+        expect(game_state.table).to include card
+      end
+
+      it "moves the card out of the player's hand" do
+        game_state = ApplyAttackAction.new(initial_game_state, attack_action).call
+        expect(game_state.player_hand(1)).not_to include card
       end
     end
 
@@ -54,7 +59,12 @@ RSpec.describe ApplyAttackAction do
 
       it "moves the card to the table" do
         game_state = ApplyAttackAction.new(initial_game_state, attack_action).call
-        expect(game_state.table.include?(card)).to be_truthy
+        expect(game_state.table).to include card
+      end
+
+      it "moves the card out of the player's hand" do
+        game_state = ApplyAttackAction.new(initial_game_state, attack_action).call
+        expect(game_state.player_hand(2)).not_to include card
       end
     end
   end

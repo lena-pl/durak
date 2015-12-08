@@ -11,12 +11,7 @@ RSpec.describe CreateGame do
     end
 
     it "creates 2 players" do
-      expect(Player.all.count).to eq(2)
-    end
-
-    it "associates those players with this game" do
-      expect(Player.find(1).game).to eq(@game)
-      expect(Player.find(2).game).to eq(@game)
+      expect(@game.players.count).to eq(2)
     end
   end
 end

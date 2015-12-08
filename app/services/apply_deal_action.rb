@@ -9,9 +9,9 @@ class ApplyDealAction
 
     @game_state.deck.delete(card)
 
-    if @action.affected_player == @game_state.player(1)
+    if @action.player == @game_state.player(1)
       @game_state.player_hand(1).add(card)
-    elsif @action.affected_player == @game_state.player(2)
+    elsif @action.player == @game_state.player(2)
       @game_state.player_hand(2).add(card)
     end
 

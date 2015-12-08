@@ -9,7 +9,7 @@ RSpec.describe ApplyDiscardAction do
   let!(:player_one) { Player.create!(:game => game) }
   let!(:player_two) { Player.create!(:game => game) }
   let(:initial_game_state) { GameState.base_state(game) }
-  let(:discard_action) { Action.new(:kind => :discard, :active_card => attacking_card) }
+  let(:discard_action) { Action.new(:kind => :discard, :card => attacking_card) }
 
   describe "#call" do
     context "when only one attacking card is on the table" do
@@ -29,7 +29,7 @@ RSpec.describe ApplyDiscardAction do
     end
 
     context "when two cards are on the table" do
-      let(:another_discard_action) { Action.new(:kind => :discard, :active_card => defending_card) }
+      let(:another_discard_action) { Action.new(:kind => :discard, :card => defending_card) }
 
       before do
         initial_game_state.deck.move_to(initial_game_state.table, attacking_card)
@@ -51,7 +51,7 @@ RSpec.describe ApplyDiscardAction do
       end
 
       context "when player one is the attacker" do
-        let(:discard_action) { Action.new(:kind => :discard, :active_card => attacking_card, :player => player_one) }
+        let(:discard_action) { Action.new(:kind => :discard, :card => attacking_card, :player => player_one) }
 
         before do
           initial_game_state.attacker = player_one
@@ -64,7 +64,7 @@ RSpec.describe ApplyDiscardAction do
       end
 
       context "when player two is the attacker" do
-        let(:discard_action) { Action.new(:kind => :discard, :active_card => attacking_card, :player => player_two) }
+        let(:discard_action) { Action.new(:kind => :discard, :card => attacking_card, :player => player_two) }
 
         before do
           initial_game_state.attacker = player_two
@@ -77,7 +77,7 @@ RSpec.describe ApplyDiscardAction do
       end
 
       context "when two discard actions are made by the same attacker" do
-        let(:another_discard_action) { Action.new(:kind => :discard, :active_card => defending_card, :player => player_two) }
+        let(:another_discard_action) { Action.new(:kind => :discard, :card => defending_card, :player => player_two) }
 
         before do
           initial_game_state.attacker = player_two

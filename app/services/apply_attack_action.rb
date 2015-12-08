@@ -5,7 +5,7 @@ class ApplyAttackAction
   end
 
   def call
-    card = @action.active_card
+    card = @action.card
 
     if @action.player == @game_state.player(1)
       player_number = 1

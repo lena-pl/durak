@@ -14,7 +14,7 @@ RSpec.describe ApplyDefendAction do
 
   describe "#call" do
     context "when the card is not in player one's hand" do
-      let(:defend_action) { Action.new(:kind => :defend, :active_card => card, :passive_card => passive_card, :player => player_one) }
+      let(:defend_action) { Action.new(:kind => :defend, :card => card, :passive_card => passive_card, :player => player_one) }
 
       subject { ApplyDefendAction.new(initial_game_state, defend_action) }
 
@@ -24,7 +24,7 @@ RSpec.describe ApplyDefendAction do
     end
 
     context "when the card is not in player two's hand" do
-      let(:defend_action) { Action.new(:kind => :defend, :active_card => card, :passive_card => passive_card, :player => player_two) }
+      let(:defend_action) { Action.new(:kind => :defend, :card => card, :passive_card => passive_card, :player => player_two) }
 
       subject { ApplyDefendAction.new(initial_game_state, defend_action) }
 
@@ -34,7 +34,7 @@ RSpec.describe ApplyDefendAction do
     end
 
     context "when the attacking card is not on the table hand" do
-      let(:defend_action) { Action.new(:kind => :defend, :active_card => card, :passive_card => passive_card, :player => player_one) }
+      let(:defend_action) { Action.new(:kind => :defend, :card => card, :passive_card => passive_card, :player => player_one) }
 
       subject { ApplyDefendAction.new(initial_game_state, defend_action) }
 
@@ -50,7 +50,7 @@ RSpec.describe ApplyDefendAction do
 
     context "when the attacking card is on the table hand and defending card is in player one's hand" do
 
-      let(:defend_action) { Action.new(:kind => :defend, :active_card => card, :passive_card => passive_card, :player => player_one) }
+      let(:defend_action) { Action.new(:kind => :defend, :card => card, :passive_card => passive_card, :player => player_one) }
 
       subject { ApplyDefendAction.new(initial_game_state, defend_action) }
 
@@ -72,7 +72,7 @@ RSpec.describe ApplyDefendAction do
 
     context "when the attacking card is on the table hand and defending card is in player two's hand" do
 
-      let(:defend_action) { Action.new(:kind => :defend, :active_card => card, :passive_card => passive_card, :player => player_two) }
+      let(:defend_action) { Action.new(:kind => :defend, :card => card, :passive_card => passive_card, :player => player_two) }
 
       subject { ApplyDefendAction.new(initial_game_state, defend_action) }
 

@@ -11,7 +11,7 @@ RSpec.describe ApplyDrawFromDeckAction do
 
   describe "#call" do
     context "player one draws a card from the deck" do
-      let(:draw_from_deck_action) { Action.new(:kind => :draw_from_deck, :active_card => card, :player => player_one) }
+      let(:draw_from_deck_action) { Action.new(:kind => :draw_from_deck, :card => card, :player => player_one) }
 
       it "moves the card to player one's hand" do
         game_state = ApplyDrawFromDeckAction.new(base_game_state, draw_from_deck_action).call
@@ -25,7 +25,7 @@ RSpec.describe ApplyDrawFromDeckAction do
     end
 
     context "player two draws a card from the deck" do
-      let(:draw_from_deck_action) { Action.new(:kind => :draw_from_deck, :active_card => card, :player => player_two) }
+      let(:draw_from_deck_action) { Action.new(:kind => :draw_from_deck, :card => card, :player => player_two) }
 
       it "moves the card to player two's hand" do
         game_state = ApplyDrawFromDeckAction.new(base_game_state, draw_from_deck_action).call

@@ -5,7 +5,7 @@ class ApplyDefendAction
   end
 
   def call
-    active_card = @action.active_card
+    card = @action.card
     passive_card = @action.passive_card
 
     if @action.player == @game_state.player(1)
@@ -16,7 +16,7 @@ class ApplyDefendAction
 
     hand = @game_state.player_hand(player_number)
 
-    if !hand.include?(active_card)
+    if !hand.include?(card)
       raise "Card must be in player's hand to defend with"
     end
 
@@ -24,7 +24,7 @@ class ApplyDefendAction
       raise "Card must be on table to defend against"
     end
 
-    hand.move_to(@game_state.table, active_card)
+    hand.move_to(@game_state.table, card)
 
     @game_state
   end

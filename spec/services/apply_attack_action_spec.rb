@@ -11,7 +11,7 @@ RSpec.describe ApplyAttackAction do
 
   describe "#call" do
     context "when the card is not in player one's hand" do
-      let(:attack_action) { Action.new(:kind => :attack, :active_card => card, :player => player_one) }
+      let(:attack_action) { Action.new(:kind => :attack, :card => card, :player => player_one) }
 
       subject { ApplyAttackAction.new(initial_game_state, attack_action) }
 
@@ -21,7 +21,7 @@ RSpec.describe ApplyAttackAction do
     end
 
     context "when the card is in player one's hand" do
-      let(:attack_action) { Action.new(:kind => :attack, :active_card => card, :player => player_one) }
+      let(:attack_action) { Action.new(:kind => :attack, :card => card, :player => player_one) }
 
       before do
         initial_game_state.deck.delete(card)
@@ -40,7 +40,7 @@ RSpec.describe ApplyAttackAction do
     end
 
     context "when the card is not in player two's hand" do
-      let(:attack_action) { Action.new(:kind => :attack, :active_card => card, :player => player_two) }
+      let(:attack_action) { Action.new(:kind => :attack, :card => card, :player => player_two) }
 
       subject { ApplyAttackAction.new(initial_game_state, attack_action) }
 
@@ -50,7 +50,7 @@ RSpec.describe ApplyAttackAction do
     end
 
     context "when the card is in player two's hand" do
-      let(:attack_action) { Action.new(:kind => :attack, :active_card => card, :player => player_two) }
+      let(:attack_action) { Action.new(:kind => :attack, :card => card, :player => player_two) }
 
       before do
         initial_game_state.deck.delete(card)

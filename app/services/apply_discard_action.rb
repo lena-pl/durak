@@ -5,7 +5,7 @@ class ApplyDiscardAction
   end
 
   def call
-    card = @action.active_card
+    card = @action.card
 
     if !@game_state.table.include?(card)
       raise "Card must be on table to discard"

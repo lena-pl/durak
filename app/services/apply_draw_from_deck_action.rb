@@ -5,7 +5,7 @@ class ApplyDrawFromDeckAction
   end
 
   def call
-    card = @action.active_card
+    card = @action.card
 
     @game_state.deck.delete(card)
 

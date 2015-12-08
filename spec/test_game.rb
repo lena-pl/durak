@@ -15,8 +15,8 @@ class TestGame
 
   private
 
-  def create_action(kind, player, card, passive_card = nil)
-    @game_model.actions.create!(kind: kind, player: player, card: card, passive_card: passive_card)
+  def create_action(kind, player, card, in_response_to_action)
+    @game_model.actions.create!(kind: kind, player: player, card: card, in_response_to_action: in_response_to_action)
   end
 
 end

@@ -7,9 +7,9 @@ class ApplyAttackAction
   def call
     card = @action.active_card
 
-    if @action.initiating_player == @game_state.player(1)
+    if @action.player == @game_state.player(1)
       player_number = 1
-    elsif @action.initiating_player == @game_state.player(2)
+    elsif @action.player == @game_state.player(2)
       player_number = 2
     end
 

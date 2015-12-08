@@ -1,10 +1,12 @@
 class CreateGame
-  def initialize
+  def initialize(trump_card =  Card.first)
+    @trump_card = trump_card
   end
 
   def call
-    game = Game.create!
-    2.times { Player.create!(game: game) }
+    #TODO TRANSACTION
+    game = Game.create!(trump_card: @trump_card)
+    2.times { game.players.create! }
 
     game
   end

@@ -16,17 +16,19 @@ ActiveRecord::Schema.define(version: 20151126040731) do
   create_table "actions", force: :cascade do |t|
     t.integer  "kind"
     t.integer  "game_id"
-    t.integer  "player_id"
+    t.integer  "initiating_player_id"
+    t.integer  "affected_player_id"
     t.integer  "active_card_id"
     t.integer  "passive_card_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
 
   add_index "actions", ["active_card_id"], name: "index_actions_on_active_card_id"
+  add_index "actions", ["affected_player_id"], name: "index_actions_on_affected_player_id"
   add_index "actions", ["game_id"], name: "index_actions_on_game_id"
+  add_index "actions", ["initiating_player_id"], name: "index_actions_on_initiating_player_id"
   add_index "actions", ["passive_card_id"], name: "index_actions_on_passive_card_id"
-  add_index "actions", ["player_id"], name: "index_actions_on_player_id"
 
   create_table "cards", force: :cascade do |t|
     t.integer  "rank"

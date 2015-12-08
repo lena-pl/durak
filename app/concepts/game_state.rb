@@ -1,8 +1,9 @@
 class GameState
   MAX_PLAYERS = 2
 
-  attr_reader :players
-  attr_accessor :trump_card, :deck, :table, :discard_pile, :attacker
+  # TODO review these
+  attr_reader :players, :table, :deck, :trump_card, :discard_pile
+  attr_accessor :attacker
 
   def initialize(trump_card, deck, players, player_hands, table, discard_pile, attacker)
     @trump_card = trump_card

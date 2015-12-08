@@ -25,11 +25,11 @@ RSpec.describe BuildGameState do
   let(:deal_cards) do
     lambda do |test_game|
       player_one_initial_hand.each do |card|
-        test_game.deal_card(test_game.game_model.players.first, test_game.game_model.players.first, card)
+        test_game.deal_card(test_game.game_model.players.first, card)
       end
 
       player_two_initial_hand.each do |card|
-        test_game.deal_card(test_game.game_model.players.first, test_game.game_model.players.second, card)
+        test_game.deal_card(test_game.game_model.players.second, card)
       end
     end
   end

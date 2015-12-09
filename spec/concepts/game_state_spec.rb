@@ -7,7 +7,7 @@ RSpec.describe GameState do
   let(:game) { Game.create!(:trump_card => trump_card) }
   let!(:player_one) { Player.create!(:game => game) }
   let!(:player_two) { Player.create!(:game => game) }
-  subject { GameState.base_state(game) }
+  subject { BuildGameState.base_state(game) }
 
   describe ".base_state" do
     it "returns GameState with trump_card from game" do

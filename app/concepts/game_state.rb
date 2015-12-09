@@ -14,18 +14,6 @@ class GameState
     @attacker = attacker
   end
 
-  def self.base_state(game)
-    trump_card = game.trump_card
-    deck = CardLocation.with_cards(Card.all)
-    attacker = nil
-    players = game.players.all
-    player_hands = []
-    players.count.times { player_hands.push(CardLocation.new) }
-    table = CardLocation.new(TableArrangement.new)
-    discard_pile = CardLocation.new
-    GameState.new(trump_card, deck, players, player_hands, table, discard_pile, attacker)
-  end
-
   def player(player_number)
     check_valid_player_number(player_number)
 

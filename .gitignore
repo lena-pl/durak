@@ -21,3 +21,5 @@
 
 # Ignore simplecov reports
 /coverage/
+
+spec/tmp/

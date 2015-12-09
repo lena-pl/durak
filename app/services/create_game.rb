@@ -4,10 +4,9 @@ class CreateGame
   end
 
   def call
-    ActiveRecord::Base.transaction do
-      game = Game.create!(trump_card: @trump_card)
-      2.times { game.players.create! }
-      game
-    end
+    game = Game.new(trump_card: @trump_card)
+    2.times { game.players.new }
+    game.save!
+    game
   end
 end

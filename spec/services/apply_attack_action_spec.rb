@@ -7,7 +7,7 @@ RSpec.describe ApplyAttackAction do
   let(:game) { Game.create!(:trump_card => card) }
   let!(:player_one) { Player.create!(:game => game) }
   let!(:player_two) { Player.create!(:game => game) }
-  let(:initial_game_state) { BuildGameState.base_state(game) }
+  let(:initial_game_state) { BuildGameState.new(game).call }
 
   describe "#call" do
     context "when the card is not in player one's hand" do

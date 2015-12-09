@@ -7,7 +7,7 @@ RSpec.describe ApplyDefendAction do
   let(:game) { Game.create!(:trump_card => trump_card) }
   let!(:player_one) { Player.create!(:game => game) }
   let!(:player_two) { Player.create!(:game => game) }
-  let(:game_state) { BuildGameState.base_state(game) }
+  let(:game_state) { BuildGameState.new(game).call }
 
   let(:attacking_card) { cards(:spades_9) }
   let(:defending_card) { cards(:spades_10) }

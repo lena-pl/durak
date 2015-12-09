@@ -7,7 +7,7 @@ RSpec.describe ApplyDealAction do
   let(:game) { Game.create!(:trump_card => card) }
   let!(:player_one) { Player.create!(:game => game) }
   let!(:player_two) { Player.create!(:game => game) }
-  let(:base_game_state) { BuildGameState.base_state(game) }
+  let(:base_game_state) { BuildGameState.new(game).call }
 
   describe "#call" do
     context "player one draws a card from the deck" do

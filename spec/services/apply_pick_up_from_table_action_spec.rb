@@ -13,7 +13,7 @@ RSpec.describe ApplyPickUpFromTableAction do
     context "when there is at least one card on the table" do
 
       context "player one picks up a card from the table" do
-        let(:pickup_from_table_action) { Action.new(:kind => :pick_up_from_table, :active_card => card, :initiating_player => player_one) }
+        let(:pickup_from_table_action) { Action.new(:kind => :pick_up_from_table, :card => card, :player => player_one) }
 
         before do
           initial_game_state.deck.move_to(initial_game_state.table, card)
@@ -26,7 +26,7 @@ RSpec.describe ApplyPickUpFromTableAction do
       end
 
       context "player two picks up a card from the table" do
-        let(:pickup_from_table_action) { Action.new(:kind => :pick_up_from_table, :active_card => card, :initiating_player => player_two) }
+        let(:pickup_from_table_action) { Action.new(:kind => :pick_up_from_table, :card => card, :player => player_two) }
 
         before do
           initial_game_state.deck.move_to(initial_game_state.table, card)
@@ -40,7 +40,7 @@ RSpec.describe ApplyPickUpFromTableAction do
     end
 
     context "when the card being picked up isn't on the table" do
-      let(:pickup_from_table_action) { Action.new(:kind => :pick_up_from_table, :active_card => card, :initiating_player => player_one) }
+      let(:pickup_from_table_action) { Action.new(:kind => :pick_up_from_table, :card => card, :player => player_one) }
 
       subject { ApplyPickUpFromTableAction.new(initial_game_state, pickup_from_table_action) }
 

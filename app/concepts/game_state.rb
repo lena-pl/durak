@@ -1,7 +1,6 @@
 class GameState
   MAX_PLAYERS = 2
 
-  # TODO review these
   attr_reader :players, :table, :deck, :trump_card, :discard_pile
   attr_accessor :attacker
 

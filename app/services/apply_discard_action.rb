@@ -5,7 +5,7 @@ class ApplyDiscardAction
   end
 
   def call
-    card = @action.active_card
+    card = @action.card
 
     if !@game_state.table.include?(card)
       raise "Card must be on table to discard"
@@ -21,7 +21,7 @@ class ApplyDiscardAction
   private
 
   def find_new_attacker
-    if @action.initiating_player == @game_state.player(1)
+    if @action.player == @game_state.player(1)
       @game_state.player(2)
     else
       @game_state.player(1)

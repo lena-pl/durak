@@ -34,8 +34,8 @@ RSpec.describe BuildGameState do
     end
   end
 
-  let(:trump_cards) { cards(:spades_10) }
-  let(:test_game) { TestGame.new(trump_cards) }
+  let(:trump_card) { cards(:spades_10) }
+  let(:test_game) { TestGame.new(trump_card) }
   subject(:game_state) { BuildGameState.new(test_game.game_model).call }
 
   context "when player one is the dealer and cards have been dealt" do

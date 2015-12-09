@@ -36,7 +36,7 @@ RSpec.describe ApplyDealAction do
         base_game_state.deck.move_to(base_game_state.player_hand(2), cards(:hearts_8))
       end
 
-      it "moves the lowest trump card to player one's hand" do
+      it "makes player one the new attacker" do
         game_state = ApplyDealAction.new(base_game_state, deal_action).call
         expect(game_state.attacker).to eq player_one
       end
@@ -50,7 +50,7 @@ RSpec.describe ApplyDealAction do
         base_game_state.deck.move_to(base_game_state.player_hand(1), cards(:hearts_8))
       end
 
-      it "moves the lowest trump card to player one's hand" do
+      it "makes player two the new attacker" do
         game_state = ApplyDealAction.new(base_game_state, deal_action).call
         expect(game_state.attacker).to eq player_two
       end
@@ -64,7 +64,7 @@ RSpec.describe ApplyDealAction do
         base_game_state.deck.move_to(base_game_state.player_hand(2), cards(:diamonds_8))
       end
 
-      it "moves the lowest trump card to player one's hand" do
+      it "makes player one the new attacker" do
         game_state = ApplyDealAction.new(base_game_state, deal_action).call
         expect(game_state.attacker).to eq player_one
       end

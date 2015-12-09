@@ -5,5 +5,6 @@ class Action < ActiveRecord::Base
 
   enum kind: [:deal, :draw_from_deck, :pick_up_from_table, :attack, :defend, :discard]
 
+  validates :kind, :player, :card, presence: true
   validates :in_response_to_action, uniqueness: true, allow_nil: true
 end

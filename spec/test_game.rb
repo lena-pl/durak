@@ -9,8 +9,8 @@ class TestGame
     block.call(self)
   end
 
-  def deal_card(player, card)
-    create_action(:deal, player, card)
+  def deal_card(player, card, in_response_to_action = nil)
+    create_action(:deal, player, card, in_response_to_action)
   end
 
   private

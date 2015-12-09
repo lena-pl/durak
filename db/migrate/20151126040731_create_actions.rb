@@ -2,7 +2,6 @@ class CreateActions < ActiveRecord::Migration
   def change
     create_table :actions do |t|
       t.integer :kind
-      t.references :game, index: true
       t.references :player, index: true
       t.references :card, index: true
       t.references :in_response_to_action

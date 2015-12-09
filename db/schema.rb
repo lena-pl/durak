@@ -15,7 +15,6 @@ ActiveRecord::Schema.define(version: 20151126040731) do
 
   create_table "actions", force: :cascade do |t|
     t.integer  "kind"
-    t.integer  "game_id"
     t.integer  "player_id"
     t.integer  "card_id"
     t.integer  "in_response_to_action_id"
@@ -24,8 +23,7 @@ ActiveRecord::Schema.define(version: 20151126040731) do
   end
 
   add_index "actions", ["card_id"], name: "index_actions_on_card_id"
-  add_index "actions", ["game_id"], name: "index_actions_on_game_id"
-  add_index "actions", ["in_response_to_action_id"], name: "index_actions_on_in_response_to_action_id"
+  add_index "actions", ["in_response_to_action_id"], name: "index_actions_on_in_response_to_action_id", unique: true
   add_index "actions", ["player_id"], name: "index_actions_on_player_id"
 
   create_table "cards", force: :cascade do |t|

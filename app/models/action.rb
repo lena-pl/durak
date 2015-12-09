@@ -5,4 +5,8 @@ class Action < ActiveRecord::Base
   belongs_to :player
   belongs_to :card
   belongs_to :in_response_to_action, :class_name => 'Action'
+
+  validates :game, presence: true
+  validates :player, presence: true
+  validates :card, presence: true
 end

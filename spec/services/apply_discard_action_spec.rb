@@ -8,7 +8,7 @@ RSpec.describe ApplyDiscardAction do
   let(:game) { Game.create!(:trump_card => attacking_card) }
   let!(:player_one) { Player.create!(:game => game) }
   let!(:player_two) { Player.create!(:game => game) }
-  let(:initial_game_state) { GameState.base_state(game) }
+  let(:initial_game_state) { BuildGameState.new(game).call }
   let(:discard_action) { Action.new(:kind => :discard, :card => attacking_card) }
 
   describe "#call" do

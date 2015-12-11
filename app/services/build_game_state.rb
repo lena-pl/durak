@@ -21,7 +21,7 @@ class BuildGameState
   private
 
   def base_state
-    GameState.new(trump_card, deck, players, player_hands, table, discard_pile, attacker)
+    GameState.new(trump_card, deck, player_states, table, discard_pile, attacker)
   end
 
   def trump_card
@@ -32,12 +32,8 @@ class BuildGameState
     CardLocation.with_cards(Card.all)
   end
 
-  def players
-    @game.players.all
-  end
-
-  def player_hands
-    players.map { CardLocation.new }
+  def player_states
+    @game.players.map { |player| PlayerState.new(player: player, hand: CardLocation.new) }
   end
 
   def table

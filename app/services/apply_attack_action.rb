@@ -14,6 +14,7 @@ class ApplyAttackAction
 
     player_state.hand.delete(card)
     @game_state.table.push(card)
+    
     @game_state
   end
 end

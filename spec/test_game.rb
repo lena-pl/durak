@@ -1,5 +1,6 @@
 class TestGame
   attr_reader :game_model
+  delegate :trump_card, :players, to: :game_model
 
   def initialize(trump_card)
     @game_model = CreateGame.new(trump_card).call

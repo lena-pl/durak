@@ -4,7 +4,7 @@ RSpec.describe ApplyAttackAction do
   fixtures :cards
 
   let(:game) { CreateGame.new(cards(:hearts_12)).call }
-  let!(:attacker) { game.players.first }
+  let(:attacker) { game.players.first }
 
   let(:attacking_card) { cards(:spades_9) }
 

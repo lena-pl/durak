@@ -7,13 +7,14 @@ class ApplyDrawFromDeckAction
   def call
     card = @action.card
 
-    @game_state.deck.delete(card)
-
-    if @action.player == @game_state.player(1)
-      @game_state.player_hand(1).add(card)
-    elsif @action.player == @game_state.player(2)
-      @game_state.player_hand(2).add(card)
+    if !@game_state.deck.include?(card)
+      raise "Card must be in deck to be drawn"
     end
+
+    player_state = @game_state.player_state_for_player(@action.player)
+
+    @game_state.deck.delete(card)
+    player_state.hand.push(card)
 
     @game_state
   end

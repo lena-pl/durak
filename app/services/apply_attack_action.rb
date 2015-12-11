@@ -5,20 +5,15 @@ class ApplyAttackAction
   end
 
   def call
+    player_state = @game_state.player_state_for_player(@action.player)
     card = @action.card
 
-    if @action.player == @game_state.player(1)
-      player_number = 1
-    elsif @action.player == @game_state.player(2)
-      player_number = 2
-    end
-
-    if !@game_state.player_hand(player_number).include?(card)
+    if !player_state.hand.include?(card)
       raise "Card must be in player's hand to attack"
     end
 
-    @game_state.player_hand(player_number).move_to(@game_state.table, card)
-
+    player_state.hand.delete(card)
+    @game_state.table.push(card)
     @game_state
   end
 end

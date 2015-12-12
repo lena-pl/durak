@@ -17,6 +17,9 @@ RSpec.describe ApplyDiscardAction do
   end
 
   let(:game_state) { BuildGameState.new(game).call }
+  before do
+    game_state.attacker = attacker
+  end
   subject { ApplyDiscardAction.new(game_state, discard_action).call }
 
   let(:attacker_state) { game_state.player_state_for_player(attacker) }
@@ -33,8 +36,8 @@ RSpec.describe ApplyDiscardAction do
       end
 
       it "only move that card to the discard_pile" do
-        expect(subject.discard_pile.count).to eq 1 
-      end 
+        expect(subject.discard_pile.count).to eq 1
+      end
 
       it "moves the card off the table" do
         expect(subject.table).to_not include(attacking_card)
@@ -57,7 +60,7 @@ RSpec.describe ApplyDiscardAction do
         end
 
         it "only moves that card to discard_pile" do
-          expect(subject.discard_pile.count).to eq 1 
+          expect(subject.discard_pile.count).to eq 1
           expect(subject.discard_pile).to include(attacking_card)
         end
 
@@ -67,7 +70,7 @@ RSpec.describe ApplyDiscardAction do
 
         it "leaves the defending card on the table" do
           expect(subject.table.count).to eq 1
-          expect(subject.table).to include(defending_card) 
+          expect(subject.table).to include(defending_card)
         end
       end
 
@@ -78,7 +81,7 @@ RSpec.describe ApplyDiscardAction do
         end
 
         it "only moves that card to discard_pile" do
-          expect(subject.discard_pile.count).to eq 1 
+          expect(subject.discard_pile.count).to eq 1
           expect(subject.discard_pile).to include(defending_card)
         end
 
@@ -88,8 +91,18 @@ RSpec.describe ApplyDiscardAction do
 
         it "only leaves the attacking card on the table" do
           expect(subject.table.count).to eq 1
-          expect(subject.table).to include(attacking_card) 
+          expect(subject.table).to include(attacking_card)
         end
+      end
+    end
+
+    context "when the attacker has discarded a card" do
+      before do
+        move_from_deck_to_table(attacking_card)
+      end
+
+      it "makes the current defender the new attacker" do
+        expect(subject.attacker).to eq defender
       end
     end
 

@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/lena-pl/durak.svg)](https://travis-ci.org/lena-pl/durak)
+[![Coverage Status](https://coveralls.io/repos/lena-pl/durak/badge.svg?branch=master&service=github)](https://coveralls.io/github/lena-pl/durak?branch=master)
 
 # Durak (Fool)
 A Ruby on Rails version of the Russian card game 'Durak'. The aim of the game is to be the first player to get rid of your cards.

@@ -9,7 +9,7 @@ class ApplyDefendAction
     defending_against = @action.in_response_to_action.card
 
     player_state = @game_state.player_state_for_player(@action.player)
-    binding.pry
+
     if !player_state.hand.include?(defending_with)
       raise "Card must be in player's hand to defend with"
     end
@@ -31,17 +31,13 @@ class ApplyDefendAction
   private
 
   def already_defended_against?(card)
-    attack_defend_pair = @game_state.table.cards.find { |pair| pair[:attacking_card] == card }
+    attack_defend_pair = @game_state.table.arranged.find { |pair| pair[:attacking_card] == card }
 
-    if !attack_defend_pair.nil?
-      defending_card = attack_defend_pair[:defending_card]
-      if defending_card.nil?
-       false
-      else
-       true
-      end
-    else
+    if attack_defend_pair.nil?
       false
+    else
+      defending_card = attack_defend_pair[:defending_card]
+      !defending_card.nil?
     end
   end
 end

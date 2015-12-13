@@ -14,7 +14,6 @@ RSpec.describe ApplyDefendAction do
 
   let(:attacking_card) { cards(:spades_9) }
   let(:defending_card) { cards(:spades_10) }
-  let(:another_defending_card) { cards(:spades_10) }
 
   let(:attack_action) { instance_double(Action) }
   before do
@@ -26,13 +25,6 @@ RSpec.describe ApplyDefendAction do
     allow(defend_action).to receive(:player).and_return(player_one)
     allow(defend_action).to receive(:card).and_return(defending_card)
     allow(defend_action).to receive(:in_response_to_action).and_return(attack_action)
-  end
-
-  let(:another_defend_action) { instance_double(Action) }
-  before do
-    allow(another_defend_action).to receive(:player).and_return(player_one)
-    allow(another_defend_action).to receive(:card).and_return(another_defending_card)
-    allow(another_defend_action).to receive(:in_response_to_action).and_return(attack_action)
   end
 
   subject { ApplyDefendAction.new(game_state, defend_action).call }
@@ -87,13 +79,14 @@ RSpec.describe ApplyDefendAction do
         end
 
         context "when an attacking action has already been defended against" do
+          let(:another_defending_card) { cards(:spades_10) }
+
           before do
             game_state.deck.delete(another_defending_card)
             game_state.table.push(another_defending_card)
           end
 
           it "raises correct error" do
-            game_state = ApplyDefendAction.new(game_state, another_defend_action).call
             expect{ subject }.to raise_error("#{attacking_card} has already been defended by another card")
           end
         end

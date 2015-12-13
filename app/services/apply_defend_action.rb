@@ -8,15 +8,9 @@ class ApplyDefendAction
     defending_with = @action.card
     defending_against = @action.in_response_to_action.card
 
-    if @action.player == @game_state.player(1)
-      player_number = 1
-    elsif @action.player == @game_state.player(2)
-      player_number = 2
-    end
+    player_state = @game_state.player_state_for_player(@action.player)
 
-    player_hand = @game_state.player_hand(player_number)
-
-    if !player_hand.include?(defending_with)
+    if !player_state.hand.include?(defending_with)
       raise "Card must be in player's hand to defend with"
     end
 
@@ -28,7 +22,8 @@ class ApplyDefendAction
       raise "Card must be on table to defend against"
     end
 
-    player_hand.move_to(@game_state.table, defending_with)
+    player_state.hand.delete(defending_with)
+    @game_state.table.push(defending_with)
 
     @game_state
   end
@@ -36,17 +31,13 @@ class ApplyDefendAction
   private
 
   def already_defended_against?(card)
-    attack_defend_pair = @game_state.table.all.find { |pair| pair[:attacking_card] == card }
+    attack_defend_pair = @game_state.table.arranged.find { |pair| pair[:attacking_card] == card }
 
-    if !attack_defend_pair.nil?
-      defending_card = attack_defend_pair[:defending_card]
-      if defending_card.nil?
-       false
-      else
-       true
-      end
-    else
+    if attack_defend_pair.nil?
       false
+    else
+      defending_card = attack_defend_pair[:defending_card]
+      !defending_card.nil?
     end
   end
 end

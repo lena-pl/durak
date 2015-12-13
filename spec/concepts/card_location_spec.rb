@@ -1,62 +1,58 @@
 require 'rails_helper'
 
 RSpec.describe CardLocation do
-  context "when a location is initialised in default order" do
-    subject { CardLocation.new }
+  fixtures :cards
 
-    it "creates an empty location" do
-      expect(subject.all.length).to eq 0
-    end
+  let(:card) { cards(:hearts_12) }
+  subject { CardLocation.new }
 
-    describe "#add" do
-      it "adds a card to the location" do
-        card = Card.first
-        subject.add(card)
-        expect(subject.include?(card)).to be_truthy
-      end
-    end
-
-    describe "#all" do
-      it "returns all the cards at the location" do
-        card = Card.first
-        subject.add(card)
-        expect(subject.all).to eq [card]
-      end
-    end
-
-    describe "#move_to" do
-      let(:card) { Card.first }
-      let(:deck) { CardLocation.with_cards(Card.all) }
-
-      it "moves a card from the deck to the table" do
-        deck.move_to(subject, card)
-
-        expect(subject.include?(card)).to be_truthy
+  context "when a new location is created with no cards" do
+    describe "#arranged" do
+      it "is empty" do
+        expect(subject.arranged).to be_empty
       end
     end
   end
 
-  context "when a location is initialised with cards" do
-    let(:cards) { Card.all }
-    subject { CardLocation.with_cards(cards) }
+  context "when a new location is created with some cards" do
+    let(:cards_at_location) {[
+      cards(:hearts_6),
+      cards(:hearts_7),
+      cards(:spades_8)
+    ]}
+    let(:card_location) { CardLocation.with_cards(cards_at_location) }
+    subject { card_location }
 
-    describe "#with_cards" do
-      it "returns a full deck" do
-        expect(subject.all.length).to eq cards.length
+    it "is not empty" do
+      expect(subject).to_not be_empty
+    end
+
+    it "includes the cards that it was created with" do
+      expect(subject).to include(*cards_at_location)
+    end
+
+    it "does not include cards that it wasn't created with" do
+      expect(subject).to_not include(cards(:diamonds_7))
+    end
+
+    it "has correct number of cards" do
+        expect(subject.count).to eq cards_at_location.count
+    end
+
+    describe "#arranged" do
+      it "is not empty" do
+        expect(subject.arranged).to_not be_empty
       end
     end
   end
 
-  context "when a location is initialised with an arranger" do
-    let(:arranger) { double("Arrangement") }
+  context "when a location is created with an arranger"do
+    let(:arranger) { double }
     subject { CardLocation.new(arranger) }
 
-    describe "#all" do
-      it "returns the result of the arrangement" do
-        allow(arranger).to receive(:arrange).and_return('test')
-
-        expect(subject.all).to eq 'test'
-      end
+    it "uses that arranger to arrange the cards" do
+      expect(arranger).to receive(:arrange)
+      subject.arranged
     end
   end
 end

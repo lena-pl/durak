@@ -11,20 +11,29 @@ class ApplyDiscardAction
       raise "Card must be on table to discard"
     end
 
-    @game_state.table.move_to(@game_state.discard_pile, card)
+    @game_state.table.delete(card)
+    @game_state.discard_pile.push(card)
 
-    @game_state.attacker = find_new_attacker
+    @game_state.attacker = next_attacker
 
     @game_state
   end
 
   private
 
-  def find_new_attacker
-    if @action.player == @game_state.player(1)
-      @game_state.player(2)
+  def next_attacker
+    if @game_state.attacker == @action.player
+      find_next_attacker
     else
-      @game_state.player(1)
+      @game_state.attacker
     end
+  end
+
+  def find_next_attacker
+    current_attacker_state = @game_state.player_state_for_player(@game_state.attacker)
+    current_attacker_index = @game_state.player_states.index(current_attacker_state)
+
+    next_attacker_index = current_attacker_index + 1
+    @game_state.player_states[next_attacker_index % @game_state.player_states.count].player 
   end
 end

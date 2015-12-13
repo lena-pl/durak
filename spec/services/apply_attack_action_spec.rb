@@ -3,69 +3,50 @@ require 'rails_helper'
 RSpec.describe ApplyAttackAction do
   fixtures :cards
 
-  let(:card) { cards(:hearts_7) }
-  let(:game) { Game.create!(:trump_card => card) }
-  let!(:player_one) { Player.create!(:game => game) }
-  let!(:player_two) { Player.create!(:game => game) }
-  let(:initial_game_state) { BuildGameState.new(game).call }
+  let(:game) { CreateGame.new(cards(:hearts_12)).call }
+  let(:attacker) { game.players.first }
+
+  let(:attacking_card) { cards(:spades_9) }
+
+  let(:attack_action) { instance_double(Action) }
+  before do
+    allow(attack_action).to receive(:card).and_return(attacking_card)
+    allow(attack_action).to receive(:player).and_return(attacker)
+  end
+
+  let(:game_state) { BuildGameState.new(game).call }
+  subject { ApplyAttackAction.new(game_state, attack_action).call }
+  let(:attacker_state) { game_state.player_state_for_player(attacker) }
 
   describe "#call" do
-    context "when the card is not in player one's hand" do
-      let(:attack_action) { Action.new(:kind => :attack, :card => card, :player => player_one) }
-
-      subject { ApplyAttackAction.new(initial_game_state, attack_action) }
-
+    context "when the attacking card is not in the attacker's hand" do
       it "raises error" do
-        expect{ subject.call }.to raise_error("Card must be in player's hand to attack")
+        expect{ subject }.to raise_error("Card must be in player's hand to attack")
       end
     end
 
-    context "when the card is in player one's hand" do
-      let(:attack_action) { Action.new(:kind => :attack, :card => card, :player => player_one) }
-
+    context "when the card is in the attacker's hand" do
       before do
-        initial_game_state.deck.delete(card)
-        initial_game_state.player_hand(1).add(card)
+        fill_hand_from_deck(attacker_state, attacking_card)
       end
 
       it "moves the card to the table" do
-        game_state = ApplyAttackAction.new(initial_game_state, attack_action).call
-        expect(game_state.table).to include card
+        expect(subject.table).to include attacking_card
       end
 
-      it "moves the card out of the player's hand" do
-        game_state = ApplyAttackAction.new(initial_game_state, attack_action).call
-        expect(game_state.player_hand(1)).not_to include card
-      end
-    end
-
-    context "when the card is not in player two's hand" do
-      let(:attack_action) { Action.new(:kind => :attack, :card => card, :player => player_two) }
-
-      subject { ApplyAttackAction.new(initial_game_state, attack_action) }
-
-      it "raises error" do
-        expect{ subject.call }.to raise_error("Card must be in player's hand to attack")
+      it "moves the card out of the attacker's hand" do
+        attacker_state = subject.player_state_for_player(attacker)
+        expect(attacker_state.hand).not_to include attacking_card
       end
     end
+  end
 
-    context "when the card is in player two's hand" do
-      let(:attack_action) { Action.new(:kind => :attack, :card => card, :player => player_two) }
+  def fill_hand_from_deck(player_state, *cards)
+    cards.each { |card| move_from_deck_to(player_state, card) }
+  end
 
-      before do
-        initial_game_state.deck.delete(card)
-        initial_game_state.player_hand(2).add(card)
-      end
-
-      it "moves the card to the table" do
-        game_state = ApplyAttackAction.new(initial_game_state, attack_action).call
-        expect(game_state.table).to include card
-      end
-
-      it "moves the card out of the player's hand" do
-        game_state = ApplyAttackAction.new(initial_game_state, attack_action).call
-        expect(game_state.player_hand(2)).not_to include card
-      end
-    end
+  def move_from_deck_to(player_state, card)
+    game_state.deck.delete(card)
+    player_state.hand.push(card)
   end
 end

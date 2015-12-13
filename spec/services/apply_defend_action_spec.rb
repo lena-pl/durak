@@ -30,7 +30,7 @@ RSpec.describe ApplyDefendAction do
   subject { ApplyDefendAction.new(game_state, defend_action).call }
 
   describe "#call" do
-    context "when the card is not in player one's hand" do
+    context "when the card is not in the player's hand" do
       before do
         allow(defend_action).to receive(:player).and_return(player_one)
       end
@@ -40,17 +40,7 @@ RSpec.describe ApplyDefendAction do
       end
     end
 
-    context "when the card is not in player two's hand" do
-      before do
-        allow(defend_action).to receive(:player).and_return(player_two)
-      end
-
-      it "raises correct error" do
-        expect{ subject }.to raise_error("Card must be in player's hand to defend with")
-      end
-    end
-
-    context "when the defending card is in player one's hand" do
+    context "when the defending card is in the player's hand" do
       before do
         allow(defend_action).to receive(:player).and_return(player_one)
         game_state.deck.delete(defending_card)
@@ -69,7 +59,7 @@ RSpec.describe ApplyDefendAction do
           game_state.table.push(attacking_card)
         end
 
-        it "moves the card away from player one's hand" do
+        it "moves the card away from the player's hand" do
           subject
           expect(player_one_state.hand).to_not include defending_card
         end
@@ -78,7 +68,7 @@ RSpec.describe ApplyDefendAction do
           expect(subject.table).to include defending_card
         end
 
-        context "when an attacking action has already been defended against" do
+        context "when an attacking card has already been defended against" do
           let(:another_defending_card) { cards(:spades_10) }
 
           before do
@@ -92,48 +82,5 @@ RSpec.describe ApplyDefendAction do
         end
       end
     end
-
-    # context "when the defending card is in player two's hand" do
-    #   before do
-    #     allow(defend_action).to receive(:player).and_return(player_two)
-    #     game_state.deck.delete(defending_card)
-    #     player_two_state.hand.push(defending_card)
-    #   end
-    #
-    #   context "when the attacking card is not on the table" do
-    #     it "raises correct error" do
-    #       expect{ subject }.to raise_error("Card must be on table to defend against")
-    #     end
-    #   end
-    #
-    #   context "when the attacking card is on the table" do
-    #     before do
-    #       game_state.deck.delete(attacking_card)
-    #       game_state.table.push(attacking_card)
-    #     end
-    #
-    #     it "moves the card away from player two's hand" do
-    #       subject
-    #       expect(player_two_state.hand).to_not include defending_card
-    #     end
-    #
-    #     it "moves the card onto the table" do
-    #       expect(subject.table).to include defending_card
-    #     end
-    #
-    #     context "when an attacking action has already been defended against" do
-    #       before do
-    #         first_defending_card = cards(:clubs_13)
-    #         game_state.deck.delete(first_defending_card)
-    #         game_state.table.push(first_defending_card)
-    #       end
-    #
-    #       it "raises correct error" do
-    #         expect{ subject }.to raise_error("#{attacking_card} has already been defended by another card")
-    #       end
-    #     end
-    #   end
-    # end
-
   end
 end

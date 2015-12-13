@@ -31,12 +31,9 @@ RSpec.describe ApplyDiscardAction do
         move_from_deck_to_table(attacking_card)
       end
 
-      it "moves that card to discard_pile" do
-        expect(subject.discard_pile).to include(attacking_card)
-      end
-
-      it "only move that card to the discard_pile" do
+      it "only moves that card to the discard_pile" do
         expect(subject.discard_pile.count).to eq 1
+        expect(subject.discard_pile).to include(attacking_card)
       end
 
       it "moves the card off the table" do
@@ -96,76 +93,68 @@ RSpec.describe ApplyDiscardAction do
       end
     end
 
-    context "when the attacker has discarded a card" do
-      before do
-        move_from_deck_to_table(attacking_card)
-      end
+    context do
+      let(:player_one) { attacker }
+      let(:player_two) { defender }
 
-      it "makes the current defender the new attacker" do
-        expect(subject.attacker).to eq defender
+      context "when there is one card left on the table" do
+        before do
+          move_from_deck_to_table(attacking_card)
+        end
+
+        context "when player one is the attacker" do
+          before do
+            game_state.attacker = player_one
+          end
+
+          context "when player_one discards a card" do
+            before do
+              allow(discard_action).to receive(:player).and_return(player_one)
+            end
+
+            it "makes the player_two the new attacker" do
+              expect(subject.attacker).to eq player_two
+            end
+          end
+
+          context "when player_two discards a card" do
+            before do
+              allow(discard_action).to receive(:player).and_return(player_two)
+            end
+
+            it "keeps player_one as the attacker" do
+              expect(subject.attacker).to eq player_one
+            end
+          end
+        end
+
+        context "when player two is the attacker" do
+          before do
+            game_state.attacker = player_two
+          end
+
+          context "when player_two discards a card" do
+            before do
+              allow(discard_action).to receive(:player).and_return(player_two)
+            end
+
+            it "makes the player_one the new attacker" do
+              expect(subject.attacker).to eq player_one
+            end
+          end
+
+          context "when player_one discards a card" do
+            before do
+              allow(discard_action).to receive(:player).and_return(player_one)
+            end
+
+            it "keeps player_two as the attacker" do
+              expect(subject.attacker).to eq player_two
+            end
+          end
+        end
       end
     end
-
-    context "when the defender has discarded a card" do
-      before do
-        allow(discard_action).to receive(:player).and_return(defender)
-        move_from_deck_to_table(attacking_card)
-      end
-
-      it "makes the attacker the new attacker" do
-        expect(subject.attacker).to eq attacker
-      end
-    end
-
-   #   context "when player one is the attacker" do
-   #     let(:discard_action) { Action.new(:kind => :discard, :card => attacking_card, :player => player_one) }
-
-   #     before do
-   #       initial_game_state.attacker = player_one
-   #     end
-
-   #     it "changes the attacker to player two" do
-   #       game_state = ApplyDiscardAction.new(initial_game_state, discard_action).call
-   #       expect(game_state.attacker).to eq player_two
-   #     end
-   #   end
-
-   #   context "when player two is the attacker" do
-   #     let(:discard_action) { Action.new(:kind => :discard, :card => attacking_card, :player => player_two) }
-
-   #     before do
-   #       initial_game_state.attacker = player_two
-   #     end
-
-   #     it "changes the attacker to player one" do
-   #       game_state = ApplyDiscardAction.new(initial_game_state, discard_action).call
-   #       expect(game_state.attacker).to eq player_one
-   #     end
-   #   end
-
-   #   context "when two discard actions are made by the same attacker" do
-   #     let(:another_discard_action) { Action.new(:kind => :discard, :card => defending_card, :player => player_two) }
-
-   #     before do
-   #       initial_game_state.attacker = player_two
-   #     end
-
-   #     it "changes the attacker to player one" do
-   #       game_state = ApplyDiscardAction.new(initial_game_state, discard_action).call
-   #       game_state = ApplyDiscardAction.new(initial_game_state, another_discard_action).call
-
-   #       expect(game_state.attacker).to eq player_one
-   #     end
-   #   end
-   # end
-
-   # context "when there are no cards on the table" do
-   #   subject { ApplyDiscardAction.new(initial_game_state, discard_action) }
-
-   #   it "raises error" do
-   #     expect{ subject.call }.to raise_error("Card must be on table to discard")
-   #   end
-   # end
   end
 
   def fill_table_from_deck(*cards)

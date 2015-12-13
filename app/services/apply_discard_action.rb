@@ -14,7 +14,7 @@ class ApplyDiscardAction
     @game_state.table.delete(card)
     @game_state.discard_pile.push(card)
 
-    @game_state.attacker = find_next_attacker
+    @game_state.attacker = next_attacker
 
     @game_state
   end
@@ -35,6 +35,6 @@ class ApplyDiscardAction
     player_position = @game_state.player_states.index(player_state)
     player_position = player_position % @game_state.player_states.count
 
-    @game_state.player_states[player_position]
+    @game_state.player_states[player_position].player
   end
 end

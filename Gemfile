@@ -38,6 +38,7 @@ group :development, :test do
 
   gem 'pry'
   gem 'pry-byebug'
+  gem 'coveralls', require: false
 end
 
 group :development do

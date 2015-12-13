@@ -26,6 +26,12 @@ RSpec.describe ApplyDiscardAction do
   let(:defender_state) { game_state.player_state_for_player(defender) }
 
   describe "#call" do
+    context "when no cards are on the table" do
+      it "raises the correct error" do
+        expect { subject }.to raise_error("Card must be on table to discard")
+      end
+    end
+
     context "when only one attacking card is on the table" do
       before do
         move_from_deck_to_table(attacking_card)

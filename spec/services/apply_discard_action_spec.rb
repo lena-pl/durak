@@ -106,6 +106,17 @@ RSpec.describe ApplyDiscardAction do
       end
     end
 
+    context "when the defender has discarded a card" do
+      before do
+        allow(discard_action).to receive(:player).and_return(defender)
+        move_from_deck_to_table(attacking_card)
+      end
+
+      it "makes the attacker the new attacker" do
+        expect(subject.attacker).to eq attacker
+      end
+    end
+
    #   context "when player one is the attacker" do
    #     let(:discard_action) { Action.new(:kind => :discard, :card => attacking_card, :player => player_one) }
 

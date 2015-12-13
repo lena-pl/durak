@@ -33,7 +33,7 @@ class ApplyDiscardAction
     player_state = @game_state.player_state_for_player(@action.player)
 
     player_position = @game_state.player_states.index(player_state)
-    player_position = player_position % @game_state.player_states.count
+    player_position %= @game_state.player_states.count
 
     @game_state.player_states[player_position].player
   end

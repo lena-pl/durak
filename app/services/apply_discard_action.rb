@@ -32,9 +32,10 @@ class ApplyDiscardAction
   def find_next_attacker
     player_state = @game_state.player_state_for_player(@action.player)
 
-    player_position = @game_state.player_states.index(player_state)
-    player_position %= @game_state.player_states.count
+    # player_position = @game_state.player_states.index(player_state)
+    @game_state.player_states.select.with_index { |player_state, index| (index + 1) % @game_state.player_states.count == 0 }.first.player
+    # player_position %= @game_state.player_states.count
 
-    @game_state.player_states[player_position].player
+    # @game_state.player_states[player_position].player
   end
 end

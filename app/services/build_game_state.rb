@@ -13,7 +13,9 @@ class BuildGameState
   end
 
   def call
-    @game.actions.inject(base_state) do |current_game_state, action|
+    actions = @game.actions.order(:id)
+
+    actions.inject(base_state) do |current_game_state, action|
       APPLY_ACTION[action.kind.to_sym].new(current_game_state, action).call
     end
   end

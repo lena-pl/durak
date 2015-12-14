@@ -26,6 +26,10 @@ class TestGame
     create_action(:draw_from_deck, player, card)
   end
 
+  def pick_up_from_table(player, card)
+    create_action(:pick_up_from_table, player, card)
+  end
+
   def deal_card(player, card)
     create_action(:deal, player, card)
   end

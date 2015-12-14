@@ -9,12 +9,12 @@ RSpec.describe ApplyPickUpFromTableAction do
 
   let(:card_to_pick_up) { cards(:clubs_10) }
 
-  let(:pickup_from_table_action) { instance_double(Action) }
+  let(:pick_up_from_table_action) { instance_double(Action) }
   before do
-    allow(pickup_from_table_action).to receive(:card).and_return(card_to_pick_up)
-    allow(pickup_from_table_action).to receive(:player).and_return(picker_uperer)
+    allow(pick_up_from_table_action).to receive(:card).and_return(card_to_pick_up)
+    allow(pick_up_from_table_action).to receive(:player).and_return(picker_uperer)
   end
-  subject { ApplyPickUpFromTableAction.new(game_state, pickup_from_table_action).call }
+  subject { ApplyPickUpFromTableAction.new(game_state, pick_up_from_table_action).call }
 
   describe "#call" do
     context "when only the card to pick up is on the table" do

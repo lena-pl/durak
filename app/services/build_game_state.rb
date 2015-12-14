@@ -2,7 +2,7 @@ class BuildGameState
   APPLY_ACTION = {
     deal: ApplyDealAction,
     draw_from_deck: ApplyDrawFromDeckAction,
-    pickup_from_table: ApplyPickUpFromTableAction,
+    pick_up_from_table: ApplyPickUpFromTableAction,
     attack: ApplyAttackAction,
     defend: ApplyDefendAction,
     discard: ApplyDiscardAction,

@@ -15,19 +15,37 @@ class GameState
     @player_states.find { |player_state| player_state.player == player }
   end
 
-  def game_over?
-    @deck.empty? && durak_found?
+  def draw?
+    final_phase? && hands_with_cards.empty?
   end
 
   def durak_found?
-    filled_hands.count == 1
+    final_phase? && hands_with_cards.count == 1
   end
 
-  def filled_hands
-    @player_states.select { |player_state| !player_state.hand.empty? }
+  def over?
+    durak_found? || draw?
   end
 
   def durak
-    filled_hands.first.player
+    durak_found? ? hands_with_cards.first.player : nil
+  end
+
+  def winner
+    if durak_found?
+      @player_states.find { |player_state| player_state.player != durak }.player
+    else
+      nil
+    end
+  end
+
+  private
+
+  def final_phase?
+    @deck.empty? && @table.empty?
+  end
+
+  def hands_with_cards
+    @player_states.select { |player_state| !player_state.hand.empty? }
   end
 end

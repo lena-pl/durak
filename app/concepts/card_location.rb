@@ -1,7 +1,7 @@
 class CardLocation
   attr_reader :cards
 
-  delegate :push, :delete, :include?, :count, :empty?, :select, to: :cards
+  delegate :push, :delete, :include?, :count, :empty?, :select, :clear, to: :cards
 
   def self.with_cards(cards)
     CardLocation.new.tap do |card_location|

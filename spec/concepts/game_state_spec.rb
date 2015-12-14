@@ -18,4 +18,16 @@ RSpec.describe GameState do
       expect(subject.player_state_for_player(player_two)).to eq subject.player_states.second
     end
   end
+
+  describe "#game_over?" do
+    before do
+      subject.deck.delete(cards(:hearts_6))
+      subject.player_state_for_player(player_one).hand.push(cards(:hearts_6))
+      subject.deck.cards.clear
+    end
+
+    it "evaluates game over as true" do
+      expect(subject.game_over?).to eq true
+    end
+  end
 end

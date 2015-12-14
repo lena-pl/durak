@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/lena-pl/durak.svg)](https://travis-ci.org/lena-pl/durak)
+[![Dependency Status](https://gemnasium.com/lena-pl/durak.svg)](https://gemnasium.com/lena-pl/durak)
 [![Coverage Status](https://coveralls.io/repos/lena-pl/durak/badge.svg?branch=master&service=github)](https://coveralls.io/github/lena-pl/durak?branch=master)
 
 # Durak (Fool)

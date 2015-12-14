@@ -182,7 +182,9 @@ describe "Full Game" do
     attack_action = test_game.attack(player_one, cards(:diamonds_12))
     game.reload
     expect(game_state.attacker).to eq player_one
-    expect(game_state.table.cards).to eq [cards(:hearts_8), cards(:hearts_12), cards(:diamonds_12)]
+    expect(game_state.table.cards).to eq [cards(:hearts_8),
+                                          cards(:hearts_12),
+                                          cards(:diamonds_12)]
     expect(player_one_hand.cards.count).to eq 4
     expect(player_one_hand.cards).to_not include cards(:diamonds_12)
     expect(game_state.table.arranged.second[:attacking_card]).to eq cards(:diamonds_12)
@@ -191,7 +193,10 @@ describe "Full Game" do
     test_game.defend(player_two, cards(:clubs_7), attack_action)
     game.reload
     expect(game_state.attacker).to eq player_one
-    expect(game_state.table.cards).to eq [cards(:hearts_8), cards(:hearts_12), cards(:diamonds_12), cards(:clubs_7)]
+    expect(game_state.table.cards).to eq [cards(:hearts_8),
+                                          cards(:hearts_12),
+                                          cards(:diamonds_12),
+                                          cards(:clubs_7)]
     expect(player_two_hand.cards.count).to eq 4
     expect(player_two_hand.cards).to_not include cards(:clubs_7)
     expect(game_state.table.arranged.second[:attacking_card]).to eq cards(:diamonds_12)
@@ -200,7 +205,9 @@ describe "Full Game" do
     test_game.discard(player_one, cards(:clubs_7))
     game.reload
     expect(game_state.attacker).to eq player_two
-    expect(game_state.table.cards).to eq [cards(:hearts_8), cards(:hearts_12), cards(:diamonds_12)]
+    expect(game_state.table.cards).to eq [cards(:hearts_8),
+                                          cards(:hearts_12),
+                                          cards(:diamonds_12)]
     expect(game_state.discard_pile.count).to eq 7
     expect(game_state.discard_pile).to include(cards(:clubs_7))
     expect(game_state.table.arranged.second[:attacking_card]).to eq cards(:diamonds_12)
@@ -273,7 +280,7 @@ describe "Full Game" do
     expect(game_state.deck.count).to eq 34
     expect(game_state.deck).to_not include cards(:hearts_7)
     expect(player_one_hand.cards).to eq [cards(:spades_6),
-                                                             cards(:hearts_7)]
+                                         cards(:hearts_7)]
     expect(game_state.attacker).to eq player_one
 
     test_game.deal_card(player_one, cards(:clubs_14))
@@ -281,8 +288,8 @@ describe "Full Game" do
     expect(game_state.deck.count).to eq 33
     expect(game_state.deck).to_not include cards(:clubs_14)
     expect(player_one_hand.cards).to eq [cards(:spades_6),
-                                                             cards(:hearts_7),
-                                                             cards(:clubs_14)]
+                                         cards(:hearts_7),
+                                         cards(:clubs_14)]
     expect(game_state.attacker).to eq player_one
 
     test_game.deal_card(player_one, cards(:hearts_9))
@@ -290,9 +297,9 @@ describe "Full Game" do
     expect(game_state.deck.count).to eq 32
     expect(game_state.deck).to_not include cards(:hearts_9)
     expect(player_one_hand.cards).to eq [cards(:spades_6),
-                                                             cards(:hearts_7),
-                                                             cards(:clubs_14),
-                                                             cards(:hearts_9)]
+                                         cards(:hearts_7),
+                                         cards(:clubs_14),
+                                         cards(:hearts_9)]
     expect(game_state.attacker).to eq player_one
 
     test_game.deal_card(player_one, cards(:spades_13))
@@ -300,10 +307,10 @@ describe "Full Game" do
     expect(game_state.deck.count).to eq 31
     expect(game_state.deck).to_not include cards(:spades_13)
     expect(player_one_hand.cards).to eq [cards(:spades_6),
-                                                             cards(:hearts_7),
-                                                             cards(:clubs_14),
-                                                             cards(:hearts_9),
-                                                             cards(:spades_13)]
+                                         cards(:hearts_7),
+                                         cards(:clubs_14),
+                                         cards(:hearts_9),
+                                         cards(:spades_13)]
     expect(game_state.attacker).to eq player_one
 
     test_game.deal_card(player_one, cards(:clubs_9))
@@ -311,11 +318,11 @@ describe "Full Game" do
     expect(game_state.deck.count).to eq 30
     expect(game_state.deck).to_not include cards(:clubs_9)
     expect(player_one_hand.cards).to eq [cards(:spades_6),
-                                                             cards(:hearts_7),
-                                                             cards(:clubs_14),
-                                                             cards(:hearts_9),
-                                                             cards(:spades_13),
-                                                             cards(:clubs_9)]
+                                         cards(:hearts_7),
+                                         cards(:clubs_14),
+                                         cards(:hearts_9),
+                                         cards(:spades_13),
+                                         cards(:clubs_9)]
     expect(game_state.attacker).to eq player_one
   end
 
@@ -332,7 +339,7 @@ describe "Full Game" do
     expect(game_state.deck.count).to eq 28
     expect(game_state.deck).to_not include cards(:clubs_7)
     expect(player_two_hand.cards).to eq [cards(:spades_11),
-                                                             cards(:clubs_7)]
+                                         cards(:clubs_7)]
     expect(game_state.attacker).to eq player_two
 
     test_game.deal_card(player_two, cards(:spades_7))
@@ -340,8 +347,8 @@ describe "Full Game" do
     expect(game_state.deck.count).to eq 27
     expect(game_state.deck).to_not include cards(:spades_7)
     expect(player_two_hand.cards).to eq [cards(:spades_11),
-                                                             cards(:clubs_7),
-                                                             cards(:spades_7)]
+                                         cards(:clubs_7),
+                                         cards(:spades_7)]
     expect(game_state.attacker).to eq player_two
 
     test_game.deal_card(player_two, cards(:hearts_12))
@@ -349,9 +356,9 @@ describe "Full Game" do
     expect(game_state.deck.count).to eq 26
     expect(game_state.deck).to_not include cards(:hearts_12)
     expect(player_two_hand.cards).to eq [cards(:spades_11),
-                                                             cards(:clubs_7),
-                                                             cards(:spades_7),
-                                                             cards(:hearts_12)]
+                                         cards(:clubs_7),
+                                         cards(:spades_7),
+                                         cards(:hearts_12)]
     expect(game_state.attacker).to eq player_two
 
     test_game.deal_card(player_two, cards(:clubs_8))
@@ -359,10 +366,10 @@ describe "Full Game" do
     expect(game_state.deck.count).to eq 25
     expect(game_state.deck).to_not include cards(:clubs_8)
     expect(player_two_hand.cards).to eq [cards(:spades_11),
-                                                             cards(:clubs_7),
-                                                             cards(:spades_7),
-                                                             cards(:hearts_12),
-                                                             cards(:clubs_8)]
+                                         cards(:clubs_7),
+                                         cards(:spades_7),
+                                         cards(:hearts_12),
+                                         cards(:clubs_8)]
     expect(game_state.attacker).to eq player_two
 
     test_game.deal_card(player_two, cards(:hearts_6))
@@ -370,11 +377,11 @@ describe "Full Game" do
     expect(game_state.deck.count).to eq 24
     expect(game_state.deck).to_not include cards(:hearts_6)
     expect(player_two_hand.cards).to eq [cards(:spades_11),
-                                                             cards(:clubs_7),
-                                                             cards(:spades_7),
-                                                             cards(:hearts_12),
-                                                             cards(:clubs_8),
-                                                             cards(:hearts_6)]
+                                         cards(:clubs_7),
+                                         cards(:spades_7),
+                                         cards(:hearts_12),
+                                         cards(:clubs_8),
+                                         cards(:hearts_6)]
     expect(game_state.attacker).to eq player_two
   end
 

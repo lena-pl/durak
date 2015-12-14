@@ -8,6 +8,10 @@ class ApplyDealAction
     player_state = @game_state.player_state_for_player(@action.player)
     card = @action.card
 
+    if !@game_state.deck.include?(card)
+      raise "Card must be in deck in order to be dealt"
+    end
+
     @game_state.deck.delete(card)
     player_state.hand.push(card)
 

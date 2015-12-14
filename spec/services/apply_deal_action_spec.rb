@@ -20,6 +20,16 @@ RSpec.describe ApplyDealAction do
   subject { ApplyDealAction.new(game_state, deal_action).call }
 
   describe "#call" do
+    context "when the card to be dealt is not in the deck" do
+      before do
+        game_state.deck.delete(next_card)
+      end
+
+      it "raises the correct error" do
+        expect { subject }.to raise_error("Card must be in deck in order to be dealt")
+      end
+    end
+
     context "when the dealee is dealt a card" do
       it "moves the card to their hand" do
         expect(subject.player_state_for_player(dealee).hand).to include next_card

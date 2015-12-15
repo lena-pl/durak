@@ -8,4 +8,9 @@ class GamesController < ApplicationController
 
     redirect_to game
   end
+
+  def show
+   game = Game.find(params[:id])
+   @game_state = BuildGameState.new(game).call
+  end
 end

@@ -1,4 +1,23 @@
 <div>
-  <h1>Here's your game</h1>
-  <p>Game id: <%= @game.id %></p>
+  <h1>Durak</h1>
+
+  <div>
+    <p>Trump Card: <%= @game_state.trump_card.rank %> of <%= @game_state.trump_card.suit %></p>
+    <% if @game_state.attacker %>
+      <p>Current Attacker: <%= @game_state.attacker.id %></p>
+    <% end %>
+  </div>
+
+  <p>Cards left in deck: <%= @game_state.deck.count %></p>
+
+  <p>Table: <%= @game_state.table.arranged %></p>
+
+  <% @game_state.player_states.each do |player_state| %>
+    <div>
+      Player Hand: <%= player_state.player.id %> (<%= player_state.hand.count %>)
+      <%= player_state.hand.arranged %>
+    </div>
+  <% end %>
+
+  <p>Discard Pile: <%= @game_state.discard_pile.arranged %></p>
 </div>

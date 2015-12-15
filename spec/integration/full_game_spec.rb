@@ -871,6 +871,10 @@ describe "Full Game" do
 
     # ROUND ELEVEN. FIGHT.
 
+    expect(game_state).to_not be_over
+    expect(game_state.winner).to be_nil
+    expect(game_state.durak).to be_nil
+
     attack_action = test_game.attack(player_two, cards(:clubs_12))
     game.reload
     expect(game_state.attacker).to eq player_two

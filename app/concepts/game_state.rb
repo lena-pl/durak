@@ -19,10 +19,6 @@ class GameState
     final_phase? && hands_with_cards.empty?
   end
 
-  def durak_found?
-    final_phase? && hands_with_cards.count == 1
-  end
-
   def over?
     durak_found? || draw?
   end
@@ -40,6 +36,10 @@ class GameState
   end
 
   private
+
+  def durak_found?
+    final_phase? && hands_with_cards.count == 1
+  end
 
   def final_phase?
     @deck.empty? && @table.empty?

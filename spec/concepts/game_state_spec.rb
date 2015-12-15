@@ -43,12 +43,6 @@ RSpec.describe GameState do
       end
     end
 
-    describe "#durak_found?" do
-      it "returns false" do
-        expect(game_state.durak_found?).to eq false
-      end
-    end
-
     describe "#durak" do
       it "returns nil" do
         expect(game_state.durak).to be_nil
@@ -83,12 +77,6 @@ RSpec.describe GameState do
       end
     end
 
-    describe "#durak_found?" do
-      it "returns true" do
-        expect(game_state.durak_found?).to eq true
-      end
-    end
-
     describe "#durak" do
       it "returns player_one" do
         expect(game_state.durak).to eq player_one
@@ -117,12 +105,6 @@ RSpec.describe GameState do
     describe "#draw?" do
       it "returns true" do
         expect(game_state).to be_draw
-      end
-    end
-
-    describe "#durak_found?" do
-      it "returns false" do
-        expect(game_state.durak_found?).to eq false
       end
     end
 
@@ -159,12 +141,6 @@ RSpec.describe GameState do
       end
     end
 
-    describe "#durak_found?" do
-      it "returns false" do
-        expect(game_state.durak_found?).to eq false
-      end
-    end
-
     describe "#durak" do
       it "returns nil" do
         expect(game_state.durak).to be_nil
@@ -188,12 +164,6 @@ RSpec.describe GameState do
     describe "#draw?" do
       it "returns false" do
         expect(game_state).to_not be_draw
-      end
-    end
-
-    describe "#durak_found?" do
-      it "returns false" do
-        expect(game_state.durak_found?).to eq false
       end
     end
 

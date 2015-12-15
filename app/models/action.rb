@@ -7,4 +7,5 @@ class Action < ActiveRecord::Base
 
   validates :kind, :player, :card, presence: true
   validates :in_response_to_action, uniqueness: true, allow_nil: true
+  validates :in_response_to_action, presence: true, if: :defend?
 end

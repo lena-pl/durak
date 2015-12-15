@@ -38,7 +38,7 @@ RSpec.describe BuildGameState do
   let(:test_game) { TestGame.new(trump_card) }
   subject(:game_state) { BuildGameState.new(test_game.game_model).call }
 
-  context "when no actions have been applied" do
+  context "when no steps have been applied" do
     it "returns GameState with trump_card from game" do
       expect(subject.trump_card).to eq test_game.trump_card
     end
@@ -59,7 +59,7 @@ RSpec.describe BuildGameState do
   # TODO: integration tests for GameState
   # context "when player one is the dealer and cards have been dealt" do
   #   before do
-  #     test_game.apply_actions(&deal_cards)
+  #     test_game.apply_steps(&deal_cards)
   #   end
   #
   #   it "returns a game state with the correct cards in player one's hand" do

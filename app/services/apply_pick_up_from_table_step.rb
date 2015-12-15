@@ -1,17 +1,17 @@
-class ApplyPickUpFromTableAction
-  def initialize(game_state, action)
+class ApplyPickUpFromTableStep
+  def initialize(game_state, step)
     @game_state = game_state
-    @action = action
+    @step = step
   end
 
   def call
-    card = @action.card
+    card = @step.card
 
     if !@game_state.table.include?(card)
       raise "Card must be on table before it is picked up"
     end
 
-    player_state = @game_state.player_state_for_player(@action.player)
+    player_state = @game_state.player_state_for_player(@step.player)
 
     @game_state.table.delete(card)
     player_state.hand.push(card)

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ApplyDiscardAction do
+RSpec.describe ApplyDiscardStep do
   fixtures :cards
 
   let(:game) { CreateGame.new(cards(:hearts_12)).call }
@@ -10,17 +10,17 @@ RSpec.describe ApplyDiscardAction do
   let(:attacking_card) { cards(:spades_9) }
   let(:defending_card) { cards(:hearts_9) }
 
-  let(:discard_action) { instance_double(Action) }
+  let(:discard_step) { instance_double(Step) }
   before do
-    allow(discard_action).to receive(:player).and_return(attacker)
-    allow(discard_action).to receive(:card).and_return(attacking_card)
+    allow(discard_step).to receive(:player).and_return(attacker)
+    allow(discard_step).to receive(:card).and_return(attacking_card)
   end
 
   let(:game_state) { BuildGameState.new(game).call }
   before do
     game_state.attacker = attacker
   end
-  subject { ApplyDiscardAction.new(game_state, discard_action).call }
+  subject { ApplyDiscardStep.new(game_state, discard_step).call }
 
   let(:attacker_state) { game_state.player_state_for_player(attacker) }
   let(:defender_state) { game_state.player_state_for_player(defender) }
@@ -58,8 +58,8 @@ RSpec.describe ApplyDiscardAction do
 
       context "when the attacking card is discarded" do
         before do
-          allow(discard_action).to receive(:player).and_return(attacker)
-          allow(discard_action).to receive(:card).and_return(attacking_card)
+          allow(discard_step).to receive(:player).and_return(attacker)
+          allow(discard_step).to receive(:card).and_return(attacking_card)
         end
 
         it "only moves that card to discard_pile" do
@@ -79,8 +79,8 @@ RSpec.describe ApplyDiscardAction do
 
       context "when the defending card is discarded" do
         before do
-          allow(discard_action).to receive(:player).and_return(defender)
-          allow(discard_action).to receive(:card).and_return(defending_card)
+          allow(discard_step).to receive(:player).and_return(defender)
+          allow(discard_step).to receive(:card).and_return(defending_card)
         end
 
         it "only moves that card to discard_pile" do
@@ -115,7 +115,7 @@ RSpec.describe ApplyDiscardAction do
 
           context "when player_one discards a card" do
             before do
-              allow(discard_action).to receive(:player).and_return(player_one)
+              allow(discard_step).to receive(:player).and_return(player_one)
             end
 
             it "makes the player_two the new attacker" do
@@ -125,7 +125,7 @@ RSpec.describe ApplyDiscardAction do
 
           context "when player_two discards a card" do
             before do
-              allow(discard_action).to receive(:player).and_return(player_two)
+              allow(discard_step).to receive(:player).and_return(player_two)
             end
 
             it "keeps player_one as the attacker" do
@@ -141,7 +141,7 @@ RSpec.describe ApplyDiscardAction do
 
           context "when player_two discards a card" do
             before do
-              allow(discard_action).to receive(:player).and_return(player_two)
+              allow(discard_step).to receive(:player).and_return(player_two)
             end
 
             it "makes the player_one the new attacker" do
@@ -151,7 +151,7 @@ RSpec.describe ApplyDiscardAction do
 
           context "when player_one discards a card" do
             before do
-              allow(discard_action).to receive(:player).and_return(player_one)
+              allow(discard_step).to receive(:player).and_return(player_one)
             end
 
             it "keeps player_two as the attacker" do

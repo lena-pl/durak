@@ -16,7 +16,7 @@ describe "Full Game" do
 
     # ROUND ONE. FIGHT.
 
-    attack_action = test_game.attack(player_two, cards(:spades_7))
+    attack_step = test_game.attack(player_two, cards(:spades_7))
     game.reload
     expect(game_state.attacker).to eq player_two
     expect(game_state.table.cards).to eq [cards(:spades_7)]
@@ -25,7 +25,7 @@ describe "Full Game" do
     expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:spades_7)
     expect(game_state.table.arranged.first[:defending_card]).to be_nil
 
-    test_game.defend(player_one, cards(:spades_13), attack_action)
+    test_game.defend(player_one, cards(:spades_13), attack_step)
     game.reload
     expect(game_state.attacker).to eq player_two
     expect(game_state.table.cards).to eq [cards(:spades_7), cards(:spades_13)]
@@ -63,7 +63,7 @@ describe "Full Game" do
 
     # ROUND TWO. FIGHT.
 
-    attack_action = test_game.attack(player_one, cards(:spades_6))
+    attack_step = test_game.attack(player_one, cards(:spades_6))
     game.reload
     expect(game_state.attacker).to eq player_one
     expect(game_state.table.cards).to eq [cards(:spades_6)]
@@ -72,7 +72,7 @@ describe "Full Game" do
     expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:spades_6)
     expect(game_state.table.arranged.first[:defending_card]).to be_nil
 
-    test_game.defend(player_two, cards(:spades_10), attack_action)
+    test_game.defend(player_two, cards(:spades_10), attack_step)
     game.reload
     expect(game_state.attacker).to eq player_one
     expect(game_state.table.cards).to eq [cards(:spades_6), cards(:spades_10)]
@@ -112,7 +112,7 @@ describe "Full Game" do
 
     # ROUND THREE. FIGHT.
 
-    attack_action = test_game.attack(player_two, cards(:hearts_6))
+    attack_step = test_game.attack(player_two, cards(:hearts_6))
     game.reload
     expect(game_state.attacker).to eq player_two
     expect(game_state.table.cards).to eq [cards(:hearts_6)]
@@ -121,7 +121,7 @@ describe "Full Game" do
     expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:hearts_6)
     expect(game_state.table.arranged.first[:defending_card]).to be_nil
 
-    test_game.defend(player_one, cards(:hearts_7), attack_action)
+    test_game.defend(player_one, cards(:hearts_7), attack_step)
     game.reload
     expect(game_state.attacker).to eq player_two
     expect(game_state.table.cards).to eq [cards(:hearts_6), cards(:hearts_7)]
@@ -161,7 +161,7 @@ describe "Full Game" do
 
     # ROUND FOUR. FIGHT.
 
-    attack_action = test_game.attack(player_one, cards(:hearts_8))
+    attack_step = test_game.attack(player_one, cards(:hearts_8))
     game.reload
     expect(game_state.attacker).to eq player_one
     expect(game_state.table.cards).to eq [cards(:hearts_8)]
@@ -170,7 +170,7 @@ describe "Full Game" do
     expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:hearts_8)
     expect(game_state.table.arranged.first[:defending_card]).to be_nil
 
-    test_game.defend(player_two, cards(:hearts_12), attack_action)
+    test_game.defend(player_two, cards(:hearts_12), attack_step)
     game.reload
     expect(game_state.attacker).to eq player_one
     expect(game_state.table.cards).to eq [cards(:hearts_8), cards(:hearts_12)]
@@ -179,7 +179,7 @@ describe "Full Game" do
     expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:hearts_8)
     expect(game_state.table.arranged.first[:defending_card]).to eq cards(:hearts_12)
 
-    attack_action = test_game.attack(player_one, cards(:diamonds_12))
+    attack_step = test_game.attack(player_one, cards(:diamonds_12))
     game.reload
     expect(game_state.attacker).to eq player_one
     expect(game_state.table.cards).to eq [cards(:hearts_8),
@@ -190,7 +190,7 @@ describe "Full Game" do
     expect(game_state.table.arranged.second[:attacking_card]).to eq cards(:diamonds_12)
     expect(game_state.table.arranged.second[:defending_card]).to be_nil
 
-    test_game.defend(player_two, cards(:clubs_7), attack_action)
+    test_game.defend(player_two, cards(:clubs_7), attack_step)
     game.reload
     expect(game_state.attacker).to eq player_one
     expect(game_state.table.cards).to eq [cards(:hearts_8),
@@ -266,7 +266,7 @@ describe "Full Game" do
 
     # ROUND FIVE. FIGHT.
 
-    attack_action = test_game.attack(player_two, cards(:hearts_11))
+    attack_step = test_game.attack(player_two, cards(:hearts_11))
     game.reload
     expect(game_state.attacker).to eq player_two
     expect(game_state.table.cards).to eq [cards(:hearts_11)]
@@ -275,7 +275,7 @@ describe "Full Game" do
     expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:hearts_11)
     expect(game_state.table.arranged.first[:defending_card]).to be_nil
 
-    test_game.defend(player_one, cards(:hearts_14), attack_action)
+    test_game.defend(player_one, cards(:hearts_14), attack_step)
     game.reload
     expect(game_state.attacker).to eq player_two
     expect(game_state.table.cards).to eq [cards(:hearts_11),
@@ -285,7 +285,7 @@ describe "Full Game" do
     expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:hearts_11)
     expect(game_state.table.arranged.first[:defending_card]).to eq cards(:hearts_14)
 
-    attack_action = test_game.attack(player_two, cards(:spades_11))
+    attack_step = test_game.attack(player_two, cards(:spades_11))
     game.reload
     expect(game_state.attacker).to eq player_two
     expect(game_state.table.cards).to eq [cards(:hearts_11),
@@ -296,7 +296,7 @@ describe "Full Game" do
     expect(game_state.table.arranged.second[:attacking_card]).to eq cards(:spades_11)
     expect(game_state.table.arranged.second[:defending_card]).to be_nil
 
-    test_game.defend(player_one, cards(:spades_14), attack_action)
+    test_game.defend(player_one, cards(:spades_14), attack_step)
     game.reload
     expect(game_state.attacker).to eq player_two
     expect(game_state.table.cards).to eq [cards(:hearts_11),
@@ -308,7 +308,7 @@ describe "Full Game" do
     expect(game_state.table.arranged.second[:attacking_card]).to eq cards(:spades_11)
     expect(game_state.table.arranged.second[:defending_card]).to eq cards(:spades_14)
 
-    attack_action = test_game.attack(player_two, cards(:diamonds_11))
+    attack_step = test_game.attack(player_two, cards(:diamonds_11))
     game.reload
     expect(game_state.attacker).to eq player_two
     expect(game_state.table.cards).to eq [cards(:hearts_11),
@@ -321,7 +321,7 @@ describe "Full Game" do
     expect(game_state.table.arranged.third[:attacking_card]).to eq cards(:diamonds_11)
     expect(game_state.table.arranged.third[:defending_card]).to be_nil
 
-    test_game.defend(player_one, cards(:clubs_9), attack_action)
+    test_game.defend(player_one, cards(:clubs_9), attack_step)
     game.reload
     expect(game_state.attacker).to eq player_two
     expect(game_state.table.cards).to eq [cards(:hearts_11),
@@ -335,7 +335,7 @@ describe "Full Game" do
     expect(game_state.table.arranged.third[:attacking_card]).to eq cards(:diamonds_11)
     expect(game_state.table.arranged.third[:defending_card]).to eq cards(:clubs_9)
 
-    attack_action = test_game.attack(player_two, cards(:diamonds_9))
+    attack_step = test_game.attack(player_two, cards(:diamonds_9))
     game.reload
     expect(game_state.attacker).to eq player_two
     expect(game_state.table.cards).to eq [cards(:hearts_11),
@@ -350,7 +350,7 @@ describe "Full Game" do
     expect(game_state.table.arranged.fourth[:attacking_card]).to eq cards(:diamonds_9)
     expect(game_state.table.arranged.fourth[:defending_card]).to be_nil
 
-    test_game.defend(player_one, cards(:clubs_13), attack_action)
+    test_game.defend(player_one, cards(:clubs_13), attack_step)
     game.reload
     expect(game_state.attacker).to eq player_two
     expect(game_state.table.cards).to eq [cards(:hearts_11),
@@ -366,7 +366,7 @@ describe "Full Game" do
     expect(game_state.table.arranged.fourth[:attacking_card]).to eq cards(:diamonds_9)
     expect(game_state.table.arranged.fourth[:defending_card]).to eq cards(:clubs_13)
 
-    attack_action = test_game.attack(player_two, cards(:diamonds_13))
+    attack_step = test_game.attack(player_two, cards(:diamonds_13))
     game.reload
     expect(game_state.attacker).to eq player_two
     expect(game_state.table.cards).to eq [cards(:hearts_11),
@@ -383,7 +383,7 @@ describe "Full Game" do
     expect(game_state.table.arranged.fifth[:attacking_card]).to eq cards(:diamonds_13)
     expect(game_state.table.arranged.fifth[:defending_card]).to be_nil
 
-    test_game.defend(player_one, cards(:clubs_14), attack_action)
+    test_game.defend(player_one, cards(:clubs_14), attack_step)
     game.reload
     expect(game_state.attacker).to eq player_two
     expect(game_state.table.cards).to eq [cards(:hearts_11),
@@ -589,7 +589,7 @@ describe "Full Game" do
 
     # ROUND SIX. FIGHT.
 
-    attack_action = test_game.attack(player_one, cards(:diamonds_7))
+    attack_step = test_game.attack(player_one, cards(:diamonds_7))
     game.reload
     expect(game_state.attacker).to eq player_one
     expect(game_state.table.cards).to eq [cards(:diamonds_7)]
@@ -598,7 +598,7 @@ describe "Full Game" do
     expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:diamonds_7)
     expect(game_state.table.arranged.first[:defending_card]).to be_nil
 
-    test_game.defend(player_two, cards(:clubs_8), attack_action)
+    test_game.defend(player_two, cards(:clubs_8), attack_step)
     game.reload
     expect(game_state.attacker).to eq player_one
     expect(game_state.table.cards).to eq [cards(:diamonds_7), cards(:clubs_8)]
@@ -607,7 +607,7 @@ describe "Full Game" do
     expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:diamonds_7)
     expect(game_state.table.arranged.first[:defending_card]).to eq cards(:clubs_8)
 
-    attack_action = test_game.attack(player_one, cards(:diamonds_8))
+    attack_step = test_game.attack(player_one, cards(:diamonds_8))
     game.reload
     expect(game_state.attacker).to eq player_one
     expect(game_state.table.cards).to eq [cards(:diamonds_7),
@@ -618,7 +618,7 @@ describe "Full Game" do
     expect(game_state.table.arranged.second[:attacking_card]).to eq cards(:diamonds_8)
     expect(game_state.table.arranged.second[:defending_card]).to be_nil
 
-    test_game.defend(player_two, cards(:clubs_10), attack_action)
+    test_game.defend(player_two, cards(:clubs_10), attack_step)
     game.reload
     expect(game_state.attacker).to eq player_one
     expect(game_state.table.cards).to eq [cards(:diamonds_7),
@@ -693,7 +693,7 @@ describe "Full Game" do
 
     # ROUND SEVEN. FIGHT.
 
-    attack_action = test_game.attack(player_two, cards(:diamonds_10))
+    attack_step = test_game.attack(player_two, cards(:diamonds_10))
     game.reload
     expect(game_state.attacker).to eq player_two
     expect(game_state.table.cards).to eq [cards(:diamonds_10)]
@@ -702,7 +702,7 @@ describe "Full Game" do
     expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:diamonds_10)
     expect(game_state.table.arranged.first[:defending_card]).to be_nil
 
-    test_game.defend(player_one, cards(:diamonds_14), attack_action)
+    test_game.defend(player_one, cards(:diamonds_14), attack_step)
     game.reload
     expect(game_state.attacker).to eq player_two
     expect(game_state.table.cards).to eq [cards(:diamonds_10),
@@ -712,7 +712,7 @@ describe "Full Game" do
     expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:diamonds_10)
     expect(game_state.table.arranged.first[:defending_card]).to eq cards(:diamonds_14)
 
-    attack_action = test_game.attack(player_two, cards(:hearts_10))
+    attack_step = test_game.attack(player_two, cards(:hearts_10))
     game.reload
     expect(game_state.attacker).to eq player_two
     expect(game_state.table.cards).to eq [cards(:diamonds_10),
@@ -723,7 +723,7 @@ describe "Full Game" do
     expect(game_state.table.arranged.second[:attacking_card]).to eq cards(:hearts_10)
     expect(game_state.table.arranged.second[:defending_card]).to be_nil
 
-    test_game.defend(player_one, cards(:clubs_11), attack_action)
+    test_game.defend(player_one, cards(:clubs_11), attack_step)
     game.reload
     expect(game_state.attacker).to eq player_two
     expect(game_state.table.cards).to eq [cards(:diamonds_10),
@@ -768,7 +768,7 @@ describe "Full Game" do
 
     # ROUND EIGHT. FIGHT.
 
-    attack_action = test_game.attack(player_one, cards(:diamonds_6))
+    attack_step = test_game.attack(player_one, cards(:diamonds_6))
     game.reload
     expect(game_state.attacker).to eq player_one
     expect(game_state.table.cards).to eq [cards(:diamonds_6)]
@@ -777,7 +777,7 @@ describe "Full Game" do
     expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:diamonds_6)
     expect(game_state.table.arranged.first[:defending_card]).to be_nil
 
-    test_game.defend(player_two, cards(:clubs_6), attack_action)
+    test_game.defend(player_two, cards(:clubs_6), attack_step)
     game.reload
     expect(game_state.attacker).to eq player_one
     expect(game_state.table.cards).to eq [cards(:diamonds_6), cards(:clubs_6)]
@@ -802,7 +802,7 @@ describe "Full Game" do
 
     # ROUND NINE. FIGHT.
 
-    attack_action = test_game.attack(player_two, cards(:spades_8))
+    attack_step = test_game.attack(player_two, cards(:spades_8))
     game.reload
     expect(game_state.attacker).to eq player_two
     expect(game_state.table.cards).to eq [cards(:spades_8)]
@@ -811,7 +811,7 @@ describe "Full Game" do
     expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:spades_8)
     expect(game_state.table.arranged.first[:defending_card]).to be_nil
 
-    test_game.defend(player_one, cards(:spades_9), attack_action)
+    test_game.defend(player_one, cards(:spades_9), attack_step)
     game.reload
     expect(game_state.attacker).to eq player_two
     expect(game_state.table.cards).to eq [cards(:spades_8),
@@ -837,7 +837,7 @@ describe "Full Game" do
 
     # ROUND TEN. FIGHT.
 
-    attack_action = test_game.attack(player_one, cards(:hearts_9))
+    attack_step = test_game.attack(player_one, cards(:hearts_9))
     game.reload
     expect(game_state.attacker).to eq player_one
     expect(game_state.table.cards).to eq [cards(:hearts_9)]
@@ -846,7 +846,7 @@ describe "Full Game" do
     expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:hearts_9)
     expect(game_state.table.arranged.first[:defending_card]).to be_nil
 
-    test_game.defend(player_two, cards(:hearts_13), attack_action)
+    test_game.defend(player_two, cards(:hearts_13), attack_step)
     game.reload
     expect(game_state.attacker).to eq player_one
     expect(game_state.table.cards).to eq [cards(:hearts_9), cards(:hearts_13)]
@@ -875,7 +875,7 @@ describe "Full Game" do
     expect(game_state.winner).to be_nil
     expect(game_state.durak).to be_nil
 
-    attack_action = test_game.attack(player_two, cards(:clubs_12))
+    attack_step = test_game.attack(player_two, cards(:clubs_12))
     game.reload
     expect(game_state.attacker).to eq player_two
     expect(game_state.table.cards).to eq [cards(:clubs_12)]

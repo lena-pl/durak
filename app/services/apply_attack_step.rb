@@ -1,12 +1,12 @@
-class ApplyAttackAction
-  def initialize(game_state, action)
+class ApplyAttackStep
+  def initialize(game_state, step)
     @game_state = game_state
-    @action = action
+    @step = step
   end
 
   def call
-    player_state = @game_state.player_state_for_player(@action.player)
-    card = @action.card
+    player_state = @game_state.player_state_for_player(@step.player)
+    card = @step.card
 
     if !player_state.hand.include?(card)
       raise "Card must be in player's hand to attack"

@@ -13,28 +13,15 @@
 
 ActiveRecord::Schema.define(version: 20151126040731) do
 
-  create_table "actions", force: :cascade do |t|
-    t.integer  "kind"
-    t.integer  "player_id"
-    t.integer  "card_id"
-    t.integer  "in_response_to_action_id"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-  end
-
-  add_index "actions", ["card_id"], name: "index_actions_on_card_id"
-  add_index "actions", ["in_response_to_action_id"], name: "index_actions_on_in_response_to_action_id", unique: true
-  add_index "actions", ["player_id"], name: "index_actions_on_player_id"
-
   create_table "cards", force: :cascade do |t|
-    t.integer  "rank"
-    t.integer  "suit"
+    t.integer  "rank",       null: false
+    t.integer  "suit",       null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "games", force: :cascade do |t|
-    t.integer  "trump_card_id"
+    t.integer  "trump_card_id", null: false
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
   end
@@ -42,11 +29,24 @@ ActiveRecord::Schema.define(version: 20151126040731) do
   add_index "games", ["trump_card_id"], name: "index_games_on_trump_card_id"
 
   create_table "players", force: :cascade do |t|
-    t.integer  "game_id"
+    t.integer  "game_id",    null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   add_index "players", ["game_id"], name: "index_players_on_game_id"
+
+  create_table "steps", force: :cascade do |t|
+    t.integer  "kind",                   null: false
+    t.integer  "player_id",              null: false
+    t.integer  "card_id",                null: false
+    t.integer  "in_response_to_step_id"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "steps", ["card_id"], name: "index_steps_on_card_id"
+  add_index "steps", ["in_response_to_step_id"], name: "index_steps_on_in_response_to_step_id", unique: true
+  add_index "steps", ["player_id"], name: "index_steps_on_player_id"
 
 end

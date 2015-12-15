@@ -1,14 +1,14 @@
-class ApplyDefendAction
-  def initialize(game_state, action)
+class ApplyDefendStep
+  def initialize(game_state, step)
     @game_state = game_state
-    @action = action
+    @step = step
   end
 
   def call
-    defending_with = @action.card
-    defending_against = @action.in_response_to_action.card
+    defending_with = @step.card
+    defending_against = @step.in_response_to_step.card
 
-    player_state = @game_state.player_state_for_player(@action.player)
+    player_state = @game_state.player_state_for_player(@step.player)
 
     if !player_state.hand.include?(defending_with)
       raise "Card must be in player's hand to defend with"

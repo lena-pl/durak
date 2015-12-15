@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ApplyPickUpFromTableAction do
+RSpec.describe ApplyPickUpFromTableStep do
   fixtures :cards
 
   let(:game) { CreateGame.new(cards(:hearts_7)).call }
@@ -9,12 +9,12 @@ RSpec.describe ApplyPickUpFromTableAction do
 
   let(:card_to_pick_up) { cards(:clubs_10) }
 
-  let(:pick_up_from_table_action) { instance_double(Action) }
+  let(:pick_up_from_table_step) { instance_double(Step) }
   before do
-    allow(pick_up_from_table_action).to receive(:card).and_return(card_to_pick_up)
-    allow(pick_up_from_table_action).to receive(:player).and_return(picker_uperer)
+    allow(pick_up_from_table_step).to receive(:card).and_return(card_to_pick_up)
+    allow(pick_up_from_table_step).to receive(:player).and_return(picker_uperer)
   end
-  subject { ApplyPickUpFromTableAction.new(game_state, pick_up_from_table_action).call }
+  subject { ApplyPickUpFromTableStep.new(game_state, pick_up_from_table_step).call }
 
   describe "#call" do
     context "when only the card to pick up is on the table" do

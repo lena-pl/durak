@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ApplyDealAction do
+RSpec.describe ApplyDealStep do
   fixtures :cards
 
   let(:trump_card) { cards(:hearts_7) }
@@ -12,12 +12,12 @@ RSpec.describe ApplyDealAction do
   let(:other_player_state) { game_state.player_state_for_player(other_player) }
 
   let(:next_card) { cards(:clubs_11) }
-  let(:deal_action) { instance_double(Action) }
+  let(:deal_step) { instance_double(Step) }
   before do
-    allow(deal_action).to receive(:card).and_return next_card
-    allow(deal_action).to receive(:player).and_return dealee
+    allow(deal_step).to receive(:card).and_return next_card
+    allow(deal_step).to receive(:player).and_return dealee
   end
-  subject { ApplyDealAction.new(game_state, deal_action).call }
+  subject { ApplyDealStep.new(game_state, deal_step).call }
 
   describe "#call" do
     context "when the card to be dealt is not in the deck" do

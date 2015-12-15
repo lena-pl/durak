@@ -6,37 +6,37 @@ class TestGame
     @game_model = CreateGame.new(trump_card).call
   end
 
-  def apply_actions(&block)
+  def apply_steps(&block)
     block.call(self)
   end
 
   def attack(player, card)
-    create_action(:attack, player, card)
+    create_step(:attack, player, card)
   end
 
-  def defend(player, card, in_response_to_action)
-    create_action(:defend, player, card, in_response_to_action)
+  def defend(player, card, in_response_to_step)
+    create_step(:defend, player, card, in_response_to_step)
   end
 
   def discard(player, card)
-    create_action(:discard, player, card)
+    create_step(:discard, player, card)
   end
 
   def draw_from_deck(player, card)
-    create_action(:draw_from_deck, player, card)
+    create_step(:draw_from_deck, player, card)
   end
 
   def pick_up_from_table(player, card)
-    create_action(:pick_up_from_table, player, card)
+    create_step(:pick_up_from_table, player, card)
   end
 
   def deal_card(player, card)
-    create_action(:deal, player, card)
+    create_step(:deal, player, card)
   end
 
   private
 
-  def create_action(kind, player, card, in_response_to_action = nil)
-    player.actions.create!(kind: kind, card: card, in_response_to_action: in_response_to_action)
+  def create_step(kind, player, card, in_response_to_step = nil)
+    player.steps.create!(kind: kind, card: card, in_response_to_step: in_response_to_step)
   end
 end

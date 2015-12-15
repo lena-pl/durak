@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ApplyAttackAction do
+RSpec.describe ApplyAttackStep do
   fixtures :cards
 
   let(:game) { CreateGame.new(cards(:hearts_12)).call }
@@ -8,14 +8,14 @@ RSpec.describe ApplyAttackAction do
 
   let(:attacking_card) { cards(:spades_9) }
 
-  let(:attack_action) { instance_double(Action) }
+  let(:attack_step) { instance_double(Step) }
   before do
-    allow(attack_action).to receive(:card).and_return(attacking_card)
-    allow(attack_action).to receive(:player).and_return(attacker)
+    allow(attack_step).to receive(:card).and_return(attacking_card)
+    allow(attack_step).to receive(:player).and_return(attacker)
   end
 
   let(:game_state) { BuildGameState.new(game).call }
-  subject { ApplyAttackAction.new(game_state, attack_action).call }
+  subject { ApplyAttackStep.new(game_state, attack_step).call }
   let(:attacker_state) { game_state.player_state_for_player(attacker) }
 
   describe "#call" do

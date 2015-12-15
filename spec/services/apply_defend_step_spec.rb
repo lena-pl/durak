@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ApplyDefendAction do
+RSpec.describe ApplyDefendStep do
   fixtures :cards
 
   let(:game) { CreateGame.new(cards(:hearts_7)).call }
@@ -15,24 +15,24 @@ RSpec.describe ApplyDefendAction do
   let(:attacking_card) { cards(:spades_9) }
   let(:defending_card) { cards(:spades_10) }
 
-  let(:attack_action) { instance_double(Action) }
+  let(:attack_step) { instance_double(Step) }
   before do
-    allow(attack_action).to receive(:card).and_return(attacking_card)
+    allow(attack_step).to receive(:card).and_return(attacking_card)
   end
 
-  let(:defend_action) { instance_double(Action) }
+  let(:defend_step) { instance_double(Step) }
   before do
-    allow(defend_action).to receive(:player).and_return(player_one)
-    allow(defend_action).to receive(:card).and_return(defending_card)
-    allow(defend_action).to receive(:in_response_to_action).and_return(attack_action)
+    allow(defend_step).to receive(:player).and_return(player_one)
+    allow(defend_step).to receive(:card).and_return(defending_card)
+    allow(defend_step).to receive(:in_response_to_step).and_return(attack_step)
   end
 
-  subject { ApplyDefendAction.new(game_state, defend_action).call }
+  subject { ApplyDefendStep.new(game_state, defend_step).call }
 
   describe "#call" do
     context "when the card is not in the player's hand" do
       before do
-        allow(defend_action).to receive(:player).and_return(player_one)
+        allow(defend_step).to receive(:player).and_return(player_one)
       end
 
       it "raises correct error" do
@@ -42,7 +42,7 @@ RSpec.describe ApplyDefendAction do
 
     context "when the defending card is in the player's hand" do
       before do
-        allow(defend_action).to receive(:player).and_return(player_one)
+        allow(defend_step).to receive(:player).and_return(player_one)
         game_state.deck.delete(defending_card)
         player_one_state.hand.push(defending_card)
       end

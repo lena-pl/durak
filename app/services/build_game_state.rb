@@ -1,11 +1,11 @@
 class BuildGameState
-  APPLY_ACTION = {
-    deal: ApplyDealAction,
-    draw_from_deck: ApplyDrawFromDeckAction,
-    pick_up_from_table: ApplyPickUpFromTableAction,
-    attack: ApplyAttackAction,
-    defend: ApplyDefendAction,
-    discard: ApplyDiscardAction,
+  APPLY_STEP = {
+    deal: ApplyDealStep,
+    draw_from_deck: ApplyDrawFromDeckStep,
+    pick_up_from_table: ApplyPickUpFromTableStep,
+    attack: ApplyAttackStep,
+    defend: ApplyDefendStep,
+    discard: ApplyDiscardStep,
   }
 
   def initialize(game)
@@ -13,10 +13,10 @@ class BuildGameState
   end
 
   def call
-    actions = @game.actions.order(:id)
+    steps = @game.steps.order(:id)
 
-    actions.inject(base_state) do |current_game_state, action|
-      APPLY_ACTION[action.kind.to_sym].new(current_game_state, action).call
+    steps.inject(base_state) do |current_game_state, step|
+      APPLY_STEP[step.kind.to_sym].new(current_game_state, step).call
     end
   end
 

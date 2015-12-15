@@ -1,11 +1,11 @@
-class ApplyDiscardAction
-  def initialize(game_state, action)
+class ApplyDiscardStep
+  def initialize(game_state, step)
     @game_state = game_state
-    @action = action
+    @step = step
   end
 
   def call
-    card = @action.card
+    card = @step.card
 
     if !@game_state.table.include?(card)
       raise "Card must be on table to discard"
@@ -22,7 +22,7 @@ class ApplyDiscardAction
   private
 
   def next_attacker
-    if @game_state.attacker == @action.player
+    if @game_state.attacker == @step.player
       find_next_attacker
     else
       @game_state.attacker

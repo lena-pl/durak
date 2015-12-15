@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ApplyDrawFromDeckAction do
+RSpec.describe ApplyDrawFromDeckStep do
   fixtures :cards
 
   let(:game) { CreateGame.new(cards(:hearts_7)).call }
@@ -9,12 +9,12 @@ RSpec.describe ApplyDrawFromDeckAction do
 
   let(:card_to_draw) { cards(:clubs_10) }
 
-  let(:draw_from_deck_action) { instance_double(Action) }
+  let(:draw_from_deck_step) { instance_double(Step) }
   before do
-    allow(draw_from_deck_action).to receive(:card).and_return(card_to_draw)
-    allow(draw_from_deck_action).to receive(:player).and_return(drawer)
+    allow(draw_from_deck_step).to receive(:card).and_return(card_to_draw)
+    allow(draw_from_deck_step).to receive(:player).and_return(drawer)
   end
-  subject { ApplyDrawFromDeckAction.new(game_state, draw_from_deck_action).call }
+  subject { ApplyDrawFromDeckStep.new(game_state, draw_from_deck_step).call }
 
   describe "#call" do
     context "drawer draws a card from the deck" do

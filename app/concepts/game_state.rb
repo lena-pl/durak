@@ -23,6 +23,24 @@ class GameState
     durak_found? || draw?
   end
 
+  def current_player
+    if @table.empty?
+      attacker
+    else
+      last_attack_defend_pair = @table.arranged.last
+
+      if last_attack_defend_pair[:defending_card].nil?
+        defender
+      else
+        attacker
+      end
+    end
+  end
+
+  def defender
+    @player_states.find { |player_state| player_state.player != attacker }.player
+  end
+
   def durak
     durak_found? ? hands_with_cards.first.player : nil
   end

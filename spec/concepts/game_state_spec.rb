@@ -19,6 +19,79 @@ RSpec.describe GameState do
     end
   end
 
+  describe "#current_player" do
+    context "when the attacker is not set" do
+      before do
+        game_state.attacker = nil
+      end
+
+      it "returns nil" do
+        expect(game_state.current_player).to be_nil
+      end
+    end
+
+    context "when player one is the attacker" do
+      before do
+        game_state.attacker = player_one
+      end
+
+      context "there are no cards on the table" do
+        before do
+          game_state.table.clear
+        end
+
+        it "returns the attacker" do
+          expect(game_state.current_player).to eq player_one
+        end
+      end
+
+      context "when is one attack defend pair on the table" do
+        context "when only the attacking card is in the pair" do
+          before do
+            game_state.table.push(cards(:hearts_12))
+          end
+
+          it "returns the defender" do
+            expect(game_state.current_player).to eq player_two
+          end
+        end
+
+        context "when both cards are in the pair" do
+          before do
+            game_state.table.push(cards(:hearts_12))
+            game_state.table.push(cards(:hearts_14))
+          end
+
+          it "returns the attacker" do
+            expect(game_state.current_player).to eq player_one
+          end
+        end
+      end
+    end
+  end
+
+  describe "#defender" do
+    context "when player one is the attacker" do
+      before do
+        game_state.attacker = player_one
+      end
+
+      it "returns player two" do
+        expect(game_state.defender).to eq player_two
+      end
+    end
+
+    context "when player two is the attacker" do
+      before do
+        game_state.attacker = player_two
+      end
+
+      it "returns player one" do
+        expect(game_state.defender).to eq player_one
+      end
+    end
+  end
+
   context "when the deck and table are empty and both players each have 1 card left" do
     before do
       game_state.deck.delete(cards(:hearts_6))

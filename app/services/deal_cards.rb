@@ -10,7 +10,7 @@ class DealCards
       cards_to_deal = game_state.deck.cards.sample(NUMBER_OF_CARDS)
 
       cards_to_deal.each do |card|
-        player.actions.create!(kind: :deal, card: card)
+        player.steps.create!(kind: :deal, card: card)
       end
     end
   end

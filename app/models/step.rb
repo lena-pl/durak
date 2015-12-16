@@ -5,7 +5,14 @@ class Step < ActiveRecord::Base
 
   enum kind: [:deal, :draw_from_deck, :pick_up_from_table, :attack, :defend, :discard]
 
-  validates :kind, :player, :card, presence: true
+  validates :kind, :player, presence: true
+  validates :card, presence: true, unless: :card_not_needed?
   validates :in_response_to_step, uniqueness: true, allow_nil: true
   validates :in_response_to_step, presence: true, if: :defend?
+
+  private
+
+  def card_not_needed?
+    pick_up_from_table? || discard?
+  end
 end

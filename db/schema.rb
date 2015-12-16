@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(version: 20151126040731) do
   create_table "steps", force: :cascade do |t|
     t.integer  "kind",                   null: false
     t.integer  "player_id",              null: false
-    t.integer  "card_id",                null: false
+    t.integer  "card_id"
     t.integer  "in_response_to_step_id"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false

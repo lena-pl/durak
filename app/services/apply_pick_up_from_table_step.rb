@@ -5,16 +5,18 @@ class ApplyPickUpFromTableStep
   end
 
   def call
-    card = @step.card
+    if @game_state.defender != @step.player
+      raise "Only the defender can pick up cards from the table"
+    end
 
-    if !@game_state.table.include?(card)
-      raise "Card must be on table before it is picked up"
+    if @game_state.table.empty?
+      raise "Must be at least one card on the table to pickup"
     end
 
     player_state = @game_state.player_state_for_player(@step.player)
 
-    @game_state.table.delete(card)
-    player_state.hand.push(card)
+    player_state.hand.push(*@game_state.table.cards)
+    @game_state.table.clear
 
     @game_state
   end

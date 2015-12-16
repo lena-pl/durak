@@ -1,4 +1,6 @@
 class GameState
+  STANDARD_HAND_SIZE = 6
+
   attr_reader :player_states, :table, :deck, :trump_card, :discard_pile
   attr_accessor :attacker
 

@@ -5,7 +5,8 @@ class GamesController < ApplicationController
 
   def create
     game = CreateGame.new.call
-    DealCards.new(game).call
+    game_state = BuildGameState.new(@game).call
+    DealCards.new(game_state).call
 
     redirect_to game
   end

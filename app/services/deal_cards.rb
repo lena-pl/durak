@@ -1,21 +1,13 @@
 class DealCards
-  NUMBER_OF_CARDS = 6
-
-  def initialize(game)
-    @game = game
+  def initialize(game_state)
+    @game_state = game_state
   end
 
   def call
-    @game.players.each do |player|
-      cards_to_deal = game_state.deck.cards.sample(NUMBER_OF_CARDS)
-
-      cards_to_deal.each do |card|
-        player.steps.create!(kind: :deal, card: card)
+    @game_state.player_states.each do |player_state|
+      GameState::STANDARD_HAND_SIZE.times do
+        PickUpFromDeck.new(game_state, player_state).call
       end
     end
-  end
-
-  def game_state
-    BuildGameState.new(@game).call
   end
 end

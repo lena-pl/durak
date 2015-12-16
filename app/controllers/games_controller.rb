@@ -11,7 +11,7 @@ class GamesController < ApplicationController
   end
 
   def show
-   game = Game.find(params[:id])
-   @game_state = BuildGameState.new(game).call
+   @game = Game.find(params[:id])
+   @game_state = BuildGameState.new(@game).call
   end
 end

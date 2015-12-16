@@ -1,23 +1,65 @@
 <div>
-  <h1>Durak</h1>
+  <h1>Durak / Game <%= @game.id %></h1>
 
   <div>
-    <p>Trump Card: <%= @game_state.trump_card.rank %> of <%= @game_state.trump_card.suit %></p>
+    <p><b>Trump Card:</b> <%= @game_state.trump_card.rank %> of <%= @game_state.trump_card.suit %></p>
     <% if @game_state.attacker %>
-      <p>Current Attacker: <%= @game_state.attacker.id %></p>
+      <p><b>Current Attacker:</b> Player <%= @game_state.attacker.id %></p>
+    <% end %>
+
+    <% if @game_state.current_player %>
+      <p><b>Current Player:</b> Player <%= @game_state.current_player.id %></p>
     <% end %>
   </div>
 
-  <p>Cards left in deck: <%= @game_state.deck.count %></p>
+  <p><b>Cards left in deck:</b> <%= @game_state.deck.count %></p>
 
-  <p>Table: <%= @game_state.table.arranged %></p>
+  <p><b>Table:</b></p>
+  <% @game_state.table.arranged.each do |attack_defend_pair| %>
+    Attacking: <%= attack_defend_pair[:attacking_card].rank %> of <%= attack_defend_pair[:attacking_card].suit %> |---|
 
+    <% if attack_defend_pair[:defending_card] != nil %>
+      Defending: <%= attack_defend_pair[:defending_card].rank %> of <%= attack_defend_pair[:defending_card].suit %>
+    <% end %>
+    <br />
+  <% end %>
+  <br />
   <% @game_state.player_states.each do |player_state| %>
     <div>
-      Player Hand: <%= player_state.player.id %> (<%= player_state.hand.count %>)
-      <%= player_state.hand.arranged %>
+      <b>Player <%= player_state.player.id %> Hand: (<%= player_state.hand.count %> cards)<br></b>
+      <% player_state.hand.cards.each do |card| %>
+
+        <%= card.rank %> of <%= card.suit %><br>
+      <% end %>
     </div>
+    <br>
   <% end %>
 
-  <p>Discard Pile: <%= @game_state.discard_pile.arranged %></p>
+  <p><b>Discard Pile:</b></p>
+  <% @game_state.discard_pile.cards.each do |card| %>
+    <%= card.rank %> of <%= card.suit %><br>
+  <% end %>
+
+  <p>Player <%= @game_state.current_player.id %>, take your turn:</p>
+  <%= form_for [@game, @game_state.current_player, @game_state.current_player.steps.new] do |f| %>
+    <% if @game_state.current_player == @game_state.attacker %>
+      <%= f.hidden_field :kind, :value => :attack %>
+    <% else %>
+      <%= f.hidden_field :kind, :value => :defend %>
+      <%= f.hidden_field :in_response_to_step_id, :value => @game.steps.last.id %>
+    <% end %>
+
+    <%= f.select :card_id do %>
+      <% @game_state.player_state_for_player(@game_state.current_player).hand.cards.each do |card| %>
+        <%= content_tag(:option, "#{card.rank} of #{card.suit}", value: card.id) %>
+      <% end %>
+    <% end %>
+
+    <% if @game_state.current_player == @game_state.attacker %>
+      <%= f.submit "Attack", data: { disable_with: 'Text' } %>
+    <% else %>
+      <%= f.submit "Defend", data: { disable_with: 'Text' }%>
+    <% end %>
+  <% end %>
+
 </div>

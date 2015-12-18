@@ -1,22 +1,22 @@
 class DrawCards
-  def initialize()
+  def initialize(game_state)
     @game_state = game_state
   end
 
   def call
     need_to_draw = find_players_who_need_to_draw
-    amount_to_draw = calculate_amount_to_draw(players_who_need_to_draw)
+    amount_to_draw = calculate_amount_to_draw(find_players_who_need_to_draw)
 
     if @game_state.deck.count >= amount_to_draw
       attacker_state = @game_state.player_state_for_player(@game_state.attacker)
 
       if need_to_draw.include?(attacker_state)
         need_to_draw.delete(attacker_state)
-        need_to_draw.shift(attacker_state)
+        need_to_draw.unshift(attacker_state)
       end
 
       need_to_draw.each do |player_state|
-        PickUpCardFromDeck.new(@game_state, player_state)
+        PickUpFromDeck.new(@game_state, player_state, :draw_from_deck).call
       end
     end
   end
@@ -30,10 +30,10 @@ class DrawCards
   end
 
   def calculate_amount_to_draw(players_who_need_to_draw)
-    players_who_need_to_draw.map { |player_state| player_state.hand.count }.reduce(&:+)
+    players_who_need_to_draw.map { |player_state| player_state.hand.count }.reduce(0, &:+)
   end
 
   def pick_up_cards_from_deck(player_state, amount)
-    amount.times { PickUpCardFromDeck.new(@game_state, player_state) }
+    amount.times { PickUpFromDeck.new(@game_state, player_state) }
   end
 end

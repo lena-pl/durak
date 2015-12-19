@@ -26,10 +26,12 @@
   <br />
   <% @game_state.player_states.each do |player_state| %>
     <div>
-      <b>Player <%= player_state.player.id %> Hand: (<%= player_state.hand.count %> cards)<br></b>
-      <% player_state.hand.cards.each do |card| %>
+      <% if @game_state.current_player == player_state.player %>
+        <b>Player <%= player_state.player.id %> Hand: (<%= player_state.hand.count %> cards)<br></b>
+        <% player_state.hand.cards.each do |card| %>
 
-        <%= card.rank %> of <%= card.suit %><br>
+          <%= card.rank %> of <%= card.suit %><br>
+        <% end %>
       <% end %>
     </div>
     <br>

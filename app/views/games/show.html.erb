@@ -12,9 +12,9 @@
     <% end %>
   </div>
 
-  <p><b>Cards left in deck:</b> <%= @game_state.deck.count %></p>
+  <h2>Cards left in deck: <%= @game_state.deck.count %></h2>
 
-  <p><b>Table:</b></p>
+  <h2>Table:</h2>
   <% @game_state.table.arranged.each do |attack_defend_pair| %>
     Attacking: <%= attack_defend_pair[:attacking_card].rank %> of <%= attack_defend_pair[:attacking_card].suit %> |---|
 
@@ -23,11 +23,12 @@
     <% end %>
     <br />
   <% end %>
+
   <br />
   <% @game_state.player_states.each do |player_state| %>
     <div>
       <% if @game_state.current_player == player_state.player %>
-        <b>Player <%= player_state.player.id %> Hand: (<%= player_state.hand.count %> cards)<br></b>
+        <h2>Player <%= player_state.player.id %> Hand: (<%= player_state.hand.count %> cards)<br></h2>
         <% player_state.hand.cards.each do |card| %>
 
           <%= card.rank %> of <%= card.suit %><br>
@@ -37,13 +38,13 @@
     <br>
   <% end %>
 
-  <p><b>Discard Pile:</b></p>
+  <h2>Discard Pile:</h2>
   <% @game_state.discard_pile.cards.each do |card| %>
     <%= card.rank %> of <%= card.suit %><br>
   <% end %>
 
   <% if !@game_state.over? %>
-    <p>Player <%= @game_state.current_player.id %>, take your turn:</p>
+    <h2>Player <%= @game_state.current_player.id %>, take your turn:</h2>
     <%= form_for [@game, @game_state.current_player, @game_state.current_player.steps.new] do |f| %>
       <% if @game_state.current_player == @game_state.attacker %>
         <%= f.hidden_field :kind, :value => :attack %>
@@ -93,5 +94,4 @@
     <b>Durak:</b>
     Player <%= @game_state.durak.id %>
   <% end %>
-
 </div>

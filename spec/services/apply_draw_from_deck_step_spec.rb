@@ -28,7 +28,7 @@ RSpec.describe ApplyDrawFromDeckStep do
       end
 
       it "leaves other cards in deck" do
-        expect(subject.deck).to include *(Card.all - [card_to_draw])
+        expect(subject.deck).to include(*(Card.all - [card_to_draw]))
       end
 
       it "does not move other cards to their hand" do

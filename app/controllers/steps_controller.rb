@@ -5,7 +5,7 @@ class StepsController < ApplicationController
 
     step = player.steps.create!(step_params)
 
-    if step.discard? || step.pick_up_from_table
+    if step.discard? || step.pick_up_from_table?
       game_state = BuildGameState.new(game).call
       DrawCards.new(game_state).call
     end

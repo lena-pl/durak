@@ -8,7 +8,9 @@ class PickUpFromDeck
   def call
     deck = @game_state.deck
 
-    if deck.count == 1
+    if deck.empty?
+      raise "Cannot pick up from empty deck"
+    elsif deck.count == 1
       card_to_pick_up = @game_state.trump_card
     else
       card_to_pick_up = deck.cards.reject {|card| card == @game_state.trump_card }.sample

@@ -4,35 +4,11 @@ class DrawCards
   end
 
   def call
-    need_to_draw = find_players_who_need_to_draw
-    total_amount_to_draw = total_amount_to_draw(find_players_who_need_to_draw)
+    if !@game_state.deck.empty?
+      need_to_draw = find_players_who_need_to_draw
 
-    attacker_state = @game_state.player_state_for_player(@game_state.attacker)
-
-    if need_to_draw.include?(attacker_state)
-      need_to_draw.delete(attacker_state)
-      need_to_draw.unshift(attacker_state)
-    end
-
-    if @game_state.deck.count >= total_amount_to_draw
-      need_to_draw.each do |player_state|
-        amount = amount_to_draw(player_state)
-        pick_up_cards_from_deck(player_state, amount)
-      end
-    elsif @game_state.deck.count < total_amount_to_draw && !hands_equal?(need_to_draw)
-      quotent = (total_amount_to_draw / need_to_draw.count).floor
-      extra_cards = total_amount_to_draw - quotent
-      amounts = [quotent, extra_cards]
-
-      amounts.each do |amount|
-        need_to_draw.each do |player_state|
-          pick_up_cards_from_deck(player_state, amount)
-        end
-      end
-    elsif @game_state.deck.count < total_amount_to_draw && hands_equal?(need_to_draw)
-      need_to_draw.each do |player_state|
-        amount = total_amount_to_draw / need_to_draw.count
-        pick_up_cards_from_deck(player_state, amount)
+      draws_for_players(need_to_draw).each do |player_state, amount|
+        draw_cards_from_deck(player_state, amount)
       end
     end
   end
@@ -45,24 +21,47 @@ class DrawCards
     end
   end
 
-  def total_amount_to_draw(players_who_need_to_draw)
-    players_who_need_to_draw.map { |player_state| player_state.hand.count }.reduce(0, &:+)
-  end
+  def draws_for_players(player_states)
+    ideal_draw_amounts = ideal_draw_amounts(player_states)
+    ideal_amount_to_draw_total = ideal_draw_amounts.values.reduce(0, &:+)
 
-  def amount_to_draw(player_state)
-    if player_state.hand.count < GameState::STANDARD_HAND_SIZE
-      GameState::STANDARD_HAND_SIZE - player_state.hand.count
+    if enough_cards_left_in_deck?(ideal_amount_to_draw_total)
+      ideal_draw_amounts
     else
-      0
+      split_remaining_cards_between_players(player_states)
     end
   end
 
-  def pick_up_cards_from_deck(player_state, amount)
+  def ideal_draw_amounts(player_states)
+    player_states.map do |player_state|
+      [player_state, ideal_draw_amount(player_state)]
+    end.to_h
+  end
+
+  def ideal_draw_amount(player_state)
+    GameState::STANDARD_HAND_SIZE - player_state.hand.count
+  end
+
+  def split_remaining_cards_between_players(player_states)
+    #TODO generalise this for more than two players
+    remaining_card_count = @game_state.deck.count
+    amount_player_one = (remaining_card_count / player_states.count.to_f).ceil
+    amount_player_two  = remaining_card_count - amount_player_one
+
+    { player_states.first => amount_player_one, player_states.second => amount_player_two }
+  end
+
+  def enough_cards_left_in_deck?(amount_to_draw)
+    @game_state.deck.count >= amount_to_draw
+  end
+
+  def have_same_amount_of_cards?(player_states)
+    hand_counts = player_states.map { |player_state| player_state.hand.count }
+    hand_counts.all? { |count| count = hand_counts.first }
+  end
+
+  def draw_cards_from_deck(player_state, amount)
     amount.times { PickUpFromDeck.new(@game_state, player_state, :draw_from_deck).call }
   end
 
-  def hands_equal?(need_to_draw)
-    hands_lengths = need_to_draw.map { |player_state| player_state.hand.count }
-    !(hands_lengths.any? {|length| length != hands_lengths[0]})
-  end
 end

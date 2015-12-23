@@ -1,3 +1,73 @@
 // Place all the styles related to the games controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+@import "compass";
+
+$white: #FFFFFF;
+$red: #f44f49;
+
+$card-width: 90px;
+$card-height: 120px;
+
+body {
+  background: #F5F5F5;
+  font-family: Josefin Sans;
+  font-weight: 100;
+  font-size: 100%;
+}
+
+.card {
+  display: inline-block;
+  position: relative;
+  width: $card-width;
+  height: $card-height;
+  background: #FFFFFF;
+  @include border-radius(5px);
+  @include box-shadow(1px 1px 6px rgba(0,0,0,0.25));
+  overflow: hidden;
+  @include user-select(none);
+
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    cursor: pointer;
+    @include box-shadow(3px 3px 6px rgba(0,0,0,0.5));
+    transform: translate(-3px, -3px);
+  }
+
+  .panel {
+    position: absolute;
+    padding: 8px;
+
+    &:last-child {
+      right: 0;
+      bottom: 0;
+    }
+
+    &.bottom {
+      transform: rotate(180deg);
+    }
+  }
+
+  .content {
+    display: flex;
+    flex-wrap: wrap;
+    height: $card-height;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &.red {
+    color: $red;
+  }
+}
+
+.attack-defend-pair {
+  display: inline-block;
+  margin: 0 10px;
+
+  .card:not(:last-child) {
+    margin-right: -70px;
+  }
+}

@@ -16,31 +16,30 @@
 
   <h2>Table:</h2>
   <% @game_state.table.arranged.each do |attack_defend_pair| %>
-    Attacking: <%= attack_defend_pair[:attacking_card].rank %> of <%= attack_defend_pair[:attacking_card].suit %> |---|
+    <% attacking_card, defending_card = attack_defend_pair[:attacking_card], attack_defend_pair[:defending_card] %>
+    <div class="attack-defend-pair">
+      <%= render "card", rank: attacking_card.rank, suit: attacking_card.suit %>
 
-    <% if attack_defend_pair[:defending_card] != nil %>
-      Defending: <%= attack_defend_pair[:defending_card].rank %> of <%= attack_defend_pair[:defending_card].suit %>
-    <% end %>
-    <br />
+      <% if defending_card != nil %>
+        <%= render "card", rank: defending_card.rank, suit: defending_card.suit %>
+      <% end %>
+    </div>
   <% end %>
 
-  <br />
   <% @game_state.player_states.each do |player_state| %>
     <div>
       <% if @game_state.current_player == player_state.player %>
         <h2>Player <%= player_state.player.id %> Hand: (<%= player_state.hand.count %> cards)<br></h2>
         <% player_state.hand.cards.each do |card| %>
-
-          <%= card.rank %> of <%= card.suit %><br>
+          <%= render "card",  rank: card.rank, suit: card.suit %>
         <% end %>
       <% end %>
     </div>
-    <br>
   <% end %>
 
   <h2>Discard Pile:</h2>
   <% @game_state.discard_pile.cards.each do |card| %>
-    <%= card.rank %> of <%= card.suit %><br>
+    <%= render "card",  rank: card.rank, suit: card.suit %>
   <% end %>
 
   <% if !@game_state.over? %>
@@ -53,20 +52,19 @@
         <%= f.hidden_field :in_response_to_step_id, :value => @game.steps.last.id %>
       <% end %>
 
-      <%= f.select :card_id do %>
-        <% @game_state.player_state_for_player(@game_state.current_player).hand.cards.each do |card| %>
-          <%= content_tag(:option, "#{card.rank} of #{card.suit}", value: card.id) %>
-        <% end %>
-      <% end %>
+      <% player_hand = @game_state.player_state_for_player(@game_state.current_player).hand %>
+      <% if !player_hand.empty? %>
+        <%= f.select :card_id, player_hand.cards.map { |card| ["#{card.rank} of #{card.suit}", card.id] } %>
 
-      <% if @game_state.current_player == @game_state.attacker %>
-        <%= f.submit "Attack", data: { disable_with: 'Don\'t think about pushing me again.' } %>
-      <% else %>
-        <%= f.submit "Defend", data: { disable_with: 'Don\'t think about pushing me again.' } %>
+        <% if @game_state.current_player == @game_state.attacker %>
+          <%= f.submit "Attack", data: { disable_with: 'Don\'t think about pushing me again.' } %>
+        <% else %>
+          <%= f.submit "Defend", data: { disable_with: 'Don\'t think about pushing me again.' } %>
+        <% end %>
       <% end %>
     <% end %>
 
-    <% if !@game_state.table.empty? %>
+    <% if !@game_state.over? %>
       <%= form_for [@game, @game_state.current_player, @game_state.current_player.steps.new] do |f| %>
         <% if @game_state.current_player == @game_state.attacker %>
           <% step_kind = :discard %>

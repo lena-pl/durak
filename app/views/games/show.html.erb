@@ -1,8 +1,8 @@
 <div>
   <h1>Durak / Game <%= @game.id %></h1>
 
-  <div>
-    <% if !@game_state.over? %>
+  <% if !@game_state.over? %>
+    <div>
       <p><b>Trump Card:</b> <%= @game_state.trump_card.rank %> of <%= @game_state.trump_card.suit %></p>
       <% if @game_state.attacker %>
         <p><b>Current Attacker:</b> Player <%= @game_state.attacker.id %></p>
@@ -80,7 +80,7 @@
         <%= f.submit submit_text, data: { disable_with: 'Don\'t think about pushing me again.' } %>
       <% end %>
     <% end %>
-  <% else %>
+  <% elsif @game_state.over? %>
     <h2>Result:</h2>
     <% if @game_state.draw? %>
       <p>It's a draw!</p>

@@ -2,94 +2,92 @@
   <h1>Durak / Game <%= @game.id %></h1>
 
   <div>
-    <p><b>Trump Card:</b> <%= @game_state.trump_card.rank %> of <%= @game_state.trump_card.suit %></p>
-    <% if @game_state.attacker %>
-      <p><b>Current Attacker:</b> Player <%= @game_state.attacker.id %></p>
-    <% end %>
-
-    <% if @game_state.current_player %>
-      <p><b>Current Player:</b> Player <%= @game_state.current_player.id %></p>
-    <% end %>
-  </div>
-
-  <h2>Cards left in deck: <%= @game_state.deck.count %></h2>
-
-  <h2>Table:</h2>
-  <% @game_state.table.arranged.each do |attack_defend_pair| %>
-    <% attacking_card, defending_card = attack_defend_pair[:attacking_card], attack_defend_pair[:defending_card] %>
-    <div class="attack-defend-pair">
-      <%= render "card", rank: attacking_card.rank, suit: attacking_card.suit %>
-
-      <% if defending_card != nil %>
-        <%= render "card", rank: defending_card.rank, suit: defending_card.suit %>
-      <% end %>
-    </div>
-  <% end %>
-
-  <% @game_state.player_states.each do |player_state| %>
-    <div>
-      <% if @game_state.current_player == player_state.player %>
-        <h2>Player <%= player_state.player.id %> Hand: (<%= player_state.hand.count %> cards)<br></h2>
-        <% player_state.hand.cards.each do |card| %>
-          <%= render "card",  rank: card.rank, suit: card.suit %>
-        <% end %>
-      <% end %>
-    </div>
-  <% end %>
-
-  <h2>Discard Pile:</h2>
-  <% @game_state.discard_pile.cards.each do |card| %>
-    <%= render "card",  rank: card.rank, suit: card.suit %>
-  <% end %>
-
-  <% if !@game_state.over? %>
-    <h2>Player <%= @game_state.current_player.id %>, take your turn:</h2>
-    <%= form_for [@game, @game_state.current_player, @game_state.current_player.steps.new] do |f| %>
-      <% if @game_state.current_player == @game_state.attacker %>
-        <%= f.hidden_field :kind, :value => :attack %>
-      <% else %>
-        <%= f.hidden_field :kind, :value => :defend %>
-        <%= f.hidden_field :in_response_to_step_id, :value => @game.steps.last.id %>
+    <% unless @game_state.over? %>
+      <p><b>Trump Card:</b> <%= @game_state.trump_card.rank %> of <%= @game_state.trump_card.suit %></p>
+      <% if @game_state.attacker %>
+        <p><b>Current Attacker:</b> Player <%= @game_state.attacker.id %></p>
       <% end %>
 
-      <% player_hand = @game_state.player_state_for_player(@game_state.current_player).hand %>
-      <% if !player_hand.empty? %>
-        <%= f.select :card_id, player_hand.cards.map { |card| ["#{card.rank} of #{card.suit}", card.id] } %>
-
-        <% if @game_state.current_player == @game_state.attacker %>
-          <%= f.submit "Attack", data: { disable_with: 'Don\'t think about pushing me again.' } %>
-        <% else %>
-          <%= f.submit "Defend", data: { disable_with: 'Don\'t think about pushing me again.' } %>
-        <% end %>
+      <% if @game_state.current_player %>
+        <p><b>Current Player:</b> Player <%= @game_state.current_player.id %></p>
       <% end %>
-    <% end %>
 
-    <% if !@game_state.over? %>
+      <h2>Cards left in deck: <%= @game_state.deck.count %></h2>
+
+      <h2>Table:</h2>
+      <% @game_state.table.arranged.each do |attack_defend_pair| %>
+        <% attacking_card, defending_card = attack_defend_pair[:attacking_card], attack_defend_pair[:defending_card] %>
+        <div class="attack-defend-pair">
+          <%= render "card", rank: attacking_card.rank, suit: attacking_card.suit %>
+
+          <% if defending_card != nil %>
+            <%= render "card", rank: defending_card.rank, suit: defending_card.suit %>
+          <% end %>
+        </div>
+      <% end %>
+
+      <% @game_state.player_states.each do |player_state| %>
+        <div>
+          <% if @game_state.current_player == player_state.player %>
+            <h2>Player <%= player_state.player.id %> Hand: (<%= player_state.hand.count %> cards)<br></h2>
+            <% player_state.hand.cards.each do |card| %>
+              <%= render "card",  rank: card.rank, suit: card.suit %>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+
+      <h2>Discard Pile:</h2>
+      <% @game_state.discard_pile.cards.each do |card| %>
+        <%= render "card",  rank: card.rank, suit: card.suit %>
+      <% end %>
+
+      <h2>Player <%= @game_state.current_player.id %>, take your turn:</h2>
       <%= form_for [@game, @game_state.current_player, @game_state.current_player.steps.new] do |f| %>
         <% if @game_state.current_player == @game_state.attacker %>
-          <% step_kind = :discard %>
-          <% submit_text = "Discard" %>
+          <%= f.hidden_field :kind, :value => :attack %>
         <% else %>
-          <% step_kind = :pick_up_from_table %>
-          <% submit_text = "Pickup" %>
+          <%= f.hidden_field :kind, :value => :defend %>
+          <%= f.hidden_field :in_response_to_step_id, :value => @game.steps.last.id %>
         <% end %>
 
-        <%= f.hidden_field :kind, :value => step_kind %>
-        <%= f.submit submit_text, data: { disable_with: 'Don\'t think about pushing me again.' } %>
+        <% player_hand = @game_state.player_state_for_player(@game_state.current_player).hand %>
+        <% if !player_hand.empty? %>
+          <%= f.select :card_id, player_hand.cards.map { |card| ["#{card.rank} of #{card.suit}", card.id] } %>
+
+          <% if @game_state.current_player == @game_state.attacker %>
+            <%= f.submit "Attack", data: { disable_with: 'Don\'t think about pushing me again.' } %>
+          <% else %>
+            <%= f.submit "Defend", data: { disable_with: 'Don\'t think about pushing me again.' } %>
+          <% end %>
+        <% end %>
+      <% end %>
+
+      <% unless @game_state.table.empty? %>
+        <%= form_for [@game, @game_state.current_player, @game_state.current_player.steps.new] do |f| %>
+          <% if @game_state.current_player == @game_state.attacker %>
+            <% step_kind = :discard %>
+            <% submit_text = "Discard" %>
+          <% else %>
+            <% step_kind = :pick_up_from_table %>
+            <% submit_text = "Pickup" %>
+          <% end %>
+
+          <%= f.hidden_field :kind, :value => step_kind %>
+          <%= f.submit submit_text, data: { disable_with: 'Don\'t think about pushing me again.' } %>
+        <% end %>
+      <% end %>
+    <% else %>
+      <h2>Result:</h2>
+      <% if @game_state.draw? %>
+        <p>It's a draw!</p>
+      <% else %>
+        <b>Winner:</b>
+        Player <%= @game_state.winner.id %>
+        <br>
+        <b>Durak:</b>
+        Player <%= @game_state.durak.id %>
       <% end %>
     <% end %>
-  <% elsif @game_state.draw? %>
-    <br>
-    <b>Result</b>
-    <p>It's a draw!</p>
-  <% else %>
-    <br>
-    <b>Result</b>
-    <br>
-    <b>Winner:</b>
-    Player <%= @game_state.winner.id %>
-    <br>
-    <b>Durak:</b>
-    Player <%= @game_state.durak.id %>
-  <% end %>
+  </div>
 </div>

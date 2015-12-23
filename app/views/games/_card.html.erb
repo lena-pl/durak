@@ -1,0 +1,25 @@
+<% if suit == "hearts" || suit == "diamonds" %>
+  <% colour_class = "red" %>
+<% else %>
+  <% colour_class = "black" %>
+<% end %>
+
+<div class="card <%= colour_class %>">
+  <div class="panel top">
+    <div class="rank"><%= rank %></div>
+  </div>
+
+  <div class="content">
+    <% rank.times do %>
+      <% if suit == "diamonds" %>
+        &diams;
+      <% else %>
+      <div><%= "&#{suit};".html_safe %></div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="panel bottom">
+    <div class="rank"><%= rank %></div>
+  </div>
+</div>

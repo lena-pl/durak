@@ -53,16 +53,18 @@
         <%= f.hidden_field :in_response_to_step_id, :value => @game.steps.last.id %>
       <% end %>
 
-      <%= f.select :card_id do %>
-        <% @game_state.player_state_for_player(@game_state.current_player).hand.cards.each do |card| %>
-          <%= content_tag(:option, "#{card.rank} of #{card.suit}", value: card.id) %>
+      <% if !@game_state.player_state_for_player(@game_state.current_player).hand.empty? %>
+        <%= f.select :card_id do %>
+          <% @game_state.player_state_for_player(@game_state.current_player).hand.cards.each do |card| %>
+            <%= content_tag(:option, "#{card.rank} of #{card.suit}", value: card.id) %>
+          <% end %>
         <% end %>
-      <% end %>
 
-      <% if @game_state.current_player == @game_state.attacker %>
-        <%= f.submit "Attack", data: { disable_with: 'Don\'t think about pushing me again.' } %>
-      <% else %>
-        <%= f.submit "Defend", data: { disable_with: 'Don\'t think about pushing me again.' } %>
+        <% if @game_state.current_player == @game_state.attacker %>
+          <%= f.submit "Attack", data: { disable_with: 'Don\'t think about pushing me again.' } %>
+        <% else %>
+          <%= f.submit "Defend", data: { disable_with: 'Don\'t think about pushing me again.' } %>
+        <% end %>
       <% end %>
     <% end %>
 

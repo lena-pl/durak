@@ -64,10 +64,15 @@ body {
 }
 
 .attack-defend-pair {
+  vertical-align: top;
   display: inline-block;
   margin: 0 10px;
 
+  .card {
+    display: block;
+  }
+
   .card:not(:last-child) {
-    margin-right: -70px;
+    margin-bottom: -90px;
   }
 }

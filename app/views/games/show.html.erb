@@ -3,7 +3,8 @@
 
   <% unless @game_state.over? %>
     <div>
-      <p><b>Trump Card:</b> <%= @game_state.trump_card.rank %> of <%= @game_state.trump_card.suit %></p>
+      <p><b>Trump Card:</b>
+      <%= render "card",  rank: @game_state.trump_card.rank, suit: @game_state.trump_card.suit %>
       <% if @game_state.attacker %>
         <p><b>Current Attacker:</b> Player <%= @game_state.attacker.id %></p>
       <% end %>

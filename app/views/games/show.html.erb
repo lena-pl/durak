@@ -42,14 +42,6 @@
         <% end %>
       <% end %>
 
-      <% unless @game_state.discard_pile.empty? %>
-        <div class="discard-pile">
-          <% @game_state.discard_pile.cards.each do |card| %>
-            <%= render "card",  rank: card.rank, suit: card.suit %>
-          <% end %>
-        </div>
-      <% end %>
-
       <div class="controls">
 	<%= form_for [@game, @game_state.current_player, @game_state.current_player.steps.new] do |f| %>
 	  <% if @game_state.current_player == @game_state.attacker %>

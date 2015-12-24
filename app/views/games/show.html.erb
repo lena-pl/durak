@@ -38,10 +38,7 @@
         </div>
       <% end %>
 
-      <h2>Discard Pile:</h2>
-      <% @game_state.discard_pile.cards.each do |card| %>
-        <%= render "card",  rank: card.rank, suit: card.suit %>
-      <% end %>
+      <h2>Cards in Discard Pile: <%= @game_state.discard_pile.count %></h2>
 
       <h2>Player <%= @game_state.current_player.id %>, take your turn:</h2>
       <%= form_for [@game, @game_state.current_player, @game_state.current_player.steps.new] do |f| %>

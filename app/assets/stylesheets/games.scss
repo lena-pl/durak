@@ -5,26 +5,19 @@
 @import "compass";
 
 $white: #FFFFFF;
-$red: #f44f49;
+$red: #F44F49;
 
 $card-width: 90px;
 $card-height: 120px;
-
-body {
-  background: #F5F5F5;
-  font-family: Josefin Sans;
-  font-weight: 100;
-  font-size: 100%;
-}
 
 .card {
   display: inline-block;
   position: relative;
   width: $card-width;
   height: $card-height;
-  background: #FFFFFF;
+  background: $white;
   @include border-radius(5px);
-  @include box-shadow(1px 1px 6px rgba(0,0,0,0.25));
+  @include box-shadow(1px 1px 3px rgba(0,0,0,0.25));
   overflow: hidden;
   @include user-select(none);
 
@@ -32,13 +25,18 @@ body {
 
   &:hover {
     cursor: pointer;
-    @include box-shadow(3px 3px 6px rgba(0,0,0,0.5));
-    transform: translate(-3px, -3px);
+    @include box-shadow(3px 3px 5px rgba(0,0,0,0.5));
+    transform: translateY(-8px);
   }
 
   .panel {
     position: absolute;
     padding: 8px;
+
+    .rank,
+    .suit {
+      font-size: 0.8em;
+    }
 
     &:last-child {
       right: 0;
@@ -51,11 +49,15 @@ body {
   }
 
   .content {
+    height: $card-height;
     display: flex;
     flex-wrap: wrap;
-    height: $card-height;
     align-items: center;
     justify-content: center;
+
+    .suit {
+      font-size: 1.2em;
+    }
   }
 
   &.red {
@@ -64,9 +66,8 @@ body {
 }
 
 .attack-defend-pair {
-  vertical-align: top;
   display: inline-block;
-  margin: 0 10px;
+  margin: 0 20px;
 
   .card {
     display: block;
@@ -75,4 +76,9 @@ body {
   .card:not(:last-child) {
     margin-bottom: -90px;
   }
+}
+
+.player-hand {
+  display: fixed;
+  bottom: 0;
 }

@@ -55,11 +55,6 @@ class DrawCards
     @game_state.deck.count >= amount_to_draw
   end
 
-  def have_same_amount_of_cards?(player_states)
-    hand_counts = player_states.map { |player_state| player_state.hand.count }
-    hand_counts.all? { |count| count = hand_counts.first }
-  end
-
   def draw_cards_from_deck(player_state, amount)
     amount.times { DrawFromDeck.new(@game_state, player_state, :draw_from_deck).call }
   end

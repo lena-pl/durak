@@ -35,7 +35,9 @@
         <% if @game_state.current_player == player_state.player %>
           <div class="player-hand">
             <% player_state.hand.cards.each do |card| %>
-              <%= render "card",  rank: card.rank, suit: card.suit %>
+              <span data-card-id="<%= card.id %>">
+                <%= render "card", rank: card.rank, suit: card.suit %>
+              </span>
             <% end %>
             <h2>Your Hand (<%= player_state.hand.count %> cards)</h2>
           </div>
@@ -43,25 +45,25 @@
       <% end %>
 
       <div class="controls">
-	<%= form_for [@game, @game_state.current_player, @game_state.current_player.steps.new] do |f| %>
-	  <% if @game_state.current_player == @game_state.attacker %>
-	    <%= f.hidden_field :kind, :value => :attack %>
-	  <% else %>
-	    <%= f.hidden_field :kind, :value => :defend %>
-	    <%= f.hidden_field :in_response_to_step_id, :value => @game.steps.last.id %>
-	  <% end %>
+        <%= form_for [@game, @game_state.current_player, @game_state.current_player.steps.new] do |f| %>
+          <% if @game_state.current_player == @game_state.attacker %>
+            <%= f.hidden_field :kind, value: :attack %>
+          <% else %>
+            <%= f.hidden_field :kind, value: :defend %>
+            <%= f.hidden_field :in_response_to_step_id, :value => @game.steps.last.id %>
+          <% end %>
 
-	  <% player_hand = @game_state.player_state_for_player(@game_state.current_player).hand %>
-	  <% if !player_hand.empty? %>
-	    <%= f.select :card_id, player_hand.cards.map { |card| ["#{card.rank} of #{card.suit}", card.id] } %>
+          <% player_hand = @game_state.player_state_for_player(@game_state.current_player).hand %>
+          <% if !player_hand.empty? %>
+            <%= f.hidden_field :card_id, class: 'card-select' %>
 
-	    <% if @game_state.current_player == @game_state.attacker %>
-	      <%= f.submit "Attack", data: { disable_with: 'Don\'t think about pushing me again.' } %>
-	    <% else %>
-	      <%= f.submit "Defend", data: { disable_with: 'Don\'t think about pushing me again.' } %>
-	    <% end %>
-	  <% end %>
-	<% end %>
+            <% if @game_state.current_player == @game_state.attacker %>
+              <%= f.submit "Attack", data: { disable_with: 'Don\'t think about pushing me again.' } %>
+            <% else %>
+              <%= f.submit "Defend", data: { disable_with: 'Don\'t think about pushing me again.' } %>
+            <% end %>
+          <% end %>
+        <% end %>
 
         <% unless @game_state.table.empty? %>
           <%= form_for [@game, @game_state.current_player, @game_state.current_player.steps.new] do |f| %>

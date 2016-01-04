@@ -13,6 +13,16 @@ describe DrawFromDeck do
   subject { DrawFromDeck.new(game_state, player_state, :draw_from_deck) }
 
   describe "#call" do
+    context "when the deck is empty" do
+      before do
+        game_state.deck.clear
+      end
+
+      it "raises correct error" do
+        expect { subject.call }.to raise_error("Cannot draw from empty deck")
+      end
+    end
+
     context "when only the trump card is left" do
       before do
         game_state.deck.clear

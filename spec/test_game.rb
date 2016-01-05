@@ -18,16 +18,16 @@ class TestGame
     create_step(:defend, player, card, in_response_to_step)
   end
 
-  def discard(player, card)
-    create_step(:discard, player, card)
+  def discard(player)
+    create_step(:discard, player)
   end
 
   def draw_from_deck(player, card)
     create_step(:draw_from_deck, player, card)
   end
 
-  def pick_up_from_table(player, card)
-    create_step(:pick_up_from_table, player, card)
+  def pick_up_from_table(player)
+    create_step(:pick_up_from_table, player)
   end
 
   def deal_card(player, card)
@@ -36,7 +36,7 @@ class TestGame
 
   private
 
-  def create_step(kind, player, card, in_response_to_step = nil)
+  def create_step(kind, player, card = nil, in_response_to_step = nil)
     player.steps.create!(kind: kind, card: card, in_response_to_step: in_response_to_step)
   end
 end

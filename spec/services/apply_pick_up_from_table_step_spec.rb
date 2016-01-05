@@ -4,73 +4,63 @@ RSpec.describe ApplyPickUpFromTableStep do
   fixtures :cards
 
   let(:game) { CreateGame.new(cards(:hearts_7)).call }
-  let!(:picker_uperer) { game.players.first }
-  let(:game_state) { BuildGameState.new(game).call }
-
-  let(:card_to_pick_up) { cards(:clubs_10) }
+  let!(:attacker) { game.players.first }
+  let!(:defender) { game.players.second }
 
   let(:pick_up_from_table_step) { instance_double(Step) }
   before do
-    allow(pick_up_from_table_step).to receive(:card).and_return(card_to_pick_up)
-    allow(pick_up_from_table_step).to receive(:player).and_return(picker_uperer)
+    allow(pick_up_from_table_step).to receive(:player).and_return(defender)
   end
+
+  let(:game_state) { BuildGameState.new(game).call }
+  before do
+    game_state.attacker = attacker
+  end
+
   subject { ApplyPickUpFromTableStep.new(game_state, pick_up_from_table_step).call }
 
   describe "#call" do
-    context "when only the card to pick up is on the table" do
+    context "when the attacker tries to pick up cards" do
       before do
-        move_from_deck_to_table(card_to_pick_up)
+        allow(pick_up_from_table_step).to receive(:player).and_return(attacker)
       end
 
-      context "picker-upperer picks up the card from the table" do
-        it "moves the card to their hand" do
-          player_state = subject.player_state_for_player(picker_uperer)
-          expect(player_state.hand).to include card_to_pick_up
-        end
+      it "raises the correct error" do
+        expect { subject }.to raise_error("Only the defender can pick up cards from the table")
       end
     end
 
-    context "when the card to pick up is on the table with other cards" do
+    context "when the table is empty" do
+      before do
+        game_state.table.clear
+      end
+
+      it "raises the correct error" do
+        expect { subject }.to raise_error("Must be at least one card on the table to pickup")
+      end
+    end
+
+    context "when there are cards on the table" do
       let(:cards_on_table) do
         [cards(:clubs_6),
-         cards(:diamonds_10),
-         card_to_pick_up]
+         cards(:clubs_10),
+         cards(:hearts_14)]
       end
 
       before do
-        fill_table_from_deck(*cards_on_table)
+        game_state.table.push(*cards_on_table)
       end
 
-      context "picker-upperer picks up the card from the table" do
-        it "moves the card to their hand" do
-          player_state = subject.player_state_for_player(picker_uperer)
-          expect(player_state.hand).to include card_to_pick_up
+      context "defender picks up from the table" do
+        it "puts cards on the table in their hand" do
+          player_state = subject.player_state_for_player(defender)
+          expect(player_state.hand).to include(*cards_on_table)
         end
 
-        it "leaves other cards on table" do
-          expect(subject.table).to include *(cards_on_table - [card_to_pick_up])
-        end
-
-        it "does not move other cards to their hand" do
-          player_state = subject.player_state_for_player(picker_uperer)
-          expect(player_state.hand).to_not include *(cards_on_table - [card_to_pick_up])
+        it "moves the cards off the table" do
+          expect(subject.table).to be_empty
         end
       end
     end
-
-    context "when the card being picked up isn't on the table" do
-      it "raises error" do
-        expect{ subject }.to raise_error("Card must be on table before it is picked up")
-      end
-    end
-  end
-
-  def fill_table_from_deck(*cards)
-    cards.each { |card| move_from_deck_to_table(card) }
-  end
-
-  def move_from_deck_to_table(card)
-    game_state.deck.delete(card)
-    game_state.table.push(card)
   end
 end

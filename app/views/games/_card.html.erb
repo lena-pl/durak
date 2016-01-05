@@ -1,0 +1,44 @@
+<% if suit == "hearts" || suit == "diamonds" %>
+  <% colour_class = "red" %>
+<% else %>
+  <% colour_class = "black" %>
+<% end %>
+
+<% rank = "J" if rank == 11 %>
+<% rank = "Q" if rank == 12 %>
+<% rank = "K" if rank == 13 %>
+<% rank = "A" if rank == 14 %>
+
+<div class="card <%= colour_class %>">
+  <div class="panel top">
+    <div class="rank"><%= rank %></div>
+    <div class="suit">
+      <% if suit == "diamonds" %>
+        &diams;
+      <% else %>
+        <%= "&#{suit};".html_safe %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="suit">
+      <% if suit == "diamonds" %>
+        &diams;
+      <% else %>
+        <%= "&#{suit};".html_safe %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="panel bottom">
+    <div class="rank"><%= rank %></div>
+    <div class="suit">
+      <% if suit == "diamonds" %>
+        &diams;
+      <% else %>
+        <%= "&#{suit};".html_safe %>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -7,6 +7,10 @@ class CreateGame
     game = Game.new(trump_card: @trump_card)
     2.times { game.players.new }
     game.save!
+
+    game_state = BuildGameState.new(game).call
+    DealCards.new(game_state).call
+
     game
   end
 end

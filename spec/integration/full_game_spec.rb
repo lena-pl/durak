@@ -673,7 +673,7 @@ describe "Full Game" do
 
     # GAME END
 
-    expect(game_state).to_not be_draw
+    expect(game_state).to_not be_tie
     expect(game_state).to be_over
     expect(game_state.winner).to eq player_two
     expect(game_state.durak).to eq player_one

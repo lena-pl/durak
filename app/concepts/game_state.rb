@@ -17,12 +17,12 @@ class GameState
     @player_states.find { |player_state| player_state.player == player }
   end
 
-  def draw?
+  def tie?
     final_phase? && hands_with_cards.empty?
   end
 
   def over?
-    durak_found? || draw?
+    durak_found? || tie?
   end
 
   def current_player

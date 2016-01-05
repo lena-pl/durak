@@ -110,9 +110,9 @@ RSpec.describe GameState do
       end
     end
 
-    describe "#draw?" do
+    describe "#tie?" do
       it "returns false" do
-        expect(game_state).to_not be_draw
+        expect(game_state).to_not be_tie
       end
     end
 
@@ -144,9 +144,9 @@ RSpec.describe GameState do
       end
     end
 
-    describe "#draw?" do
+    describe "#tie?" do
       it "returns false" do
-        expect(game_state).to_not be_draw
+        expect(game_state).to_not be_tie
       end
     end
 
@@ -175,9 +175,9 @@ RSpec.describe GameState do
       end
     end
 
-    describe "#draw?" do
+    describe "#tie?" do
       it "returns true" do
-        expect(game_state).to be_draw
+        expect(game_state).to be_tie
       end
     end
 
@@ -208,9 +208,9 @@ RSpec.describe GameState do
       end
     end
 
-    describe "#draw?" do
+    describe "#tie?" do
       it "returns false" do
-        expect(game_state).to_not be_draw
+        expect(game_state).to_not be_tie
       end
     end
 
@@ -234,9 +234,9 @@ RSpec.describe GameState do
       end
     end
 
-    describe "#draw?" do
+    describe "#tie?" do
       it "returns false" do
-        expect(game_state).to_not be_draw
+        expect(game_state).to_not be_tie
       end
     end
 

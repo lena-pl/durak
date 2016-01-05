@@ -1,6 +1,11 @@
 <div class="content">
   <div>
     <h1>Durak / Game <%= @game.id %></h1>
+
+    <% if flash.alert %>
+      <div class="alert"><%= flash.alert %></div>
+    <% end %>
+
     <% unless @game_state.over? %>
       <div class="game-information">
         <p><strong>Trump Card:</strong></p>

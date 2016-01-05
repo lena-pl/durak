@@ -82,3 +82,11 @@ $card-height: 120px;
   display: fixed;
   bottom: 0;
 }
+
+.alert {
+  background-color: $red;
+  color: $white;
+  padding: 0.5em;
+  border-radius: 15px;
+  border: 2px solid #CCCCCC;
+}

@@ -4,38 +4,38 @@ describe DrawCards do
   fixtures :cards
 
   let(:trump_card) { cards(:hearts_7) }
-  let(:game) { CreateGame.new(trump_card).call }
+  let(:game) { Game.create!(trump_card: trump_card) }
   let(:game_state) { BuildGameState.new(game).call }
-  
-  let!(:attacker) { game.players.first }
+
+  let!(:attacker) { game.players.create! }
   let(:attacker_state) { game_state.player_state_for_player(attacker) }
-  let!(:defender) { game.players.second }
+  let!(:defender) { game.players.create! }
   let(:defender_state) { game_state.player_state_for_player(defender) }
 
   subject { DrawCards.new(game_state) }
 
   describe "#call" do
     before do
-      fill_hand_from_deck(attacker_state, *attacker_hand) 
-      fill_hand_from_deck(defender_state, *defender_hand) 
+      fill_hand_from_deck(attacker_state, *attacker_hand)
+      fill_hand_from_deck(defender_state, *defender_hand)
     end
 
     context "when both players have the standard amount of cards" do
-      let(:attacker_hand) do 
+      let(:attacker_hand) do
         [cards(:spades_7),
-         cards(:spades_8), 
-         cards(:spades_9), 
-         cards(:spades_10), 
-         cards(:spades_11), 
+         cards(:spades_8),
+         cards(:spades_9),
+         cards(:spades_10),
+         cards(:spades_11),
          cards(:spades_12)]
       end
 
-      let(:defender_hand) do 
+      let(:defender_hand) do
         [cards(:clubs_7),
-         cards(:clubs_8), 
-         cards(:clubs_9), 
-         cards(:clubs_10), 
-         cards(:clubs_11), 
+         cards(:clubs_8),
+         cards(:clubs_9),
+         cards(:clubs_10),
+         cards(:clubs_11),
          cards(:clubs_12)]
       end
 
@@ -73,19 +73,19 @@ describe DrawCards do
     end
 
     context "when one player has 2 less than the standard amount of cards" do
-      let(:attacker_hand) do 
+      let(:attacker_hand) do
         [cards(:spades_7),
-         cards(:spades_8), 
-         cards(:spades_9), 
+         cards(:spades_8),
+         cards(:spades_9),
          cards(:spades_12)]
       end
 
-      let(:defender_hand) do 
+      let(:defender_hand) do
         [cards(:clubs_7),
-         cards(:clubs_8), 
-         cards(:clubs_9), 
-         cards(:clubs_10), 
-         cards(:clubs_11), 
+         cards(:clubs_8),
+         cards(:clubs_9),
+         cards(:clubs_10),
+         cards(:clubs_11),
          cards(:clubs_12)]
       end
 
@@ -137,12 +137,12 @@ describe DrawCards do
     end
 
     context "when both players have 4 less than the standard amount of cards" do
-      let(:attacker_hand) do 
+      let(:attacker_hand) do
         [cards(:spades_7),
          cards(:spades_12)]
       end
 
-      let(:defender_hand) do 
+      let(:defender_hand) do
         [cards(:clubs_7),
          cards(:clubs_12)]
       end
@@ -188,7 +188,7 @@ describe DrawCards do
             game_state.deck.push(trump_card)
             game_state.deck.push(cards(:diamonds_12))
           end
-            
+
           it "draws 1 card to each player" do
             subject.call
 
@@ -208,7 +208,7 @@ describe DrawCards do
             game_state.deck.push(cards(:diamonds_11))
             game_state.deck.push(cards(:diamonds_10))
           end
-            
+
           it "draws 2 cards to each player" do
             subject.call
 
@@ -229,7 +229,7 @@ describe DrawCards do
             game_state.deck.push(cards(:diamonds_12))
             game_state.deck.push(cards(:diamonds_11))
           end
-            
+
           it "draws 2 cards to the attacker" do
             subject.call
 

@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe GameState do
   fixtures :cards
 
-  let(:game) { CreateGame.new(cards(:hearts_7)).call }
-  let!(:player_one) { game.players.first }
-  let!(:player_two) { game.players.second }
+  let(:game) { Game.new(trump_card: cards(:hearts_7)) }
+  let!(:player_one) { game.players.new }
+  let!(:player_two) { game.players.new }
 
   subject(:game_state) { BuildGameState.new(game).call }
 

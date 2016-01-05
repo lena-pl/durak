@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe ApplyDrawFromDeckStep do
   fixtures :cards
 
-  let(:game) { CreateGame.new(cards(:hearts_7)).call }
-  let!(:drawer) { game.players.first }
+  let(:game) { Game.new(trump_card: cards(:hearts_7)) }
+  let!(:drawer) { game.players.new }
   let(:game_state) { BuildGameState.new(game).call }
 
   let(:card_to_draw) { cards(:clubs_10) }

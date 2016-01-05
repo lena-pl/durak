@@ -5,10 +5,10 @@ RSpec.describe StepsController, type: :controller do
 
   describe "POST create" do
     let(:card) { cards(:hearts_7) }
-    let(:game) { CreateGame.new.call }
+    let(:game) { Game.create!(trump_card: card) }
     let(:game_state) { BuildGameState.new(game).call }
-    let(:player_one) { game.players.first }
-    let(:player_two) { game.players.second }
+    let!(:player_one) { game.players.create! }
+    let!(:player_two) { game.players.create! }
 
     context 'when the step kind is not :discard or :pick_up_from_table' do
       it 'does not call build game state service' do

@@ -3,7 +3,8 @@ class TestGame
   delegate :trump_card, :players, to: :game_model
 
   def initialize(trump_card)
-    @game_model = CreateGame.new(trump_card).call
+    @game_model = Game.create!(trump_card: trump_card)
+    2.times { @game_model.players.create! }
   end
 
   def apply_steps(&block)

@@ -47,31 +47,8 @@ RSpec.describe BuildGameState do
       expect(subject.deck).to include(*Card.all)
     end
 
-    it "returns GameState with nil attacker" do
-      expect(subject.attacker).to be_nil
-    end
-
     it "returns GameState with players" do
       expect(subject.player_states).to_not be_empty
     end
   end
-
-  # TODO: integration tests for GameState
-  # context "when player one is the dealer and cards have been dealt" do
-  #   before do
-  #     test_game.apply_steps(&deal_cards)
-  #   end
-  #
-  #   it "returns a game state with the correct cards in player one's hand" do
-  #     player_one_initial_hand.each do |card|
-  #       expect(subject.player_hand(1).all).to include card
-  #     end
-  #   end
-  #
-  #   it "returns a game state with the correct cards in player two's hand" do
-  #     player_two_initial_hand.each do |card|
-  #       expect(subject.player_hand(2).all).to include card
-  #     end
-  #   end
-  # end
 end

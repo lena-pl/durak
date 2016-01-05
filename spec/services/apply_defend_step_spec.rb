@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe ApplyDefendStep do
   fixtures :cards
 
-  let(:game) { CreateGame.new(cards(:hearts_7)).call }
-  let(:player_one) { game.players.first }
-  let(:player_two) { game.players.second }
+  let(:game) { Game.create!(trump_card: cards(:hearts_7)) }
+  let!(:player_one) { game.players.create! }
+  let!(:player_two) { game.players.create! }
 
   let(:game_state) { BuildGameState.new(game).call }
 

@@ -11,10 +11,8 @@ RSpec.describe StepsController, type: :controller do
     let!(:player_two) { game.players.create! }
 
     context 'when the step kind is not :discard or :pick_up_from_table' do
-      it 'does not call build game state service' do
-        expect_any_instance_of(BuildGameState).to_not receive(:call)
-
-        post_create(:attack)
+      before do
+        player_one.steps.create!(kind: :draw_from_deck, card: card)
       end
 
       it 'does not call draw cards service' do

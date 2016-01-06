@@ -42,6 +42,7 @@ group :development, :test do
   gem 'pry'
   gem 'pry-byebug'
   gem 'coveralls', require: false
+  gem 'oink'
 end
 
 group :development do

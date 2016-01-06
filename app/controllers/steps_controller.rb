@@ -3,11 +3,17 @@ class StepsController < ApplicationController
     game = Game.find(params[:game_id])
     player = game.players.find(params[:player_id])
 
-    step = player.steps.create!(step_params)
+    Step.transaction do
+      step = player.steps.create!(step_params)
 
-    if step.discard? || step.pick_up_from_table?
       game_state = BuildGameState.new(game).call
-      DrawCards.new(game_state).call
+
+      if FollowsRules.new(step, game_state).call
+        CompleteTurn.new(step, game_state).call
+      else
+        flash.alert = "You broke one or more rules. You monster."
+        raise ActiveRecord::Rollback
+      end
     end
 
     redirect_to game

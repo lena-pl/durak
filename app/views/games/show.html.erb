@@ -1,6 +1,11 @@
 <div class="content">
   <div>
     <h1>Durak / Game <%= @game.id %></h1>
+
+    <% if flash.alert %>
+      <div class="alert"><%= flash.alert %></div>
+    <% end %>
+
     <% unless @game_state.over? %>
       <div class="game-information">
         <p><strong>Trump Card:</strong></p>
@@ -90,6 +95,12 @@
         <b>Durak:</b>
         Player <%= @game_state.durak.id %>
       <% end %>
+
+      <div>
+        <%= form_for Game.new do |f| %>
+          <%= f.submit "New Game", :class => 'button' %>
+        <% end %>
+      </div>
     </div>
   </div>
 <% end %>

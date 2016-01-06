@@ -12,33 +12,15 @@
 <div class="card <%= colour_class %>">
   <div class="panel top">
     <div class="rank"><%= rank %></div>
-    <div class="suit">
-      <% if suit == "diamonds" %>
-        &diams;
-      <% else %>
-        <%= "&#{suit};".html_safe %>
-      <% end %>
-    </div>
+    <%= render "suit", suit: suit %>
   </div>
 
   <div class="content">
-    <div class="suit">
-      <% if suit == "diamonds" %>
-        &diams;
-      <% else %>
-        <%= "&#{suit};".html_safe %>
-      <% end %>
-    </div>
+    <%= render "suit", suit: suit %>
   </div>
 
   <div class="panel bottom">
     <div class="rank"><%= rank %></div>
-    <div class="suit">
-      <% if suit == "diamonds" %>
-        &diams;
-      <% else %>
-        <%= "&#{suit};".html_safe %>
-      <% end %>
-    </div>
+    <%= render "suit", suit: suit %>
   </div>
 </div>

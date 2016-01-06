@@ -3,8 +3,9 @@ require 'rails_helper'
 RSpec.describe ApplyAttackStep do
   fixtures :cards
 
-  let(:game) { CreateGame.new(cards(:hearts_12)).call }
-  let(:attacker) { game.players.first }
+  let(:game) { Game.create!(trump_card: cards(:hearts_12)) }
+  let!(:attacker) { game.players.create! }
+  let!(:defender) { game.players.create! }
 
   let(:attacking_card) { cards(:spades_9) }
 

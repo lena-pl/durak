@@ -84,6 +84,7 @@ GEM
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     hike (1.2.3)
+    hodel_3000_compliant_logger (0.1.1)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     i18n (0.7.0)
@@ -107,6 +108,9 @@ GEM
     netrc (0.11.0)
     nokogiri (1.6.7.1)
       mini_portile2 (~> 2.0.0.rc2)
+    oink (0.10.1)
+      activerecord
+      hodel_3000_compliant_logger
     pry (0.10.3)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -228,6 +232,7 @@ DEPENDENCIES
   coveralls
   jbuilder (~> 2.0)
   jquery-rails
+  oink
   pry
   pry-byebug
   rails (= 4.2.5)

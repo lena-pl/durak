@@ -21,39 +21,41 @@
         </div>
       </div>
 
-      <div class="game-information">
-        <p><strong>Trump Card:</strong></p>
-        <%= render "card",  rank: @game_state.trump_card.rank, suit: @game_state.trump_card.suit %>
+      <div class="row">
+        <div class="game-information">
+          <p><strong>Trump Card:</strong></p>
+          <%= render "card",  rank: @game_state.trump_card.rank, suit: @game_state.trump_card.suit %>
 
-        <% if @game_state.attacker %>
-          <p><strong>Current Attacker:</strong>
-            <% if @game_state.current_player == @game_state.attacker %>
-              You!
-            <% else %>
-              Them
-            <% end %></p>
-        <% end %>
+          <% if @game_state.attacker %>
+            <p><strong>Current Attacker:</strong>
+              <% if @game_state.current_player == @game_state.attacker %>
+                You!
+              <% else %>
+                Them
+              <% end %></p>
+          <% end %>
 
-        <% if @game_state.current_player %>
-          <p><strong>Current Player:</strong> Player <%= @game_state.current_player.id %></p>
-        <% end %>
+          <% if @game_state.current_player %>
+            <p><strong>Current Player:</strong> Player <%= @game_state.current_player.id %></p>
+          <% end %>
 
-        <p><strong>Cards left in deck:</strong> <%= @game_state.deck.count %></p>
-        <p><strong>Cards in Discard Pile:</strong> <%= @game_state.discard_pile.count %></p>
-      </div>
+          <p><strong>Cards left in deck:</strong> <%= @game_state.deck.count %></p>
+          <p><strong>Cards in Discard Pile:</strong> <%= @game_state.discard_pile.count %></p>
+        </div>
 
-      <div class="table">
-        <p><strong>Table:</strong></p>
-        <% @game_state.table.arranged.each do |attack_defend_pair| %>
-          <% attacking_card, defending_card = attack_defend_pair[:attacking_card], attack_defend_pair[:defending_card] %>
-          <div class="attack-defend-pair">
-            <%= render "card", rank: attacking_card.rank, suit: attacking_card.suit %>
+        <div class="table">
+          <p><strong>Table:</strong></p>
+          <% @game_state.table.arranged.each do |attack_defend_pair| %>
+            <% attacking_card, defending_card = attack_defend_pair[:attacking_card], attack_defend_pair[:defending_card] %>
+            <div class="attack-defend-pair">
+              <%= render "card", rank: attacking_card.rank, suit: attacking_card.suit %>
 
-            <% if defending_card != nil %>
-              <%= render "card", rank: defending_card.rank, suit: defending_card.suit %>
-            <% end %>
-          </div>
-        <% end %>
+              <% if defending_card != nil %>
+                <%= render "card", rank: defending_card.rank, suit: defending_card.suit %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
       </div>
 
       <% @game_state.player_states.each do |player_state| %>

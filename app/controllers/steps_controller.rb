@@ -9,9 +9,7 @@ class StepsController < ApplicationController
       game_state = BuildGameState.new(game).call
 
       if FollowsRules.new(step, game_state).call
-        if step.discard? || step.pick_up_from_table?
-          DrawCards.new(game_state).call
-        end
+        CompleteTurn.new(step, game_state).call
       else
         flash.alert = "You broke one or more rules. You monster."
         raise ActiveRecord::Rollback

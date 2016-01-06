@@ -90,3 +90,20 @@ $card-height: 120px;
   border-radius: 15px;
   border: 2px solid #CCCCCC;
 }
+
+.button {
+  margin: 5px 0;
+  font-size: 16px;
+  display: inline-block;
+  padding: 5px 10px;
+  text-align: center;
+  cursor: pointer;
+  color: #333;
+  background-color: $white;
+  border: 1px solid #ccc;
+  line-height: 1.6;
+  border-radius: 5px;
+    &:hover {
+      background-color: #e6e6e6;
+    }
+}

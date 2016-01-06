@@ -95,6 +95,12 @@
         <b>Durak:</b>
         Player <%= @game_state.durak.id %>
       <% end %>
+
+      <div>
+        <%= form_for Game.new do |f| %>
+          <%= f.submit "New Game", :class => 'button' %>
+        <% end %>
+      </div>
     </div>
   </div>
 <% end %>

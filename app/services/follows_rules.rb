@@ -13,6 +13,8 @@ class FollowsRules
   def rules_pass?
     if defending?
       good_defend_rank? && good_defend_suit?
+    elsif attacking?
+      good_attack_rank?
     else
       true
     end
@@ -38,5 +40,21 @@ class FollowsRules
     defending_card = @step.card
 
     defending_card.suit == attacking_card.suit || defending_card.suit == @game_state.trump_card.suit
+  end
+
+  def attacking?
+    @step.kind == "attack"
+  end
+
+  def good_attack_rank?
+    attacking_card = @step.card
+    @game_state.table.cards.pop
+
+    if !@game_state.table.cards.empty?
+      ranks_on_table = @game_state.table.cards.map(&:rank)
+      ranks_on_table.include? attacking_card.rank
+    else
+      true
+    end
   end
 end

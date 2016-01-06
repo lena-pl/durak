@@ -24,6 +24,7 @@
       </div>
 
       <div class="table">
+        <p><strong>Table:</strong></p>
         <% @game_state.table.arranged.each do |attack_defend_pair| %>
           <% attacking_card, defending_card = attack_defend_pair[:attacking_card], attack_defend_pair[:defending_card] %>
           <div class="attack-defend-pair">
@@ -38,13 +39,13 @@
 
       <% @game_state.player_states.each do |player_state| %>
         <% if @game_state.current_player == player_state.player %>
+          <p><strong>Your Hand (<%= player_state.hand.count %> cards)</strong></p>
           <div class="player-hand">
             <% player_state.hand.cards.each do |card| %>
               <span data-card-id="<%= card.id %>">
                 <%= render "card", rank: card.rank, suit: card.suit %>
               </span>
             <% end %>
-            <h2>Your Hand (<%= player_state.hand.count %> cards)</h2>
           </div>
         <% end %>
       <% end %>
@@ -65,23 +66,21 @@
         <% end %>
 
         <% unless @game_state.table.empty? %>
-          <%= form_for [@game, @game_state.current_player, @game_state.current_player.steps.new] do |f| %>
-            <% if @game_state.current_player == @game_state.attacker %>
-              <% step_kind = :discard %>
-              <% submit_text = "Discard" %>
-            <% else %>
-              <% step_kind = :pick_up_from_table %>
-              <% submit_text = "Pickup" %>
-            <% end %>
+          <div class="player-actions">
+            <%= form_for [@game, @game_state.current_player, @game_state.current_player.steps.new] do |f| %>
+              <% if @game_state.current_player == @game_state.attacker %>
+                <% step_kind = :discard %>
+                <% submit_text = "Discard" %>
+              <% else %>
+                <% step_kind = :pick_up_from_table %>
+                <% submit_text = "Pickup" %>
+              <% end %>
 
-            <%= f.hidden_field :kind, :value => step_kind %>
-            <%= f.submit submit_text, data: { disable_with: 'Don\'t think about pushing me again.' } %>
+              <%= f.hidden_field :kind, :value => step_kind %>
+              <%= f.submit submit_text, data: { disable_with: 'Don\'t think about pushing me again.' }, :class => 'button' %>
+            </div>
           <% end %>
         <% end %>
-      </div>
-
-      <div>
-        <h2>Player <%= @game_state.current_player.id %></h2>
       </div>
 
     <% else %>

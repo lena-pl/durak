@@ -21,12 +21,20 @@ body {
   font-family: Josefin Sans;
 }
 
+.wrapper, html, body {
+      max-width: 1180px;
+      margin: 0;
+  }
+
 .wrapper {
+  margin: 0 50px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  width: 100%;
 
   .content {
+    width: 100%;
     text-align: center;
   }
 }

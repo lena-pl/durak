@@ -107,3 +107,27 @@ $card-height: 120px;
       background-color: #e6e6e6;
     }
 }
+
+.game-information {
+  border: 1px solid #ccc;
+  padding: 15px;
+  float: right;
+}
+
+.table {
+  border: 1px solid #ccc;
+  padding: 15px;
+  height: 316px;
+
+    .card {
+      width: 80px;
+      height: 107px;
+    }
+
+    .panel, {
+      .rank,
+      .suit {
+        font-size: 0.4em;
+      }
+    }
+}

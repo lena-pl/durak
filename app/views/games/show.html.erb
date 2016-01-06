@@ -7,12 +7,31 @@
     <% end %>
 
     <% unless @game_state.over? %>
+      <div class="opponent-hand">
+        <% if @game_state.current_player == @game_state.attacker %>
+          <% opponent = @game_state.defender %>
+        <% else %>
+          <% opponent = @game_state.attacker %>
+        <% end %>
+        <p><strong>Player <%= opponent.id %> | Their Hand (<%= @game_state.player_state_for_player(opponent).hand.count %> cards):</strong></p>
+        <div class="player-hand">
+          <% @game_state.player_state_for_player(opponent).hand.cards.each do |card| %>
+            <div class="card"></div>
+          <% end %>
+        </div>
+      </div>
+
       <div class="game-information">
         <p><strong>Trump Card:</strong></p>
         <%= render "card",  rank: @game_state.trump_card.rank, suit: @game_state.trump_card.suit %>
 
         <% if @game_state.attacker %>
-          <p><strong>Current Attacker:</strong> Player <%= @game_state.attacker.id %></p>
+          <p><strong>Current Attacker:</strong>
+            <% if @game_state.current_player == @game_state.attacker %>
+              You!
+            <% else %>
+              Them
+            <% end %></p>
         <% end %>
 
         <% if @game_state.current_player %>
@@ -39,7 +58,7 @@
 
       <% @game_state.player_states.each do |player_state| %>
         <% if @game_state.current_player == player_state.player %>
-          <p><strong>Your Hand (<%= player_state.hand.count %> cards)</strong></p>
+          <p><strong>Player <%= player_state.player.id %> | Your Hand (<%= player_state.hand.count %> cards):</strong></p>
           <div class="player-hand">
             <% player_state.hand.cards.each do |card| %>
               <span data-card-id="<%= card.id %>">
@@ -82,7 +101,6 @@
           <% end %>
         <% end %>
       </div>
-
     <% else %>
       <h2>Result:</h2>
       <% if @game_state.tie? %>

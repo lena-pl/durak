@@ -14,7 +14,7 @@ class FollowsRules
     if defending?
       good_defend_rank? && good_defend_suit?
     elsif attacking?
-      good_attack_rank?
+      good_attack_rank? && may_be_defended?
     else
       true
     end
@@ -56,5 +56,9 @@ class FollowsRules
     else
       true
     end
+  end
+
+  def may_be_defended?
+    @game_state.player_state_for_player(@game_state.defender).hand.count >= 1
   end
 end

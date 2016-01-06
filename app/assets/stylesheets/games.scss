@@ -109,17 +109,14 @@ $card-height: 120px;
 }
 
 .game-information {
-  margin: 15px 0;
   border: 1px solid #ccc;
   padding: 15px;
-  float: right;
 }
 
 .table {
   border: 1px solid #ccc;
-  margin: 15px 0;
   padding: 15px;
-  height: 316px;
+  min-height: 100px;
 
     .card {
       width: 80px;
@@ -132,4 +129,22 @@ $card-height: 120px;
         font-size: 0.4em;
       }
     }
+}
+
+.row {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+@media screen and (min-width: 600px){
+
+  .row {
+    flex-direction: row;
+  }
+
+  .table {
+    width: 100%;
+  }
 }

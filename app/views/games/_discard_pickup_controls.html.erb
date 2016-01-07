@@ -1,0 +1,18 @@
+<% unless @game_state.table.empty? %>
+
+  <div class="player-actions">
+    <%= form_for [@game, @game_state.current_player, @game_state.current_player.steps.new] do |f| %>
+      <% if @game_state.current_player == @game_state.attacker %>
+        <% step_kind = :discard %>
+        <% submit_text = "Discard" %>
+      <% else %>
+        <% step_kind = :pick_up_from_table %>
+        <% submit_text = "Pickup" %>
+      <% end %>
+
+      <%= f.hidden_field :kind, :value => step_kind %>
+      <%= f.submit submit_text, data: { disable_with: 'Don\'t think about pushing me again.' }, :class => 'button' %>
+    <% end %>
+  </div>
+
+<% end %>

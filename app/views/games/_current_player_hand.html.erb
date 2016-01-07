@@ -1,0 +1,17 @@
+<% @game_state.player_states.each do |player_state| %>
+
+  <% if @game_state.current_player == player_state.player %>
+    <p><strong>Player <%= player_state.player.id %> | Your Hand (<%= player_state.hand.count %> cards):</strong></p>
+
+    <div class="player-hand">
+
+      <% player_state.hand.cards.each do |card| %>
+        <span data-card-id="<%= card.id %>">
+          <%= render "card", rank: card.rank, suit: card.suit %>
+        </span>
+      <% end %>
+
+    </div>
+
+  <% end %>
+<% end %>

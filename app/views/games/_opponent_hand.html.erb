@@ -1,0 +1,13 @@
+<% if @game_state.current_player == @game_state.attacker %>
+  <% opponent = @game_state.defender %>
+<% else %>
+  <% opponent = @game_state.attacker %>
+<% end %>
+
+<p><strong>Player <%= opponent.id %> | Their Hand (<%= @game_state.player_state_for_player(opponent).hand.count %> cards):</strong></p>
+
+<div class="player-hand">
+  <% @game_state.player_state_for_player(opponent).hand.cards.each do |card| %>
+    <div class="card"></div>
+  <% end %>
+</div>

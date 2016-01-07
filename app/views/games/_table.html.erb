@@ -1,0 +1,13 @@
+<p><strong>Table:</strong></p>
+
+<% @game_state.table.arranged.each do |attack_defend_pair| %>
+  <% attacking_card, defending_card = attack_defend_pair[:attacking_card], attack_defend_pair[:defending_card] %>
+  
+  <div class="attack-defend-pair">
+    <%= render "card", rank: attacking_card.rank, suit: attacking_card.suit %>
+
+    <% if defending_card != nil %>
+      <%= render "card", rank: defending_card.rank, suit: defending_card.suit %>
+    <% end %>
+  </div>
+<% end %>

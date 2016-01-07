@@ -8,101 +8,29 @@
 
     <% unless @game_state.over? %>
       <div class="opponent-hand">
-        <% if @game_state.current_player == @game_state.attacker %>
-          <% opponent = @game_state.defender %>
-        <% else %>
-          <% opponent = @game_state.attacker %>
-        <% end %>
-        <p><strong>Player <%= opponent.id %> | Their Hand (<%= @game_state.player_state_for_player(opponent).hand.count %> cards):</strong></p>
-        <div class="player-hand">
-          <% @game_state.player_state_for_player(opponent).hand.cards.each do |card| %>
-            <div class="card"></div>
-          <% end %>
-        </div>
+        <%= render "opponent_hand", game_state: @game_state %>
       </div>
 
       <div class="row">
         <div class="game-information">
-          <p><strong>Trump Card:</strong></p>
-          <%= render "card",  rank: @game_state.trump_card.rank, suit: @game_state.trump_card.suit %>
-
-          <% if @game_state.attacker %>
-            <p><strong>Current Attacker:</strong>
-              <% if @game_state.current_player == @game_state.attacker %>
-                You!
-              <% else %>
-                Them
-              <% end %></p>
-          <% end %>
-
-          <% if @game_state.current_player %>
-            <p><strong>Current Player:</strong> Player <%= @game_state.current_player.id %></p>
-          <% end %>
-
-          <p><strong>Cards left in deck:</strong> <%= @game_state.deck.count %></p>
-          <p><strong>Cards in Discard Pile:</strong> <%= @game_state.discard_pile.count %></p>
+          <%= render "game_information", game_state: @game_state %>
         </div>
 
         <div class="table">
-          <p><strong>Table:</strong></p>
-          <% @game_state.table.arranged.each do |attack_defend_pair| %>
-            <% attacking_card, defending_card = attack_defend_pair[:attacking_card], attack_defend_pair[:defending_card] %>
-            <div class="attack-defend-pair">
-              <%= render "card", rank: attacking_card.rank, suit: attacking_card.suit %>
-
-              <% if defending_card != nil %>
-                <%= render "card", rank: defending_card.rank, suit: defending_card.suit %>
-              <% end %>
-            </div>
-          <% end %>
+          <%= render "table", game_state: @game_state %>
         </div>
       </div>
 
-      <% @game_state.player_states.each do |player_state| %>
-        <% if @game_state.current_player == player_state.player %>
-          <p><strong>Player <%= player_state.player.id %> | Your Hand (<%= player_state.hand.count %> cards):</strong></p>
-          <div class="player-hand">
-            <% player_state.hand.cards.each do |card| %>
-              <span data-card-id="<%= card.id %>">
-                <%= render "card", rank: card.rank, suit: card.suit %>
-              </span>
-            <% end %>
-          </div>
-        <% end %>
-      <% end %>
+      <div class="current-player-hand">
+        <%= render "current_player_hand", game_state: @game_state %>
+      </div>
 
       <div class="controls">
-        <%= form_for [@game, @game_state.current_player, @game_state.current_player.steps.new] do |f| %>
-          <% if @game_state.current_player == @game_state.attacker %>
-            <%= f.hidden_field :kind, value: :attack %>
-          <% else %>
-            <%= f.hidden_field :kind, value: :defend %>
-            <%= f.hidden_field :in_response_to_step_id, :value => @game.steps.last.id %>
-          <% end %>
+        <%= render "attack_defend_controls", game_state: @game_state %>
 
-          <% player_hand = @game_state.player_state_for_player(@game_state.current_player).hand %>
-          <% if !player_hand.empty? %>
-            <%= f.hidden_field :card_id, class: 'card-select' %>
-          <% end %>
-        <% end %>
-
-        <% unless @game_state.table.empty? %>
-          <div class="player-actions">
-            <%= form_for [@game, @game_state.current_player, @game_state.current_player.steps.new] do |f| %>
-              <% if @game_state.current_player == @game_state.attacker %>
-                <% step_kind = :discard %>
-                <% submit_text = "Discard" %>
-              <% else %>
-                <% step_kind = :pick_up_from_table %>
-                <% submit_text = "Pickup" %>
-              <% end %>
-
-              <%= f.hidden_field :kind, :value => step_kind %>
-              <%= f.submit submit_text, data: { disable_with: 'Don\'t think about pushing me again.' }, :class => 'button' %>
-            </div>
-          <% end %>
-        <% end %>
+        <%= render "discard_pickup_controls", game_state: @game_state %>
       </div>
+
     <% else %>
       <h2>Result:</h2>
       <% if @game_state.tie? %>
@@ -115,11 +43,12 @@
         Player <%= @game_state.durak.id %>
       <% end %>
 
-      <div>
+      <div class="new-game">
         <%= form_for Game.new do |f| %>
           <%= f.submit "New Game", :class => 'button' %>
         <% end %>
       </div>
+
     </div>
   </div>
 <% end %>

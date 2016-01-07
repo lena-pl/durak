@@ -6,11 +6,7 @@ class TestGame
     @game_model = Game.create!(trump_card: trump_card)
     2.times { @game_model.players.create! }
   end
-
-  def apply_steps(&block)
-    block.call(self)
-  end
-
+  
   def attack(player, card)
     create_step(:attack, player, card)
   end

@@ -1,7 +1,10 @@
 class FollowsRules
+  attr_reader :errors
+
   def initialize(step, game_state)
     @step = step
     @game_state = game_state
+    @errors = []
   end
 
   def call
@@ -12,8 +15,12 @@ class FollowsRules
 
   def rules_pass?
     if defending?
+      @errors.push("You must defend with a card of higher rank or a trump!") if !good_defend_rank?
+      @errors.push("You must defend with a card of the same suit or a trump!") if !good_defend_suit?
       good_defend_rank? && good_defend_suit?
     elsif attacking?
+      @errors.push("You must attack with one of the ranks already on the table!") if !good_attack_rank?
+      @errors.push("The defender doesn't have enough cards in their hand!") if !may_be_defended?
       good_attack_rank? && may_be_defended?
     else
       true

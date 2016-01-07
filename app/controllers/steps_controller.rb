@@ -8,11 +8,11 @@ class StepsController < ApplicationController
 
       game_state = BuildGameState.new(game).call
 
-      if FollowsRules.new(step, game_state).call
+      follow_rules_service = FollowsRules.new(step, game_state)
+
+      if follow_rules_service.call
         CompleteTurn.new(step, game_state).call
       else
-        follow_rules_service = FollowsRules.new(step, game_state)
-        follow_rules_service.call
         flash.alert = follow_rules_service.errors
         raise ActiveRecord::Rollback
       end

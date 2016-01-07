@@ -55,10 +55,10 @@ class FollowsRules
 
   def good_attack_rank?
     attacking_card = @step.card
-    @game_state.table.cards.pop
+    cards_on_table_before_step = @game_state.table.cards.reject { |card| card == attacking_card }
 
-    if !@game_state.table.cards.empty?
-      ranks_on_table = @game_state.table.cards.map(&:rank)
+    unless cards_on_table_before_step.empty?
+      ranks_on_table = cards_on_table_before_step.map(&:rank)
       ranks_on_table.include? attacking_card.rank
     else
       true

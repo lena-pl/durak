@@ -87,6 +87,40 @@ RSpec.describe FollowsRules do
           expect(FollowsRules.new(defend_step, game_state).call).to eq true
         end
       end
+
+      context "the attacking card is a trump and the defending suit and rank abide by rules" do
+        let(:defender_hand) do
+          [cards(:hearts_8)]
+        end
+
+        let(:attacker_hand) do
+          [cards(:hearts_9)]
+        end
+
+        let(:attack_step) { attacker.steps.create!(kind: :attack, card: cards(:hearts_8)) }
+        let(:defend_step) { defender.steps.create!(kind: :defend, card: cards(:hearts_9), in_response_to_step: attack_step ) }
+
+        it "passes the rules" do
+          expect(FollowsRules.new(defend_step, game_state).call).to eq true
+        end
+      end
+
+      context "the attacking card is a trump and the defending suit abides by rules, but rank does not" do
+        let(:defender_hand) do
+          [cards(:hearts_8)]
+        end
+
+        let(:attacker_hand) do
+          [cards(:hearts_7)]
+        end
+
+        let(:attack_step) { attacker.steps.create!(kind: :attack, card: cards(:hearts_8)) }
+        let(:defend_step) { defender.steps.create!(kind: :defend, card: cards(:hearts_7), in_response_to_step: attack_step ) }
+
+        it "does not pass the rules" do
+          expect(FollowsRules.new(defend_step, game_state).call).to eq false
+        end
+      end
     end
 
     context "the step kind is attack" do

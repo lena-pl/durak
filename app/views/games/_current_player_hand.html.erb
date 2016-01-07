@@ -1,7 +1,7 @@
 <% @game_state.player_states.each do |player_state| %>
 
   <% if @game_state.current_player == player_state.player %>
-    <p><strong>Player <%= player_state.player.id %> | Your Hand (<%= player_state.hand.count %> cards):</strong></p>
+    <p><strong><%= render "player_name", game_state: @game_state, game: @game, player: @game_state.current_player %> | Your Hand (<%= player_state.hand.count %> cards):</strong></p>
 
     <div class="player-hand">
 

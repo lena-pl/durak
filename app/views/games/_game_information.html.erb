@@ -11,7 +11,8 @@
 <% end %>
 
 <% if @game_state.current_player %>
-  <p><strong>Current Player:</strong> Player <%= @game_state.current_player.id %></p>
+  <p><strong>Current Player:</strong>
+    <%= render "player_name", game_state: @game_state, game: @game, player: @game_state.current_player %>
 <% end %>
 
 <p><strong>Cards left in deck:</strong> <%= @game_state.deck.count %></p>

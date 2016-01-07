@@ -1,5 +1,5 @@
 class CreateGame
-  def initialize(trump_card = Card.first)
+  def initialize(trump_card = SelectRandomTrumpCard.new.call)
     @trump_card = trump_card
   end
 

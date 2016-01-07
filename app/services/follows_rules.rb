@@ -21,7 +21,7 @@ class FollowsRules
   end
 
   def defending?
-    @step.kind == "defend"
+    @step.defend?
   end
 
   def good_defend_rank?
@@ -43,7 +43,7 @@ class FollowsRules
   end
 
   def attacking?
-    @step.kind == "attack"
+    @step.attack?
   end
 
   def good_attack_rank?

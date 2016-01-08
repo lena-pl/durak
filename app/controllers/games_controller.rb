@@ -6,6 +6,8 @@ class GamesController < ApplicationController
   def create
     game = CreateGame.new.call
 
+    InviteSecondPlayer.new(game).call
+
     redirect_to game
   end
 

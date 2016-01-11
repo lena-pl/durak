@@ -18,8 +18,10 @@ class ApplyDefendStep
       raise "#{defending_against} has already been defended by another card"
     end
 
-    if !@game_state.table.include?(defending_against)
-      raise "Card must be on table to defend against"
+    if !player_state.hand.include?(defending_against)
+      if !@game_state.table.include?(defending_against)
+        raise "Card must be on table to defend against"
+      end
     end
 
     player_state.hand.delete(defending_with)

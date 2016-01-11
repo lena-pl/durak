@@ -8,7 +8,7 @@ class StepsController < ApplicationController
 
       game_state = BuildGameState.new(game).call
 
-      follow_rules_service = FollowsRules.new(step, game_state)
+      follow_rules_service = FollowsRules.new(step, game_state, game)
 
       if follow_rules_service.call
         CompleteTurn.new(step, game_state).call

@@ -7,4 +7,26 @@ $(document).ready(function() {
     cardSelect.val($(this).data('card-id'));
     cardSelect.closest("form").submit();
   });
+
+  (function() {
+    var poll = function() {
+      $.ajax({
+        url: "/steps.json",
+        dataType: 'json',
+        type: 'get',
+        success: function(data) {
+          $('.json').text(data.steps);
+        },
+        error: function() {
+          console.log('error!');
+        }
+      });
+    };
+
+    poll();
+
+    setInterval(function() {
+      poll();
+    }, 2000);
+  })();
 });

@@ -33,7 +33,7 @@ RSpec.describe FollowsRules do
         let(:defend_step) { defender.steps.create!(kind: :defend, card: cards(:spades_8), in_response_to_step: attack_step ) }
 
         it "passes the rules" do
-          expect(FollowsRules.new(defend_step, game_state).call).to eq true
+          expect(FollowsRules.new(defend_step, game_state, game).call).to eq true
         end
       end
 
@@ -50,7 +50,7 @@ RSpec.describe FollowsRules do
         let(:defend_step) { defender.steps.create!(kind: :defend, card: cards(:spades_8), in_response_to_step: attack_step ) }
 
         it "does not pass rules" do
-          expect(FollowsRules.new(defend_step, game_state).call).to eq false
+          expect(FollowsRules.new(defend_step, game_state, game).call).to eq false
         end
       end
 
@@ -67,7 +67,7 @@ RSpec.describe FollowsRules do
         let(:defend_step) { defender.steps.create!(kind: :defend, card: cards(:spades_12), in_response_to_step: attack_step ) }
 
         it "does not pass rules" do
-          expect(FollowsRules.new(defend_step, game_state).call).to eq false
+          expect(FollowsRules.new(defend_step, game_state, game).call).to eq false
         end
       end
 
@@ -84,7 +84,7 @@ RSpec.describe FollowsRules do
         let(:defend_step) { defender.steps.create!(kind: :defend, card: cards(:hearts_8), in_response_to_step: attack_step ) }
 
         it "passes the rules" do
-          expect(FollowsRules.new(defend_step, game_state).call).to eq true
+          expect(FollowsRules.new(defend_step, game_state, game).call).to eq true
         end
       end
 
@@ -101,7 +101,7 @@ RSpec.describe FollowsRules do
         let(:defend_step) { defender.steps.create!(kind: :defend, card: cards(:hearts_9), in_response_to_step: attack_step ) }
 
         it "passes the rules" do
-          expect(FollowsRules.new(defend_step, game_state).call).to eq true
+          expect(FollowsRules.new(defend_step, game_state, game).call).to eq true
         end
       end
 
@@ -118,7 +118,7 @@ RSpec.describe FollowsRules do
         let(:defend_step) { defender.steps.create!(kind: :defend, card: cards(:hearts_7), in_response_to_step: attack_step ) }
 
         it "does not pass the rules" do
-          expect(FollowsRules.new(defend_step, game_state).call).to eq false
+          expect(FollowsRules.new(defend_step, game_state, game).call).to eq false
         end
       end
     end
@@ -136,7 +136,7 @@ RSpec.describe FollowsRules do
         let(:attack_step) { attacker.steps.create!(kind: :attack, card: cards(:spades_7)) }
 
         it "passes the rules" do
-          expect(FollowsRules.new(attack_step, game_state).call).to eq true
+          expect(FollowsRules.new(attack_step, game_state, game).call).to eq true
         end
       end
 
@@ -159,7 +159,7 @@ RSpec.describe FollowsRules do
           it "passes the rules" do
             ApplyAttackStep.new(game_state, attack_step).call
             ApplyDefendStep.new(game_state, defend_step).call
-            expect(FollowsRules.new(next_attack_step, game_state).call).to eq true
+            expect(FollowsRules.new(next_attack_step, game_state, game).call).to eq true
           end
         end
 
@@ -181,7 +181,7 @@ RSpec.describe FollowsRules do
           it "does not pass the rules" do
             ApplyAttackStep.new(game_state, attack_step).call
             ApplyDefendStep.new(game_state, defend_step).call
-            expect(FollowsRules.new(next_attack_step, game_state).call).to eq false
+            expect(FollowsRules.new(next_attack_step, game_state, game).call).to eq false
           end
         end
 
@@ -202,7 +202,7 @@ RSpec.describe FollowsRules do
           it "does not pass the rules" do
             ApplyAttackStep.new(game_state, attack_step).call
             ApplyDefendStep.new(game_state, defend_step).call
-            expect(FollowsRules.new(next_attack_step, game_state).call).to eq false
+            expect(FollowsRules.new(next_attack_step, game_state, game).call).to eq false
           end
         end
       end

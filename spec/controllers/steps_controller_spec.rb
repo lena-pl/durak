@@ -24,7 +24,7 @@ RSpec.describe StepsController, type: :controller do
       it 'redirects to show page' do
         post_create(:attack)
 
-        expect(response).to redirect_to(game)
+        expect(response).to redirect_to(controller: 'games', action: 'show', id: game.id, player_id: player_one.id)
       end
     end
 
@@ -40,8 +40,8 @@ RSpec.describe StepsController, type: :controller do
         post_create(:pick_up_from_table, player_two)
       end
 
-      it 'calls draw cards service exactly once' do
-        expect_any_instance_of(DrawCards).to receive(:call).once
+      it 'calls complete turn service exactly once' do
+        expect_any_instance_of(CompleteTurn).to receive(:call).once
 
         post_create(:pick_up_from_table, player_two)
       end
@@ -49,14 +49,16 @@ RSpec.describe StepsController, type: :controller do
       it 'redirects to show page' do
         post_create(:pick_up_from_table, player_two)
 
-        expect(response).to redirect_to(game)
+        expect(response).to redirect_to(controller: 'games', action: 'show', id: game.id, player_id: player_two.id)
       end
     end
 
     context 'when the step kind is :discard' do
       before do
         player_one.steps.create!(kind: :deal, card: cards(:hearts_6))
-        player_one.steps.create!(kind: :attack, card: cards(:hearts_6))
+        player_two.steps.create!(kind: :deal, card: cards(:hearts_7))
+        attack = player_one.steps.create!(kind: :attack, card: cards(:hearts_6))
+        player_two.steps.create!(kind: :defend, card: cards(:hearts_7), in_response_to_step: attack)
       end
 
       it 'calls build game state service exactly once' do
@@ -65,8 +67,8 @@ RSpec.describe StepsController, type: :controller do
         post_create(:discard, player_one)
       end
 
-      it 'calls draw cards service exactly once' do
-        expect_any_instance_of(DrawCards).to receive(:call).once
+      it 'calls complete turn service exactly once' do
+        expect_any_instance_of(CompleteTurn).to receive(:call).once
 
         post_create(:discard, player_one)
       end
@@ -74,13 +76,14 @@ RSpec.describe StepsController, type: :controller do
       it 'redirects to show page' do
         post_create(:discard, player_one)
 
-        expect(response).to redirect_to(game)
+        expect(response).to redirect_to(controller: 'games', action: 'show', id: game.id, player_id: player_one.id)
       end
     end
   end
 
-  def post_create(kind, player = player_one)
+  def post_create(kind, player = player_one, in_response_to_step = nil)
     post :create, game_id: game, player_id: player, step: { kind: kind,
-                                                            card_id: card }
+                                                            card_id: card,
+                                                            in_response_to_step: in_response_to_step }
   end
 end

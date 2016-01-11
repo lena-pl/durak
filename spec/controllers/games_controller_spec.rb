@@ -3,6 +3,10 @@ require 'rails_helper'
 RSpec.describe GamesController, type: :controller do
   fixtures :cards
 
+  let(:game) { Game.create!(trump_card: cards(:hearts_6)) }
+  let!(:player_one) { game.players.create! }
+  let!(:player_two) { game.players.create! }
+
   describe "GET new" do
     it "has a 200 status code" do
       get :new
@@ -25,25 +29,19 @@ RSpec.describe GamesController, type: :controller do
 
   describe "POST create" do
     context 'after creation' do
-      it 'renders invite a friend template' do
+      it 'redirects to show' do
         post :create
 
-        expect(response.status).to eq 200
+        expect(response).to redirect_to(controller: 'games', action: 'show', id: Game.last.id, player_id: Game.last.players.first.id)
       end
     end
   end
 
   describe "GET #show" do
-    let(:game) { Game.create!(trump_card: cards(:hearts_6)) }
     subject { get :show, :id => game }
 
     it "renders the show template" do
-      expect(subject).to render_template(:show)
-    end
-
-    it "assigns @game" do
-      subject
-      expect(assigns(:game)).to be_a Game
+      expect(subject).to render_template(:invite_friend)
     end
 
     it "builds a new game state" do
@@ -54,9 +52,6 @@ RSpec.describe GamesController, type: :controller do
   end
 
   describe "GET #join" do
-    let!(:game) { Game.create!(trump_card: cards(:hearts_6)) }
-    let!(:player_one) { game.players.create! }
-    let!(:player_two) { game.players.create! }
 
     it "connects the second player" do
       get :join, id: game.id
@@ -67,7 +62,7 @@ RSpec.describe GamesController, type: :controller do
     it 'redirects to show page' do
       get :join, id: game.id
 
-      expect(response).to redirect_to(Game.last)
+      expect(response).to redirect_to(redirect_to controller: 'games', action: 'show', id: game.id, player_id: player_two.id)
     end
   end
 end

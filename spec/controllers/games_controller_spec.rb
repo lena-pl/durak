@@ -38,16 +38,45 @@ RSpec.describe GamesController, type: :controller do
   end
 
   describe "GET #show" do
-    subject { get :show, :id => game }
+    subject { get :show, :id => game, player_id: player_one.id }
 
-    it "renders the show template" do
-      expect(subject).to render_template(:invite_friend)
+    it "assigns the current player" do
+      subject
+
+      expect(session[:current_player]).to eq player_one
     end
 
-    it "builds a new game state" do
-      expect_any_instance_of(BuildGameState).to receive(:call)
+    context "the second player is not connected" do
+      before do
+        game.players.first.update_attributes(connected: true)
+      end
 
-      subject
+      it "renders the invite_friend template" do
+        expect(subject).to render_template(:invite_friend)
+      end
+
+      it "builds a new game state" do
+        expect_any_instance_of(BuildGameState).to receive(:call)
+
+        subject
+      end
+    end
+
+    context "the second player is connected" do
+      before do
+        game.players.first.update_attributes(connected: true)
+        game.players.second.update_attributes(connected: true)
+      end
+
+      it "renders the show template" do
+        expect(subject).to render_template(:show)
+      end
+
+      it "builds a new game state" do
+        expect_any_instance_of(BuildGameState).to receive(:call)
+
+        subject
+      end
     end
   end
 

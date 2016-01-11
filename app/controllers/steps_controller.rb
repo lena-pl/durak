@@ -18,7 +18,7 @@ class StepsController < ApplicationController
       end
     end
 
-    redirect_to game
+    redirect_to controller: 'games', action: 'show', id: game.id, player_id: player.id
   end
 
   private

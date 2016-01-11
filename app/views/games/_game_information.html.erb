@@ -1,19 +1,12 @@
 <p><strong>Trump Card:</strong></p>
 <%= render "card",  rank: @game_state.trump_card.rank, suit: @game_state.trump_card.suit %>
 
-<% if @game_state.attacker %>
-  <p><strong>Current Attacker:</strong>
-    <% if @game_state.current_player == @game_state.attacker %>
-      You!
-    <% else %>
-      Them
-    <% end %></p>
-<% end %>
-
-<% if @game_state.current_player %>
-  <p><strong>Current Player:</strong>
-    <%= render "player_name", game_state: @game_state, game: @game, player: @game_state.current_player %>
-<% end %>
+<p><strong>Current Attacker:</strong>
+<% if @current_player == @game_state.attacker %>
+  You!
+<% else %>
+  Them
+<% end %></p>
 
 <p><strong>Cards left in deck:</strong> <%= @game_state.deck.count %></p>
 <p><strong>Cards in Discard Pile:</strong> <%= @game_state.discard_pile.count %></p>

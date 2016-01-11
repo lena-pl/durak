@@ -2,5 +2,11 @@
   <h1>Invite a friend</h1>
 
   <p>Send this link to the person you want to play with. Your game will start as soon as they click on the link.</p>
+  Current Player (SESSION):
+  <% if @current_player == @game.players.first %>
+    Player 1
+  <% else %>
+    Player 2
+  <% end %>
   <%= link_to "Your Friend's Link", join_game_path(id: @game.id) %>
 </div>

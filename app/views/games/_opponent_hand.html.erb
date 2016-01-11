@@ -1,4 +1,4 @@
-<% if @game_state.current_player == @game_state.attacker %>
+<% if @current_player == @game_state.attacker %>
   <% opponent = @game_state.defender %>
 <% else %>
   <% opponent = @game_state.attacker %>

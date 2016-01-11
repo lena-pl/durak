@@ -1,8 +1,8 @@
 <% unless @game_state.table.empty? %>
 
   <div class="player-actions">
-    <%= form_for [@game, @game_state.current_player, @game_state.current_player.steps.new] do |f| %>
-      <% if @game_state.current_player == @game_state.attacker %>
+    <%= form_for [@game, @current_player, @current_player.steps.new] do |f| %>
+      <% if @current_player == @game_state.attacker %>
         <% step_kind = :discard %>
         <% submit_text = "Discard" %>
       <% else %>

@@ -1,5 +1,6 @@
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
+var StepPoller;
 $(document).ready(function() {
   $('.player-hand').find('span').click(function(){
     var cardSelect = $('.card-select');
@@ -8,25 +9,23 @@ $(document).ready(function() {
     cardSelect.closest("form").submit();
   });
 
-  (function() {
-    var poll = function() {
-      $.ajax({
-        url: "/steps.json",
-        dataType: 'json',
-        type: 'get',
-        success: function(data) {
-          $('.json').text(data.steps);
-        },
-        error: function() {
-          console.log('error!');
-        }
+  StepPoller = {
+    poll: function() {
+      return setTimeout(this.request, 2000);
+    },
+    request: function() {
+      var request = $.get($('#steps').data('url'), { after: $('.step').last().data('id')} );
+      request.done(function(data){
+        $("#steps").html(data);
+        StepPoller.poll();
       });
-    };
+    }
+  };
 
-    poll();
-
-    setInterval(function() {
-      poll();
-    }, 2000);
-  })();
+  jQuery(function() {
+    if ($('#steps').length > 0) {
+      StepPoller.request(),
+      StepPoller.poll();
+    }
+  });
 });

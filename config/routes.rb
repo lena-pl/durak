@@ -4,9 +4,11 @@ Rails.application.routes.draw do
   resources :games, only: [:new, :create, :show] do
     get :join, on: :member
     resources :players do
-      resources :steps, only: [:create]
+      resources :steps, only: [:create, :index]
     end
   end
+
+  get 'games/:id/steps' => 'steps#index', as: :game_steps
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

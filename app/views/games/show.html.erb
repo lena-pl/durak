@@ -9,7 +9,9 @@
       Player 2
     <% end %>
 
-    <p>Step count: <span class="json"></span></p>
+    <p>Step count:</p>
+    <%= content_tag :div, id: "steps", data: { url: game_steps_path(@game) } do %>
+    <% end %>
 
     <% if flash.alert %>
       <div class="alert"><%= flash.alert %></div>

@@ -7,7 +7,7 @@ class GamesController < ApplicationController
     @game = CreateGame.new.call
     @current_player = session[:current_player] = @game.players.first
 
-    redirect_to controller: 'games', action: 'show', id: @game.id, player_id: @game.players.first.id
+    redirect_to controller: 'games', action: 'show', id: @game.id, token: @game.players.first.token
   end
 
   def show
@@ -27,14 +27,14 @@ class GamesController < ApplicationController
     @game.players.second.update_attributes!(connected: true)
     @current_player = session[:current_player] = @game.players.second
 
-    redirect_to controller: 'games', action: 'show', id: @game.id, player_id: @game.players.second.id
+    redirect_to controller: 'games', action: 'show', id: @game.id, token: @game.players.second.token
   end
 
   private
 
   def current_player
-    if params[:player_id]
-      session[:current_player] = @game.players.find(params[:player_id])
+    if params[:token]
+      session[:current_player] = @game.players.where('token = ?', params[:token]).first
     end
     session[:current_player]
   end

@@ -86,6 +86,24 @@ RSpec.describe FollowsRules do
 
     context "it is this player's turn" do
 
+      context "the attacker drew from the deck, and tries to make a move" do
+        let(:attacker_hand) do
+          [cards(:spades_7),
+           cards(:spades_8)]
+        end
+
+        let(:defender_hand) do
+          [cards(:spades_9)]
+        end
+        
+        let!(:draw_step) { attacker.steps.create!(kind: :draw_from_deck, card: cards(:spades_10)) }
+        let!(:attack_step) { attacker.steps.create!(kind: :attack, card: cards(:spades_10)) }
+
+        it "does not pass rules" do
+          expect(FollowsRules.new(attack_step, game_state, game).call).to eq true
+        end
+      end
+
       context "the step kind is defend" do
         context "the defending suit and rank abide by rules" do
           let(:defender_hand) do

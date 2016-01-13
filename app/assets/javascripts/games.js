@@ -10,7 +10,7 @@ $(document).ready(function() {
       return setTimeout(this.request, 1000);
     },
     request: function() {
-      var request = $.get(location.pathname + '/last_step_id')
+      var request = $.get(location.pathname + '.json');
 
       request.done(function(data) {
         console.log(data, lastStepId)

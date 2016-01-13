@@ -15,7 +15,9 @@ class GamesController < ApplicationController
     @game_state = BuildGameState.new(@game).call
     @current_player = current_player
 
-    if @game.players.first.connected && @game.players.second.connected
+    if request.xhr?
+      render text: @game.steps.last.id
+    elsif @game.players.first.connected && @game.players.second.connected
       render :show
     else
       render :invite_friend
@@ -24,15 +26,10 @@ class GamesController < ApplicationController
 
   def join
     @game = Game.find(params[:id])
-    @game.players.second.update_attributes(connected: true)
+    @game.players.second.update_attributes!(connected: true)
     @current_player = session[:current_player] = @game.players.second
 
     redirect_to controller: 'games', action: 'show', id: @game.id, player_id: @game.players.second.id
-  end
-
-  def last_step_id
-    @game = Game.find(params[:id])
-    render text: @game.steps.last.id
   end
 
   private

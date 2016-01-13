@@ -80,10 +80,10 @@ class FollowsRules
     last_step = previous_steps.last
 
     if previous_steps.map(&:kind).include? "attack"
-      if last_step.draw_from_deck?
+      if last_step.draw_from_deck? && last_step.player == @game_state.attacker
         @step.player == last_step.player
       else
-        @step.player != last_step.player 
+        @step.player != last_step.player
       end
     else
       @step.player == @game_state.attacker

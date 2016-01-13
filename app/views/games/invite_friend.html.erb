@@ -3,10 +3,6 @@
 
   <p>Send this link to the person you want to play with. Your game will start as soon as they click on the link.</p>
   Current Player (SESSION):
-  <% if @current_player == @game.players.first %>
-    Player 1
-  <% else %>
-    Player 2
-  <% end %>
+  <%= render "player_name", game_state: @game_state, game: @game, player: @current_player %>
   <%= link_to "Your Friend's Link", join_game_path(id: @game.id) %>
 </div>

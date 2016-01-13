@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :games, only: [:new, :create, :show] do
     get :join, on: :member
     resources :players do
-      resources :steps, only: [:create, :index]
+      resources :steps, only: [:create]
     end
   end
 

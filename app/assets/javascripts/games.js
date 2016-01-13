@@ -25,6 +25,44 @@ $(document).ready(function() {
     var cardSelect = $('.card-select');
 
     cardSelect.val($(this).data('card-id'));
+    cardSelect.closest("form").submit(function(e) {
+      var postData = $(this).serializeArray();
+      var formURL = $(this).attr("action");
+
+      $.ajax({
+        url: formURL,
+        type: "POST",
+        data: postData,
+        success:function(data, textStatus, jqXHR)
+        {
+        },
+        error: function(jqXHR, textStatus, errorThrown)
+        {
+        }
+      });
+      e.preventDefault();
+    });
     cardSelect.closest("form").submit();
+  });
+
+  $('.wrapper').on('click', '.player-actions', function() {
+    $('.player-actions .new_step').submit(function(e) {
+      var postData = $(this).serializeArray();
+      var formURL = $(this).attr("action");
+
+      $.ajax({
+        url: formURL,
+        type: "POST",
+        data: postData,
+        success:function(data, textStatus, jqXHR)
+        {
+        },
+        error: function(jqXHR, textStatus, errorThrown)
+        {
+        }
+      });
+      e.preventDefault();
+    });
+    $('.player-actions .new_step').submit();
   });
 });

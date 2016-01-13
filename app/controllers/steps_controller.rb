@@ -1,12 +1,4 @@
 class StepsController < ApplicationController
-  def index
-    game = Game.find(params[:id])
-    @step = game.steps.where('steps.id >= ?', params[:after].to_i).order('steps.id DESC').first
-
-    if request.xhr?
-      render partial: "step"
-    end
-  end
 
   def create
     game = Game.find(params[:game_id])

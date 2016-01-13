@@ -9,8 +9,8 @@
       Player 2
     <% end %>
 
-    <p>Step count:</p>
-    <%= content_tag :div, id: "steps", data: { url: game_steps_path(@game) } do %>
+    <p>Last step:</p>
+    <%= content_tag :div, id: "steps" do %>
     <% end %>
 
     <% if flash.alert %>

@@ -30,6 +30,11 @@ class GamesController < ApplicationController
     redirect_to controller: 'games', action: 'show', id: @game.id, player_id: @game.players.second.id
   end
 
+  def last_step_id
+    @game = Game.find(params[:id])
+    render text: @game.steps.last.id
+  end
+
   private
 
   def current_player

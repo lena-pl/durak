@@ -15,10 +15,8 @@ class GamesController < ApplicationController
     @game_state = BuildGameState.new(@game).call
     @current_player = current_player
 
-    if request.xhr?
-      render text: @game.steps.last.id
-    elsif @game.players.first.connected && @game.players.second.connected
-      render :show
+    if @game.players.first.connected && @game.players.second.connected
+      render :show, layout: !request.xhr?
     else
       render :invite_friend
     end

@@ -5,13 +5,15 @@
       <% if @current_player == @game_state.attacker %>
         <% step_kind = :discard %>
         <% submit_text = "Discard" %>
-      <% else %>
+      <% elsif @game_state.table.count%2 != 0 %>
         <% step_kind = :pick_up_from_table %>
         <% submit_text = "Pickup" %>
       <% end %>
 
       <%= f.hidden_field :kind, :value => step_kind %>
-      <%= f.submit submit_text, data: { disable_with: 'Don\'t think about pushing me again.' }, :class => 'button' %>
+      <% if submit_text == "Discard" || submit_text == "Pickup" %>
+        <%= f.submit submit_text, data: { disable_with: 'Don\'t think about pushing me again.' }, :class => 'button' %>
+      <% end %>
     <% end %>
   </div>
 

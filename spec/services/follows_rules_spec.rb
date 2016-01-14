@@ -221,8 +221,4 @@ RSpec.describe FollowsRules do
       end
     end
   end
-
-  def take_step(player, kind, card, in_response_to_step = nil)
-    player.steps.create!(kind: kind, card: card, in_response_to_step: in_response_to_step)
-  end
 end

@@ -18,8 +18,6 @@ class StepsController < ApplicationController
         raise ActiveRecord::Rollback
       end
     end
-
-    redirect_to controller: 'games', action: 'show', id: game.id, player_id: player.id
   end
 
   private

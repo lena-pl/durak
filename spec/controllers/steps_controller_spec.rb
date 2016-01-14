@@ -20,12 +20,6 @@ RSpec.describe StepsController, type: :controller do
 
         post_create(:attack)
       end
-
-      it 'redirects to show page' do
-        post_create(:attack)
-
-        expect(response).to redirect_to(controller: 'games', action: 'show', id: game.id, player_id: player_one.id)
-      end
     end
 
     context 'when the step kind is :pick_up_from_table' do
@@ -44,12 +38,6 @@ RSpec.describe StepsController, type: :controller do
         expect_any_instance_of(CompleteTurn).to receive(:call).once
 
         post_create(:pick_up_from_table, player_two)
-      end
-
-      it 'redirects to show page' do
-        post_create(:pick_up_from_table, player_two)
-
-        expect(response).to redirect_to(controller: 'games', action: 'show', id: game.id, player_id: player_two.id)
       end
     end
 
@@ -71,12 +59,6 @@ RSpec.describe StepsController, type: :controller do
         expect_any_instance_of(CompleteTurn).to receive(:call).once
 
         post_create(:discard, player_one)
-      end
-
-      it 'redirects to show page' do
-        post_create(:discard, player_one)
-
-        expect(response).to redirect_to(controller: 'games', action: 'show', id: game.id, player_id: player_one.id)
       end
     end
   end

@@ -18,6 +18,8 @@ class StepsController < ApplicationController
         raise ActiveRecord::Rollback
       end
     end
+
+    render nothing: true
   end
 
   private

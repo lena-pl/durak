@@ -1,9 +1,10 @@
 class FollowsRules
   attr_reader :errors
 
-  def initialize(step, game_state)
+  def initialize(step, game_state, game)
     @step = step
     @game_state = game_state
+    @game = game
     @errors = []
   end
 
@@ -14,16 +15,21 @@ class FollowsRules
   private
 
   def rules_pass?
-    if defending?
-      @errors.push("You must defend with a card of higher rank or a trump!") if !good_defend_rank?
-      @errors.push("You must defend with a card of the same suit or a trump!") if !good_defend_suit?
-      good_defend_rank? && good_defend_suit?
-    elsif attacking?
-      @errors.push("You must attack with one of the ranks already on the table!") if !good_attack_rank?
-      @errors.push("The defender doesn't have enough cards in their hand!") if !may_be_defended?
-      good_attack_rank? && may_be_defended?
+    @errors.push("It's not your turn right now!") if !your_move?
+    if your_move?
+      if defending?
+        @errors.push("You must defend with a card of higher rank or a trump!") if !good_defend_rank?
+        @errors.push("You must defend with a card of the same suit or a trump!") if !good_defend_suit?
+        good_defend_rank? && good_defend_suit?
+      elsif attacking?
+        @errors.push("You must attack with one of the ranks already on the table!") if !good_attack_rank?
+        @errors.push("The defender doesn't have enough cards in their hand!") if !may_be_defended?
+        good_attack_rank? && may_be_defended?
+      else
+        true
+      end
     else
-      true
+      false
     end
   end
 
@@ -67,5 +73,20 @@ class FollowsRules
 
   def may_be_defended?
     @game_state.player_state_for_player(@game_state.defender).hand.count >= 1
+  end
+
+  def your_move?
+    previous_steps = @game.steps.order("id ASC").reject { |step| step == @step }
+    last_step = previous_steps.last
+
+    if previous_steps.map(&:kind).include? "attack"
+      if last_step.draw_from_deck? && last_step.player == @game_state.attacker
+        @step.player == last_step.player
+      else
+        @step.player != last_step.player
+      end
+    else
+      @step.player == @game_state.attacker
+    end
   end
 end

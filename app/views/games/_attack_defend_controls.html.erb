@@ -1,15 +1,15 @@
-<%= form_for [@game, @game_state.current_player, @game_state.current_player.steps.new] do |f| %>
+<%= form_for [@game, @current_player, @current_player.steps.new] do |f| %>
 
-  <% if @game_state.current_player == @game_state.attacker %>
+  <% if @current_player == @game_state.attacker %>
     <%= f.hidden_field :kind, value: :attack %>
   <% else %>
     <%= f.hidden_field :kind, value: :defend %>
     <%= f.hidden_field :in_response_to_step_id, :value => @game.steps.last.id %>
   <% end %>
 
-  <% player_hand = @game_state.player_state_for_player(@game_state.current_player).hand %>
+  <% player_hand = @game_state.player_state_for_player(@current_player).hand %>
   <% if !player_hand.empty? %>
     <%= f.hidden_field :card_id, class: 'card-select' %>
   <% end %>
-  
+
 <% end %>

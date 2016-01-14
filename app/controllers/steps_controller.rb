@@ -1,4 +1,5 @@
 class StepsController < ApplicationController
+
   def create
     game = Game.find(params[:game_id])
     player = game.players.find(params[:player_id])
@@ -8,7 +9,7 @@ class StepsController < ApplicationController
 
       game_state = BuildGameState.new(game).call
 
-      follow_rules_service = FollowsRules.new(step, game_state)
+      follow_rules_service = FollowsRules.new(step, game_state, game)
 
       if follow_rules_service.call
         CompleteTurn.new(step, game_state).call
@@ -18,7 +19,7 @@ class StepsController < ApplicationController
       end
     end
 
-    redirect_to game
+    render nothing: true
   end
 
   private

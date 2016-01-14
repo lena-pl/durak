@@ -3,6 +3,10 @@ require 'rails_helper'
 RSpec.describe GamesController, type: :controller do
   fixtures :cards
 
+  let(:game) { Game.create!(trump_card: cards(:hearts_6)) }
+  let!(:player_one) { game.players.create! }
+  let!(:player_two) { game.players.create! }
+
   describe "GET new" do
     it "has a 200 status code" do
       get :new
@@ -25,30 +29,73 @@ RSpec.describe GamesController, type: :controller do
 
   describe "POST create" do
     context 'after creation' do
-      it 'redirects to show page' do
+      it 'redirects to show' do
         post :create
-        expect(response).to redirect_to(Game.last)
+
+        expect(response).to redirect_to(controller: 'games', action: 'show', id: Game.last.id)
       end
     end
   end
 
   describe "GET #show" do
-    let(:game) { Game.create!(trump_card: cards(:hearts_6)) }
-    subject { get :show, :id => game }
+    subject { get :show, id: game.id }
 
-    it "renders the show template" do
-      expect(subject).to render_template(:show)
+    before do
+      session[:current_player_token] = player_one.token
     end
 
-    it "assigns @game" do
+    it "assigns the current player" do
       subject
-      expect(assigns(:game)).to be_a Game
+
+      expect(:current_player).to_not be_nil
     end
 
-    it "builds a new game state" do
-      expect_any_instance_of(BuildGameState).to receive(:call)
-      
-      subject
+    context "the second player is not connected" do
+      before do
+        game.players.first.update_attributes(connected: true)
+      end
+
+      it "renders the invite_friend template" do
+        expect(subject).to render_template(:invite_friend)
+      end
+
+      it "builds a new game state" do
+        expect_any_instance_of(BuildGameState).to receive(:call)
+
+        subject
+      end
+    end
+
+    context "the second player is connected" do
+      before do
+        game.players.first.update_attributes(connected: true)
+        game.players.second.update_attributes(connected: true)
+      end
+
+      it "renders the show template" do
+        expect(subject).to render_template(:show)
+      end
+
+      it "builds a new game state" do
+        expect_any_instance_of(BuildGameState).to receive(:call)
+
+        subject
+      end
+    end
+  end
+
+  describe "GET #join" do
+
+    it "connects the second player" do
+      get :join, id: game.id
+
+      expect(game.players.second.connected).to eq true
+    end
+
+    it 'redirects to show page' do
+      get :join, id: game.id
+
+      expect(response).to redirect_to(redirect_to controller: 'games', action: 'show', id: game.id)
     end
   end
 end

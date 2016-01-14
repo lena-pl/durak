@@ -8,6 +8,8 @@ class CreateGame
     2.times { game.players.new }
     game.save!
 
+    game.players.first.update_attributes!(connected: true)
+
     game_state = BuildGameState.new(game).call
     DealCards.new(game_state).call
 

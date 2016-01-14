@@ -2,18 +2,21 @@
   <div>
     <h1>Durak / Game <%= @game.id %></h1>
 
-    <% if flash.alert %>
-      <div class="alert"><%= flash.alert %></div>
+    Current Player (SESSION):
+    <% if @current_player == @game.players.first %>
+      Player 1
+    <% else %>
+      Player 2
     <% end %>
 
     <% unless @game_state.over? %>
       <div class="opponent-hand">
-        <%= render "opponent_hand", game_state: @game_state %>
+        <%= render "opponent_hand", game_state: @game_state, current_player: @current_player %>
       </div>
 
       <div class="row">
         <div class="game-information">
-          <%= render "game_information", game_state: @game_state %>
+          <%= render "game_information", game_state: @game_state, game: @game, current_player: @current_player %>
         </div>
 
         <div class="table">
@@ -21,14 +24,18 @@
         </div>
       </div>
 
+      <% if flash.alert %>
+        <div class="alert"><%= flash.alert %></div>
+      <% end %>
+
       <div class="current-player-hand">
-        <%= render "current_player_hand", game_state: @game_state %>
+        <%= render "current_player_hand", game_state: @game_state, current_player: @current_player %>
       </div>
 
       <div class="controls">
         <%= render "attack_defend_controls", game_state: @game_state %>
 
-        <%= render "discard_pickup_controls", game_state: @game_state %>
+        <%= render "discard_pickup_controls", game_state: @game_state, current_player: @current_player %>
       </div>
 
     <% else %>

@@ -32,18 +32,22 @@ RSpec.describe GamesController, type: :controller do
       it 'redirects to show' do
         post :create
 
-        expect(response).to redirect_to(controller: 'games', action: 'show', id: Game.last.id, player_id: Game.last.players.first.id)
+        expect(response).to redirect_to(controller: 'games', action: 'show', id: Game.last.id)
       end
     end
   end
 
   describe "GET #show" do
-    subject { get :show, :id => game, player_id: player_one.id }
+    subject { get :show, id: game.id }
+
+    before do
+      session[:current_player_token] = player_one.token
+    end
 
     it "assigns the current player" do
       subject
 
-      expect(session[:current_player]).to eq player_one
+      expect(:current_player).to_not be_nil
     end
 
     context "the second player is not connected" do
@@ -91,7 +95,7 @@ RSpec.describe GamesController, type: :controller do
     it 'redirects to show page' do
       get :join, id: game.id
 
-      expect(response).to redirect_to(redirect_to controller: 'games', action: 'show', id: game.id, player_id: player_two.id)
+      expect(response).to redirect_to(redirect_to controller: 'games', action: 'show', id: game.id)
     end
   end
 end

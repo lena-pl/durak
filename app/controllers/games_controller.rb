@@ -6,7 +6,7 @@ class GamesController < ApplicationController
   def create
     @game = CreateGame.new.call
     @current_player = @game.players.first
-    session[:current_player] = @current_player.token
+    session[:current_player_token] = @current_player.token
 
     redirect_to controller: 'games', action: 'show', id: @game.id
   end
@@ -14,7 +14,7 @@ class GamesController < ApplicationController
   def show
     @game = Game.find(params[:id])
     @game_state = BuildGameState.new(@game).call
-    @current_player = @game.players.find_by!(token: session[:current_player])
+    @current_player = @game.players.find_by!(token: session[:current_player_token])
 
     if @game.players.first.connected && @game.players.second.connected
       render :show, layout: !request.xhr?
@@ -27,7 +27,7 @@ class GamesController < ApplicationController
     @game = Game.find(params[:id])
     @game.players.second.update_attributes!(connected: true)
     @current_player = @game.players.second
-    session[:current_player] = @current_player.token
+    session[:current_player_token] = @current_player.token
 
     redirect_to controller: 'games', action: 'show', id: @game.id
   end

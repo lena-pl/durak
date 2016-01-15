@@ -94,7 +94,7 @@ describe DrawCards do
           subject.call
 
           expect(attacker).to have_exactly(2).steps
-          expect(attacker.steps.map(&:kind)).to all eq "draw_from_deck"
+          expect(attacker.steps.map(&:kind)).to all eq Step::DRAW_FROM_DECK
         end
 
         it "does not draw cards for the other player" do
@@ -152,14 +152,14 @@ describe DrawCards do
           subject.call
 
           expect(attacker).to have_exactly(4).steps
-          expect(attacker.steps.map(&:kind)).to all eq "draw_from_deck"
+          expect(attacker.steps.map(&:kind)).to all eq Step::DRAW_FROM_DECK
         end
 
         it "draws 4 cards to the second player" do
           subject.call
 
           expect(defender).to have_exactly(4).steps
-          expect(defender.steps.map(&:kind)).to all eq "draw_from_deck"
+          expect(defender.steps.map(&:kind)).to all eq Step::DRAW_FROM_DECK
         end
       end
 
@@ -193,10 +193,10 @@ describe DrawCards do
             subject.call
 
             expect(attacker).to have_exactly(1).steps
-            expect(attacker.steps.map(&:kind)).to all eq "draw_from_deck"
+            expect(attacker.steps.map(&:kind)).to all eq Step::DRAW_FROM_DECK
 
             expect(defender).to have_exactly(1).steps
-            expect(defender.steps.map(&:kind)).to all eq "draw_from_deck"
+            expect(defender.steps.map(&:kind)).to all eq Step::DRAW_FROM_DECK
           end
         end
 
@@ -213,10 +213,10 @@ describe DrawCards do
             subject.call
 
             expect(attacker).to have_exactly(2).steps
-            expect(attacker.steps.map(&:kind)).to all eq "draw_from_deck"
+            expect(attacker.steps.map(&:kind)).to all eq Step::DRAW_FROM_DECK
 
             expect(defender).to have_exactly(2).steps
-            expect(defender.steps.map(&:kind)).to all eq "draw_from_deck"
+            expect(defender.steps.map(&:kind)).to all eq Step::DRAW_FROM_DECK
           end
         end
       end
@@ -234,14 +234,14 @@ describe DrawCards do
             subject.call
 
             expect(attacker).to have_exactly(2).steps
-            expect(attacker.steps.map(&:kind)).to all eq "draw_from_deck"
+            expect(attacker.steps.map(&:kind)).to all eq Step::DRAW_FROM_DECK
           end
 
           it "draws 1 card to the defender" do
             subject.call
 
             expect(defender).to have_exactly(1).steps
-            expect(defender.steps.map(&:kind)).to all eq "draw_from_deck"
+            expect(defender.steps.map(&:kind)).to all eq Step::DRAW_FROM_DECK
           end
         end
       end

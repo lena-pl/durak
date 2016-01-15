@@ -4,6 +4,8 @@ class Step < ActiveRecord::Base
   belongs_to :in_response_to_step, :class_name => 'Step'
 
   enum kind: [:deal, :draw_from_deck, :pick_up_from_table, :attack, :defend, :discard]
+  ATTACK = "attack"
+  DRAW_FROM_DECK = "draw_from_deck"
 
   validates :kind, :player, presence: true
   validates :card, presence: true, unless: :card_not_needed?

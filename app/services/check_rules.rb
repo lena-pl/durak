@@ -1,4 +1,4 @@
-class FollowsRules
+class CheckRules
   attr_reader :errors
 
   def initialize(step, game_state, game)

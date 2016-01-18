@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe FollowsRules do
+RSpec.describe CheckRules do
   fixtures :cards
 
   let(:game) { Game.create!(trump_card: cards(:hearts_6))}
@@ -25,7 +25,7 @@ RSpec.describe FollowsRules do
         it "defender tries to attack and fails rules" do
           illegal_step = defender.steps.create!(kind: :attack, card: cards(:spades_8))
 
-          expect(FollowsRules.new(illegal_step, game_state, game).call).to eq false
+          expect(CheckRules.new(illegal_step, game_state, game).call).to eq false
         end
       end
 
@@ -37,13 +37,13 @@ RSpec.describe FollowsRules do
         it "the attacker tries to move for the second time in a row and fails rules" do
           illegal_step = attacker.steps.create!(kind: :attack, card: cards(:hearts_10))
 
-          expect(FollowsRules.new(illegal_step, game_state, game).call).to eq false
+          expect(CheckRules.new(illegal_step, game_state, game).call).to eq false
         end
 
         it "the defender tries to attack and fails rules" do
           illegal_step = defender.steps.create!(kind: :attack, card: cards(:spades_9))
 
-          expect(FollowsRules.new(illegal_step, game_state, game).call).to eq false
+          expect(CheckRules.new(illegal_step, game_state, game).call).to eq false
         end
       end
     end
@@ -77,7 +77,7 @@ RSpec.describe FollowsRules do
           it "old defender (now atacker) tries to attack and passes rules" do
             legal_step = defender.steps.create!(kind: :attack, card: cards(:spades_10))
 
-            expect(FollowsRules.new(legal_step, game_state, game).call).to eq true
+            expect(CheckRules.new(legal_step, game_state, game).call).to eq true
           end
         end
       end
@@ -90,19 +90,19 @@ RSpec.describe FollowsRules do
         it "the defending suit and rank abide by rules (rules pass)" do
           defend_step = defender.steps.create!(kind: :defend, card: cards(:spades_9), in_response_to_step: game.steps.last )
 
-          expect(FollowsRules.new(defend_step, game_state, game).call).to eq true
+          expect(CheckRules.new(defend_step, game_state, game).call).to eq true
         end
 
         it "the defending suit abides by rules, but the rank does not so rules fail" do
           defend_step = defender.steps.create!(kind: :defend, card: cards(:spades_6), in_response_to_step: game.steps.last )
 
-          expect(FollowsRules.new(defend_step, game_state, game).call).to eq false
+          expect(CheckRules.new(defend_step, game_state, game).call).to eq false
         end
 
         it "the defending rank abides by rules, but suit does not so rules fail" do
           defend_step = defender.steps.create!(kind: :defend, card: cards(:diamonds_9), in_response_to_step: game.steps.last )
 
-          expect(FollowsRules.new(defend_step, game_state, game).call).to eq false
+          expect(CheckRules.new(defend_step, game_state, game).call).to eq false
         end
 
         context "the attacking card is a non-trump ace" do
@@ -116,7 +116,7 @@ RSpec.describe FollowsRules do
           it "the defending suit and rank abide by rules due to being a trump" do
             defend_step = defender.steps.create!(kind: :defend, card: cards(:hearts_7), in_response_to_step: game.steps.last )
 
-            expect(FollowsRules.new(defend_step, game_state, game).call).to eq true
+            expect(CheckRules.new(defend_step, game_state, game).call).to eq true
           end
         end
 
@@ -132,13 +132,13 @@ RSpec.describe FollowsRules do
           it "the defending suit and rank abide by rules" do
             defend_step = defender.steps.create!(kind: :defend, card: cards(:hearts_9), in_response_to_step: game.steps.last )
 
-            expect(FollowsRules.new(defend_step, game_state, game).call).to eq true
+            expect(CheckRules.new(defend_step, game_state, game).call).to eq true
           end
 
           it "the defending suit abides by rules, but rank does not" do
             defend_step = defender.steps.create!(kind: :defend, card: cards(:hearts_7), in_response_to_step: game.steps.last )
 
-            expect(FollowsRules.new(defend_step, game_state, game).call).to eq false
+            expect(CheckRules.new(defend_step, game_state, game).call).to eq false
           end
         end
       end
@@ -149,7 +149,7 @@ RSpec.describe FollowsRules do
         end
 
         it "the first attack of the turn passes the rules" do
-          expect(FollowsRules.new(game.steps.last, game_state, game).call).to eq true
+          expect(CheckRules.new(game.steps.last, game_state, game).call).to eq true
         end
 
         context "subsequent attacks" do
@@ -160,13 +160,13 @@ RSpec.describe FollowsRules do
           it "the attacking rank abides by the rules" do
             next_attack_step = attacker.steps.create!(kind: :attack, card: cards(:clubs_9))
 
-            expect(FollowsRules.new(next_attack_step, game_state, game).call).to eq true
+            expect(CheckRules.new(next_attack_step, game_state, game).call).to eq true
           end
 
           it "the attacking rank does not abide by the rules" do
             next_attack_step = attacker.steps.create!(kind: :attack, card: cards(:hearts_10))
 
-            expect(FollowsRules.new(next_attack_step, game_state, game).call).to eq false
+            expect(CheckRules.new(next_attack_step, game_state, game).call).to eq false
           end
 
           context "there are not enough cards in defender's hand to defend" do
@@ -178,7 +178,7 @@ RSpec.describe FollowsRules do
             it "the defender may not attack, even if the attacking card rank abides by rules" do
               next_attack_step = attacker.steps.create!(kind: :attack, card: cards(:clubs_9))
 
-              expect(FollowsRules.new(next_attack_step, game_state, game).call).to eq false
+              expect(CheckRules.new(next_attack_step, game_state, game).call).to eq false
             end
           end
         end

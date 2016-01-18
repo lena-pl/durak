@@ -1,6 +1,6 @@
 <% player_state = @game_state.player_state_for_player(@current_player) %>
 
-<p><strong><%= render "player_name", game_state: @game_state, game: @game, player: @current_player %> | Your Hand (<%= player_state.hand.count %> cards):</strong></p>
+<p><strong><%= player_name(@current_player) %> | Your Hand (<%= player_state.hand.count %> cards):</strong></p>
 
 <div class="player-hand">
 

@@ -3,11 +3,7 @@
     <h1>Durak / Game <%= @game.id %></h1>
 
     Current Player (SESSION):
-    <% if @current_player == @game.players.first %>
-      Player 1
-    <% else %>
-      Player 2
-    <% end %>
+    <%= player_name(@current_player) %>
 
     <% unless @game_state.over? %>
       <div class="opponent-hand">

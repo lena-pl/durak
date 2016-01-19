@@ -22,8 +22,8 @@ describe "Full Game" do
     expect(game_state.table.cards).to eq [cards(:spades_7)]
     expect(player_two_hand.cards.count).to eq 5
     expect(player_two_hand.cards).to_not include cards(:spades_7)
-    expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:spades_7)
-    expect(game_state.table.arranged.first[:defending_card]).to be_nil
+    expect(game_state.table.arranged.first.attacking_card).to eq cards(:spades_7)
+    expect(game_state.table.arranged.first.defending_card).to be_nil
 
     test_game.defend(player_one, cards(:spades_13), attack_step)
     game.reload
@@ -31,8 +31,8 @@ describe "Full Game" do
     expect(game_state.table.cards).to eq [cards(:spades_7), cards(:spades_13)]
     expect(player_one_hand.cards.count).to eq 5
     expect(player_one_hand.cards).to_not include cards(:spades_13)
-    expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:spades_7)
-    expect(game_state.table.arranged.first[:defending_card]).to eq cards(:spades_13)
+    expect(game_state.table.arranged.first.attacking_card).to eq cards(:spades_7)
+    expect(game_state.table.arranged.first.defending_card).to eq cards(:spades_13)
 
     test_game.discard(player_two)
     game.reload
@@ -62,8 +62,8 @@ describe "Full Game" do
     expect(game_state.table.cards).to eq [cards(:spades_6)]
     expect(player_one_hand.cards.count).to eq 5
     expect(player_one_hand.cards).to_not include cards(:spades_6)
-    expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:spades_6)
-    expect(game_state.table.arranged.first[:defending_card]).to be_nil
+    expect(game_state.table.arranged.first.attacking_card).to eq cards(:spades_6)
+    expect(game_state.table.arranged.first.defending_card).to be_nil
 
     test_game.defend(player_two, cards(:spades_10), attack_step)
     game.reload
@@ -71,8 +71,8 @@ describe "Full Game" do
     expect(game_state.table.cards).to eq [cards(:spades_6), cards(:spades_10)]
     expect(player_two_hand.cards.count).to eq 5
     expect(player_two_hand.cards).to_not include cards(:spades_10)
-    expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:spades_6)
-    expect(game_state.table.arranged.first[:defending_card]).to eq cards(:spades_10)
+    expect(game_state.table.arranged.first.attacking_card).to eq cards(:spades_6)
+    expect(game_state.table.arranged.first.defending_card).to eq cards(:spades_10)
 
     test_game.discard(player_one)
     game.reload
@@ -102,8 +102,8 @@ describe "Full Game" do
     expect(game_state.table.cards).to eq [cards(:hearts_6)]
     expect(player_two_hand.cards.count).to eq 5
     expect(player_two_hand.cards).to_not include cards(:hearts_6)
-    expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:hearts_6)
-    expect(game_state.table.arranged.first[:defending_card]).to be_nil
+    expect(game_state.table.arranged.first.attacking_card).to eq cards(:hearts_6)
+    expect(game_state.table.arranged.first.defending_card).to be_nil
 
     test_game.defend(player_one, cards(:hearts_7), attack_step)
     game.reload
@@ -111,8 +111,8 @@ describe "Full Game" do
     expect(game_state.table.cards).to eq [cards(:hearts_6), cards(:hearts_7)]
     expect(player_one_hand.cards.count).to eq 5
     expect(player_one_hand.cards).to_not include cards(:hearts_7)
-    expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:hearts_6)
-    expect(game_state.table.arranged.first[:defending_card]).to eq cards(:hearts_7)
+    expect(game_state.table.arranged.first.attacking_card).to eq cards(:hearts_6)
+    expect(game_state.table.arranged.first.defending_card).to eq cards(:hearts_7)
 
     test_game.discard(player_two)
     game.reload
@@ -142,8 +142,8 @@ describe "Full Game" do
     expect(game_state.table.cards).to eq [cards(:hearts_8)]
     expect(player_one_hand.cards.count).to eq 5
     expect(player_one_hand.cards).to_not include cards(:hearts_8)
-    expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:hearts_8)
-    expect(game_state.table.arranged.first[:defending_card]).to be_nil
+    expect(game_state.table.arranged.first.attacking_card).to eq cards(:hearts_8)
+    expect(game_state.table.arranged.first.defending_card).to be_nil
 
     test_game.defend(player_two, cards(:hearts_12), attack_step)
     game.reload
@@ -151,8 +151,8 @@ describe "Full Game" do
     expect(game_state.table.cards).to eq [cards(:hearts_8), cards(:hearts_12)]
     expect(player_two_hand.cards.count).to eq 5
     expect(player_two_hand.cards).to_not include cards(:hearts_12)
-    expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:hearts_8)
-    expect(game_state.table.arranged.first[:defending_card]).to eq cards(:hearts_12)
+    expect(game_state.table.arranged.first.attacking_card).to eq cards(:hearts_8)
+    expect(game_state.table.arranged.first.defending_card).to eq cards(:hearts_12)
 
     attack_step = test_game.attack(player_one, cards(:diamonds_12))
     game.reload
@@ -162,8 +162,8 @@ describe "Full Game" do
                                           cards(:diamonds_12)]
     expect(player_one_hand.cards.count).to eq 4
     expect(player_one_hand.cards).to_not include cards(:diamonds_12)
-    expect(game_state.table.arranged.second[:attacking_card]).to eq cards(:diamonds_12)
-    expect(game_state.table.arranged.second[:defending_card]).to be_nil
+    expect(game_state.table.arranged.second.attacking_card).to eq cards(:diamonds_12)
+    expect(game_state.table.arranged.second.defending_card).to be_nil
 
     test_game.defend(player_two, cards(:clubs_7), attack_step)
     game.reload
@@ -174,8 +174,8 @@ describe "Full Game" do
                                           cards(:clubs_7)]
     expect(player_two_hand.cards.count).to eq 4
     expect(player_two_hand.cards).to_not include cards(:clubs_7)
-    expect(game_state.table.arranged.second[:attacking_card]).to eq cards(:diamonds_12)
-    expect(game_state.table.arranged.second[:defending_card]).to eq cards(:clubs_7)
+    expect(game_state.table.arranged.second.attacking_card).to eq cards(:diamonds_12)
+    expect(game_state.table.arranged.second.defending_card).to eq cards(:clubs_7)
 
     test_game.discard(player_one)
     game.reload
@@ -220,8 +220,8 @@ describe "Full Game" do
     expect(game_state.table.cards).to eq [cards(:hearts_11)]
     expect(player_two_hand.cards.count).to eq 5
     expect(player_two_hand.cards).to_not include cards(:hearts_11)
-    expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:hearts_11)
-    expect(game_state.table.arranged.first[:defending_card]).to be_nil
+    expect(game_state.table.arranged.first.attacking_card).to eq cards(:hearts_11)
+    expect(game_state.table.arranged.first.defending_card).to be_nil
 
     test_game.defend(player_one, cards(:hearts_14), attack_step)
     game.reload
@@ -230,8 +230,8 @@ describe "Full Game" do
                                           cards(:hearts_14)]
     expect(player_one_hand.cards.count).to eq 5
     expect(player_one_hand.cards).to_not include cards(:hearts_14)
-    expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:hearts_11)
-    expect(game_state.table.arranged.first[:defending_card]).to eq cards(:hearts_14)
+    expect(game_state.table.arranged.first.attacking_card).to eq cards(:hearts_11)
+    expect(game_state.table.arranged.first.defending_card).to eq cards(:hearts_14)
 
     attack_step = test_game.attack(player_two, cards(:spades_11))
     game.reload
@@ -241,8 +241,8 @@ describe "Full Game" do
                                           cards(:spades_11)]
     expect(player_two_hand.cards.count).to eq 4
     expect(player_two_hand.cards).to_not include cards(:spades_11)
-    expect(game_state.table.arranged.second[:attacking_card]).to eq cards(:spades_11)
-    expect(game_state.table.arranged.second[:defending_card]).to be_nil
+    expect(game_state.table.arranged.second.attacking_card).to eq cards(:spades_11)
+    expect(game_state.table.arranged.second.defending_card).to be_nil
 
     test_game.defend(player_one, cards(:spades_14), attack_step)
     game.reload
@@ -253,8 +253,8 @@ describe "Full Game" do
                                           cards(:spades_14)]
     expect(player_one_hand.cards.count).to eq 4
     expect(player_one_hand.cards).to_not include cards(:spades_14)
-    expect(game_state.table.arranged.second[:attacking_card]).to eq cards(:spades_11)
-    expect(game_state.table.arranged.second[:defending_card]).to eq cards(:spades_14)
+    expect(game_state.table.arranged.second.attacking_card).to eq cards(:spades_11)
+    expect(game_state.table.arranged.second.defending_card).to eq cards(:spades_14)
 
     attack_step = test_game.attack(player_two, cards(:diamonds_11))
     game.reload
@@ -266,8 +266,8 @@ describe "Full Game" do
                                           cards(:diamonds_11)]
     expect(player_two_hand.cards.count).to eq 3
     expect(player_two_hand.cards).to_not include cards(:diamonds_11)
-    expect(game_state.table.arranged.third[:attacking_card]).to eq cards(:diamonds_11)
-    expect(game_state.table.arranged.third[:defending_card]).to be_nil
+    expect(game_state.table.arranged.third.attacking_card).to eq cards(:diamonds_11)
+    expect(game_state.table.arranged.third.defending_card).to be_nil
 
     test_game.defend(player_one, cards(:clubs_9), attack_step)
     game.reload
@@ -280,8 +280,8 @@ describe "Full Game" do
                                           cards(:clubs_9)]
     expect(player_one_hand.cards.count).to eq 3
     expect(player_one_hand.cards).to_not include cards(:clubs_9)
-    expect(game_state.table.arranged.third[:attacking_card]).to eq cards(:diamonds_11)
-    expect(game_state.table.arranged.third[:defending_card]).to eq cards(:clubs_9)
+    expect(game_state.table.arranged.third.attacking_card).to eq cards(:diamonds_11)
+    expect(game_state.table.arranged.third.defending_card).to eq cards(:clubs_9)
 
     attack_step = test_game.attack(player_two, cards(:diamonds_9))
     game.reload
@@ -295,8 +295,8 @@ describe "Full Game" do
                                           cards(:diamonds_9)]
     expect(player_two_hand.cards.count).to eq 2
     expect(player_two_hand.cards).to_not include cards(:diamonds_9)
-    expect(game_state.table.arranged.fourth[:attacking_card]).to eq cards(:diamonds_9)
-    expect(game_state.table.arranged.fourth[:defending_card]).to be_nil
+    expect(game_state.table.arranged.fourth.attacking_card).to eq cards(:diamonds_9)
+    expect(game_state.table.arranged.fourth.defending_card).to be_nil
 
     test_game.defend(player_one, cards(:clubs_13), attack_step)
     game.reload
@@ -311,8 +311,8 @@ describe "Full Game" do
                                           cards(:clubs_13)]
     expect(player_one_hand.cards.count).to eq 2
     expect(player_one_hand.cards).to_not include cards(:clubs_13)
-    expect(game_state.table.arranged.fourth[:attacking_card]).to eq cards(:diamonds_9)
-    expect(game_state.table.arranged.fourth[:defending_card]).to eq cards(:clubs_13)
+    expect(game_state.table.arranged.fourth.attacking_card).to eq cards(:diamonds_9)
+    expect(game_state.table.arranged.fourth.defending_card).to eq cards(:clubs_13)
 
     attack_step = test_game.attack(player_two, cards(:diamonds_13))
     game.reload
@@ -328,8 +328,8 @@ describe "Full Game" do
                                           cards(:diamonds_13)]
     expect(player_two_hand.cards.count).to eq 1
     expect(player_two_hand.cards).to_not include cards(:diamonds_13)
-    expect(game_state.table.arranged.fifth[:attacking_card]).to eq cards(:diamonds_13)
-    expect(game_state.table.arranged.fifth[:defending_card]).to be_nil
+    expect(game_state.table.arranged.fifth.attacking_card).to eq cards(:diamonds_13)
+    expect(game_state.table.arranged.fifth.defending_card).to be_nil
 
     test_game.defend(player_one, cards(:clubs_14), attack_step)
     game.reload
@@ -346,8 +346,8 @@ describe "Full Game" do
                                           cards(:clubs_14)]
     expect(player_one_hand.cards.count).to eq 1
     expect(player_one_hand.cards).to_not include cards(:clubs_14)
-    expect(game_state.table.arranged.fifth[:attacking_card]).to eq cards(:diamonds_13)
-    expect(game_state.table.arranged.fifth[:defending_card]).to eq cards(:clubs_14)
+    expect(game_state.table.arranged.fifth.attacking_card).to eq cards(:diamonds_13)
+    expect(game_state.table.arranged.fifth.defending_card).to eq cards(:clubs_14)
 
     test_game.discard(player_two)
     game.reload
@@ -444,8 +444,8 @@ describe "Full Game" do
     expect(game_state.table.cards).to eq [cards(:diamonds_7)]
     expect(player_one_hand.cards.count).to eq 5
     expect(player_one_hand.cards).to_not include cards(:diamonds_7)
-    expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:diamonds_7)
-    expect(game_state.table.arranged.first[:defending_card]).to be_nil
+    expect(game_state.table.arranged.first.attacking_card).to eq cards(:diamonds_7)
+    expect(game_state.table.arranged.first.defending_card).to be_nil
 
     test_game.defend(player_two, cards(:clubs_8), attack_step)
     game.reload
@@ -453,8 +453,8 @@ describe "Full Game" do
     expect(game_state.table.cards).to eq [cards(:diamonds_7), cards(:clubs_8)]
     expect(player_two_hand.cards.count).to eq 5
     expect(player_two_hand.cards).to_not include cards(:clubs_8)
-    expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:diamonds_7)
-    expect(game_state.table.arranged.first[:defending_card]).to eq cards(:clubs_8)
+    expect(game_state.table.arranged.first.attacking_card).to eq cards(:diamonds_7)
+    expect(game_state.table.arranged.first.defending_card).to eq cards(:clubs_8)
 
     attack_step = test_game.attack(player_one, cards(:diamonds_8))
     game.reload
@@ -464,8 +464,8 @@ describe "Full Game" do
                                           cards(:diamonds_8)]
     expect(player_one_hand.cards.count).to eq 4
     expect(player_one_hand.cards).to_not include cards(:diamonds_8)
-    expect(game_state.table.arranged.second[:attacking_card]).to eq cards(:diamonds_8)
-    expect(game_state.table.arranged.second[:defending_card]).to be_nil
+    expect(game_state.table.arranged.second.attacking_card).to eq cards(:diamonds_8)
+    expect(game_state.table.arranged.second.defending_card).to be_nil
 
     test_game.defend(player_two, cards(:clubs_10), attack_step)
     game.reload
@@ -476,8 +476,8 @@ describe "Full Game" do
                                           cards(:clubs_10)]
     expect(player_two_hand.cards.count).to eq 4
     expect(player_two_hand.cards).to_not include cards(:clubs_10)
-    expect(game_state.table.arranged.second[:attacking_card]).to eq cards(:diamonds_8)
-    expect(game_state.table.arranged.second[:defending_card]).to eq cards(:clubs_10)
+    expect(game_state.table.arranged.second.attacking_card).to eq cards(:diamonds_8)
+    expect(game_state.table.arranged.second.defending_card).to eq cards(:clubs_10)
 
     test_game.discard(player_one)
     game.reload
@@ -522,8 +522,8 @@ describe "Full Game" do
     expect(game_state.table.cards).to eq [cards(:diamonds_10)]
     expect(player_two_hand.cards.count).to eq 5
     expect(player_two_hand.cards).to_not include cards(:diamonds_10)
-    expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:diamonds_10)
-    expect(game_state.table.arranged.first[:defending_card]).to be_nil
+    expect(game_state.table.arranged.first.attacking_card).to eq cards(:diamonds_10)
+    expect(game_state.table.arranged.first.defending_card).to be_nil
 
     test_game.defend(player_one, cards(:diamonds_14), attack_step)
     game.reload
@@ -532,8 +532,8 @@ describe "Full Game" do
                                           cards(:diamonds_14)]
     expect(player_one_hand.cards.count).to eq 5
     expect(player_one_hand.cards).to_not include cards(:diamonds_14)
-    expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:diamonds_10)
-    expect(game_state.table.arranged.first[:defending_card]).to eq cards(:diamonds_14)
+    expect(game_state.table.arranged.first.attacking_card).to eq cards(:diamonds_10)
+    expect(game_state.table.arranged.first.defending_card).to eq cards(:diamonds_14)
 
     attack_step = test_game.attack(player_two, cards(:hearts_10))
     game.reload
@@ -543,8 +543,8 @@ describe "Full Game" do
                                           cards(:hearts_10)]
     expect(player_two_hand.cards.count).to eq 4
     expect(player_two_hand.cards).to_not include cards(:hearts_10)
-    expect(game_state.table.arranged.second[:attacking_card]).to eq cards(:hearts_10)
-    expect(game_state.table.arranged.second[:defending_card]).to be_nil
+    expect(game_state.table.arranged.second.attacking_card).to eq cards(:hearts_10)
+    expect(game_state.table.arranged.second.defending_card).to be_nil
 
     test_game.defend(player_one, cards(:clubs_11), attack_step)
     game.reload
@@ -555,8 +555,8 @@ describe "Full Game" do
                                           cards(:clubs_11)]
     expect(player_one_hand.cards.count).to eq 4
     expect(player_one_hand.cards).to_not include cards(:clubs_11)
-    expect(game_state.table.arranged.second[:attacking_card]).to eq cards(:hearts_10)
-    expect(game_state.table.arranged.second[:defending_card]).to eq cards(:clubs_11)
+    expect(game_state.table.arranged.second.attacking_card).to eq cards(:hearts_10)
+    expect(game_state.table.arranged.second.defending_card).to eq cards(:clubs_11)
 
     test_game.discard(player_two)
     game.reload
@@ -573,8 +573,8 @@ describe "Full Game" do
     expect(game_state.table.cards).to eq [cards(:diamonds_6)]
     expect(player_one_hand.cards.count).to eq 3
     expect(player_one_hand.cards).to_not include cards(:diamonds_6)
-    expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:diamonds_6)
-    expect(game_state.table.arranged.first[:defending_card]).to be_nil
+    expect(game_state.table.arranged.first.attacking_card).to eq cards(:diamonds_6)
+    expect(game_state.table.arranged.first.defending_card).to be_nil
 
     test_game.defend(player_two, cards(:clubs_6), attack_step)
     game.reload
@@ -582,8 +582,8 @@ describe "Full Game" do
     expect(game_state.table.cards).to eq [cards(:diamonds_6), cards(:clubs_6)]
     expect(player_two_hand.cards.count).to eq 3
     expect(player_two_hand.cards).to_not include cards(:clubs_6)
-    expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:diamonds_6)
-    expect(game_state.table.arranged.first[:defending_card]).to eq cards(:clubs_6)
+    expect(game_state.table.arranged.first.attacking_card).to eq cards(:diamonds_6)
+    expect(game_state.table.arranged.first.defending_card).to eq cards(:clubs_6)
 
     test_game.discard(player_one)
     game.reload
@@ -600,8 +600,8 @@ describe "Full Game" do
     expect(game_state.table.cards).to eq [cards(:spades_8)]
     expect(player_two_hand.cards.count).to eq 2
     expect(player_two_hand.cards).to_not include cards(:spades_8)
-    expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:spades_8)
-    expect(game_state.table.arranged.first[:defending_card]).to be_nil
+    expect(game_state.table.arranged.first.attacking_card).to eq cards(:spades_8)
+    expect(game_state.table.arranged.first.defending_card).to be_nil
 
     test_game.defend(player_one, cards(:spades_9), attack_step)
     game.reload
@@ -610,8 +610,8 @@ describe "Full Game" do
                                           cards(:spades_9)]
     expect(player_one_hand.cards.count).to eq 2
     expect(player_one_hand.cards).to_not include cards(:spades_9)
-    expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:spades_8)
-    expect(game_state.table.arranged.first[:defending_card]).to eq cards(:spades_9)
+    expect(game_state.table.arranged.first.attacking_card).to eq cards(:spades_8)
+    expect(game_state.table.arranged.first.defending_card).to eq cards(:spades_9)
 
     test_game.discard(player_two)
     game.reload
@@ -628,8 +628,8 @@ describe "Full Game" do
     expect(game_state.table.cards).to eq [cards(:hearts_9)]
     expect(player_one_hand.cards.count).to eq 1
     expect(player_one_hand.cards).to_not include cards(:hearts_9)
-    expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:hearts_9)
-    expect(game_state.table.arranged.first[:defending_card]).to be_nil
+    expect(game_state.table.arranged.first.attacking_card).to eq cards(:hearts_9)
+    expect(game_state.table.arranged.first.defending_card).to be_nil
 
     test_game.defend(player_two, cards(:hearts_13), attack_step)
     game.reload
@@ -637,8 +637,8 @@ describe "Full Game" do
     expect(game_state.table.cards).to eq [cards(:hearts_9), cards(:hearts_13)]
     expect(player_two_hand.cards.count).to eq 1
     expect(player_two_hand.cards).to_not include cards(:hearts_13)
-    expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:hearts_9)
-    expect(game_state.table.arranged.first[:defending_card]).to eq cards(:hearts_13)
+    expect(game_state.table.arranged.first.attacking_card).to eq cards(:hearts_9)
+    expect(game_state.table.arranged.first.defending_card).to eq cards(:hearts_13)
 
     test_game.discard(player_one)
     game.reload
@@ -659,8 +659,8 @@ describe "Full Game" do
     expect(game_state.table.cards).to eq [cards(:clubs_12)]
     expect(player_two_hand.cards).to be_empty
     expect(player_two_hand.cards).to_not include cards(:clubs_12)
-    expect(game_state.table.arranged.first[:attacking_card]).to eq cards(:clubs_12)
-    expect(game_state.table.arranged.first[:defending_card]).to be_nil
+    expect(game_state.table.arranged.first.attacking_card).to eq cards(:clubs_12)
+    expect(game_state.table.arranged.first.defending_card).to be_nil
 
     test_game.pick_up_from_table(player_one)
     game.reload

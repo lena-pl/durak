@@ -31,10 +31,10 @@ class GameState
     else
       last_attack_defend_pair = @table.arranged.last
 
-      if last_attack_defend_pair[:defending_card].nil?
-        defender
-      else
+      if last_attack_defend_pair.defended?
         attacker
+      else
+        defender
       end
     end
   end

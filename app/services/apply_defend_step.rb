@@ -33,13 +33,8 @@ class ApplyDefendStep
   private
 
   def already_defended_against?(card)
-    attack_defend_pair = @game_state.table.arranged.find { |pair| pair[:attacking_card] == card }
+    attack_defend_pair = @game_state.table.arranged.find { |pair| pair.attacking_card == card }
 
-    if attack_defend_pair.nil?
-      false
-    else
-      defending_card = attack_defend_pair[:defending_card]
-      !defending_card.nil?
-    end
+    attack_defend_pair.try!(:defending_card).present?
   end
 end

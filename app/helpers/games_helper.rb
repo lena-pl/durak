@@ -1,4 +1,7 @@
 module GamesHelper
+  CARD_NAMES = {11 => "J", 12 => "Q", 13 => "K", 14 => "A"}
+  RED_CARDS = %w(hearts diamonds)
+
   def player_name(player)
     if player == @game.players.first
       "Player 1"
@@ -16,7 +19,7 @@ module GamesHelper
   end
 
   def suit_colour(suit)
-    if suit == "hearts" || suit == "diamonds"
+    if RED_CARDS.include?(suit)
       "red"
     else
       "black"
@@ -24,24 +27,15 @@ module GamesHelper
   end
 
   def display_rank(rank)
-    return rank unless rank > 10
-
-    if rank == 11
-      "J"
-    elsif rank == 12
-      "Q"
-    elsif rank == 13
-      "K"
-    elsif rank == 14
-      "A"
-    end
+    CARD_NAMES.fetch(rank, rank)
   end
 
+  #TODO entities not ascii
   def display_suit_ascii(suit)
     if suit == "diamonds"
-      "&diams;"
+      "&diams;".html_safe
     else
-      "&#{suit};"
+      "&#{suit};".html_safe
     end
   end
 end

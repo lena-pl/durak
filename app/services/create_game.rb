@@ -5,10 +5,9 @@ class CreateGame
 
   def call
     game = Game.new(trump_card: @trump_card)
-    2.times { game.players.new }
+    game.players.new(connected: true)
+    game.players.new
     game.save!
-
-    game.players.first.update_attributes!(connected: true)
 
     game_state = BuildGameState.new(game).call
     DealCards.new(game_state).call

@@ -44,14 +44,12 @@ class GameState
   end
 
   def durak
-    durak_found? ? hands_with_cards.first.player : nil
+    hands_with_cards.first.player if durak_found?
   end
 
   def winner
     if durak_found?
       @player_states.find { |player_state| player_state.player != durak }.player
-    else
-      nil
     end
   end
 
@@ -66,6 +64,6 @@ class GameState
   end
 
   def hands_with_cards
-    @player_states.select { |player_state| !player_state.hand.empty? }
+    @player_states.select { |player_state| player_state.hand.present? }
   end
 end

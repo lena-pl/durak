@@ -39,6 +39,6 @@ class ApplyDealStep
         lowest_trump: player_state.lowest_card_with_suit(@game_state.trump_card.suit) }
     end
 
-    lowest_trumps.reject { |lowest_trump| lowest_trump[:lowest_trump].nil? }
+    lowest_trumps.select { |lowest_trump| lowest_trump[:lowest_trump] }
   end
 end

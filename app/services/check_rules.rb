@@ -101,7 +101,7 @@ class CheckRules
   end
 
   def start_of_game?(previous_steps)
-    !previous_steps.map(&:kind).include? Step::ATTACK
+    previous_steps.none?(&:attack?)
   end
 
   def attacker_drew_from_deck?(last_step)

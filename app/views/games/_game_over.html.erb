@@ -1,0 +1,16 @@
+<h2>Result:</h2>
+<% if @game_state.tie? %>
+  <p>It's a tie!</p>
+<% else %>
+  <b>Winner:</b>
+  Player <%= @game_state.winner.id %>
+  <br>
+  <b>Durak:</b>
+  Player <%= @game_state.durak.id %>
+<% end %>
+
+<div class="new-game">
+  <%= form_for Game.new do |f| %>
+    <%= f.submit "New Game", :class => 'button' %>
+  <% end %>
+</div>

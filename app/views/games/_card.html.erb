@@ -1,15 +1,15 @@
 <div class="card <%= suit_colour(suit) %>">
   <div class="panel top">
     <div class="rank"><%= display_rank(rank) %></div>
-    <%= display_suit_ascii(suit).html_safe %>
+    <%= display_suit_ascii(suit) %>
   </div>
 
   <div class="content">
-    <div class="suit"><%= display_suit_ascii(suit).html_safe %></div>
+    <div class="suit"><%= display_suit_ascii(suit) %></div>
   </div>
 
   <div class="panel bottom">
     <div class="rank"><%= display_rank(rank) %></div>
-    <%= display_suit_ascii(suit).html_safe %>
+    <%= display_suit_ascii(suit) %>
   </div>
 </div>

@@ -5,53 +5,6 @@
     Current Player (SESSION):
     <%= player_name(@current_player) %>
 
-    <% unless @game_state.over? %>
-      <div class="opponent-hand">
-        <%= render "opponent_hand", game_state: @game_state, current_player: @current_player %>
-      </div>
-
-      <div class="row">
-        <div class="game-information">
-          <%= render "game_information", game_state: @game_state, game: @game, current_player: @current_player %>
-        </div>
-
-        <div class="table">
-          <%= render "table", game_state: @game_state %>
-        </div>
-      </div>
-
-      <% if flash.alert %>
-        <div class="alert"><%= flash.alert %></div>
-      <% end %>
-
-      <div class="current-player-hand">
-        <%= render "current_player_hand", game_state: @game_state, current_player: @current_player %>
-      </div>
-
-      <div class="controls">
-        <%= render "attack_defend_controls", game_state: @game_state %>
-
-        <%= render "discard_pickup_controls", game_state: @game_state, current_player: @current_player %>
-      </div>
-
-    <% else %>
-      <h2>Result:</h2>
-      <% if @game_state.tie? %>
-        <p>It's a tie!</p>
-      <% else %>
-        <b>Winner:</b>
-        Player <%= @game_state.winner.id %>
-        <br>
-        <b>Durak:</b>
-        Player <%= @game_state.durak.id %>
-      <% end %>
-
-      <div class="new-game">
-        <%= form_for Game.new do |f| %>
-          <%= f.submit "New Game", :class => 'button' %>
-        <% end %>
-      </div>
-
-    </div>
+    <%= !@game_state.over? ? (render "game_in_progress", game: @game, game_state: @game_state, current_player: @current_player) : (render "game_over", game_state: @game_state) %>
   </div>
-<% end %>
+</div>

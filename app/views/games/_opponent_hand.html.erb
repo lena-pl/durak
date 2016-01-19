@@ -1,4 +1,11 @@
-<p><strong><%= player_name(opponent) %> | Their Hand (<%= @game_state.player_state_for_player(opponent).hand.count %> cards):</strong></p>
+<p>
+  <strong>
+    <%= player_name(opponent) %>
+    |
+    Their Hand
+    (<%= pluralize @game_state.player_state_for_player(opponent).hand.count, 'card' %>):
+  </strong>
+</p>
 
 <div class="player-hand">
   <% @game_state.player_state_for_player(opponent).hand.cards.each do |card| %>

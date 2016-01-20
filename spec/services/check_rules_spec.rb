@@ -24,8 +24,10 @@ RSpec.describe CheckRules do
       context "start of game (no attack moves made yet)" do
         it "defender tries to attack and fails rules" do
           illegal_step = defender.steps.create!(kind: :attack, card: cards(:spades_8))
+          subject = CheckRules.new(illegal_step, game_state, game)
 
-          expect(CheckRules.new(illegal_step, game_state, game).call).to eq false
+          expect(subject.call).to eq false
+          expect(subject.errors).to include "It's not your turn right now!"
         end
       end
 
@@ -37,13 +39,10 @@ RSpec.describe CheckRules do
         it "the attacker tries to move for the second time in a row and fails rules" do
           illegal_step = attacker.steps.create!(kind: :attack, card: cards(:hearts_10))
 
-          expect(CheckRules.new(illegal_step, game_state, game).call).to eq false
-        end
+          subject = CheckRules.new(illegal_step, game_state, game)
 
-        it "the defender tries to attack and fails rules" do
-          illegal_step = defender.steps.create!(kind: :attack, card: cards(:spades_9))
-
-          expect(CheckRules.new(illegal_step, game_state, game).call).to eq false
+          expect(subject.call).to eq false
+          expect(subject.errors).to include "It's not your turn right now!"
         end
       end
     end
@@ -96,13 +95,19 @@ RSpec.describe CheckRules do
         it "the defending suit abides by rules, but the rank does not so rules fail" do
           defend_step = defender.steps.create!(kind: :defend, card: cards(:spades_6), in_response_to_step: game.steps.last )
 
-          expect(CheckRules.new(defend_step, game_state, game).call).to eq false
+          subject = CheckRules.new(defend_step, game_state, game)
+
+          expect(subject.call).to eq false
+          expect(subject.errors).to include "You must defend with a card of higher rank or a trump!"
         end
 
         it "the defending rank abides by rules, but suit does not so rules fail" do
           defend_step = defender.steps.create!(kind: :defend, card: cards(:diamonds_9), in_response_to_step: game.steps.last )
 
-          expect(CheckRules.new(defend_step, game_state, game).call).to eq false
+          subject = CheckRules.new(defend_step, game_state, game)
+
+          expect(subject.call).to eq false
+          expect(subject.errors).to include "You must defend with a card of the same suit or a trump!"
         end
 
         context "the attacking card is a non-trump ace" do
@@ -138,7 +143,10 @@ RSpec.describe CheckRules do
           it "the defending suit abides by rules, but rank does not" do
             defend_step = defender.steps.create!(kind: :defend, card: cards(:hearts_7), in_response_to_step: game.steps.last )
 
-            expect(CheckRules.new(defend_step, game_state, game).call).to eq false
+            subject = CheckRules.new(defend_step, game_state, game)
+
+            expect(subject.call).to eq false
+            expect(subject.errors).to include "You must defend with a card of higher rank or a trump!"
           end
         end
       end
@@ -166,7 +174,10 @@ RSpec.describe CheckRules do
           it "the attacking rank does not abide by the rules" do
             next_attack_step = attacker.steps.create!(kind: :attack, card: cards(:hearts_10))
 
-            expect(CheckRules.new(next_attack_step, game_state, game).call).to eq false
+            subject = CheckRules.new(next_attack_step, game_state, game)
+
+            expect(subject.call).to eq false
+            expect(subject.errors).to include "You must attack with one of the ranks already on the table!"
           end
 
           context "there are not enough cards in defender's hand to defend" do
@@ -178,7 +189,10 @@ RSpec.describe CheckRules do
             it "the defender may not attack, even if the attacking card rank abides by rules" do
               next_attack_step = attacker.steps.create!(kind: :attack, card: cards(:clubs_9))
 
-              expect(CheckRules.new(next_attack_step, game_state, game).call).to eq false
+              subject = CheckRules.new(next_attack_step, game_state, game)
+
+              expect(subject.call).to eq false
+              expect(subject.errors).to include "The defender doesn't have enough cards in their hand!"
             end
           end
         end

@@ -17,6 +17,14 @@ class GameState
     @player_states.find { |player_state| player_state.player == player }
   end
 
+  def pick_up_allowed?(player)
+    player == defender && @table.count % 2 != 0
+  end
+
+  def discard_allowed?(player)
+    player == attacker && @table.count % 2 == 0
+  end
+
   def tie?
     final_phase? && hands_with_cards.empty?
   end

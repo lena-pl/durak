@@ -1,0 +1,17 @@
+class ConnectPlayer
+  def initialize(game, session)
+    @game = game
+    @session = session
+  end
+
+  def call
+    if @game.players.first.connected && @game.players.second.connected
+      :full
+    else
+      @game.players.second.update_attributes!(connected: true)
+      @current_player = @game.players.second
+      @session[:current_player_token] = @current_player.token
+      :ok
+    end
+  end
+end

@@ -25,10 +25,13 @@ class GamesController < ApplicationController
 
   def join
     @game = Game.find(params[:id])
-    @game.players.second.update_attributes!(connected: true)
-    @current_player = @game.players.second
-    session[:current_player_token] = @current_player.token
 
-    redirect_to controller: 'games', action: 'show', id: @game.id
+    connect = ConnectPlayer.new(@game, session).call
+
+    if connect == :ok
+      redirect_to @game
+    elsif connect == :full
+      render :game_full
+    end
   end
 end

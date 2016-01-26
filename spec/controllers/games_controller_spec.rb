@@ -41,7 +41,7 @@ RSpec.describe GamesController, type: :controller do
     subject { get :show, id: game.id }
 
     before do
-      session[:current_player_token] = player_one.token
+      session["game_#{game.id}_token".to_sym] = player_one.token
     end
 
     it "assigns the current player" do

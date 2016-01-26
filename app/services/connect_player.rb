@@ -10,7 +10,7 @@ class ConnectPlayer
     else
       @game.players.second.update_attributes!(connected: true)
       @current_player = @game.players.second
-      @session[:current_player_token] = @current_player.token
+      @session["game_#{@game.id}_token".to_sym] = @current_player.token
       :ok
     end
   end

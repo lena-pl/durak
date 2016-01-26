@@ -85,17 +85,29 @@ RSpec.describe GamesController, type: :controller do
   end
 
   describe "GET #join" do
+    context "when the game is not full" do
+      before do
+        game.players.first.update_attributes!(connected: true)
+      end
 
-    it "connects the second player" do
-      get :join, id: game.id
+      it 'redirects to show page' do
+        get :join, id: game.id
 
-      expect(game.players.second.connected).to eq true
+        expect(response).to redirect_to(controller: 'games', action: 'show', id: game.id)
+      end
     end
 
-    it 'redirects to show page' do
-      get :join, id: game.id
+    context "when the game is full" do
+      before do
+        game.players.first.update_attributes!(connected: true)
+        game.players.second.update_attributes!(connected: true)
+      end
 
-      expect(response).to redirect_to(redirect_to controller: 'games', action: 'show', id: game.id)
+      it 'redirects to game full page' do
+        get :join, id: game.id
+
+        expect(response).to render_template(:game_full)
+      end
     end
   end
 end

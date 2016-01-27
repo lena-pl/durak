@@ -3,73 +3,75 @@ require 'rails_helper'
 RSpec.describe StepsController, type: :controller do
   fixtures :cards
 
-  describe "POST create" do
-    #TODO: write step controller tests
-  end
+  let(:game) { Game.create!(trump_card: cards(:hearts_6)) }
+  let!(:player_one) { game.players.create! }
+  let!(:player_two) { game.players.create! }
 
-  # describe "POST create" do
-  #   let(:card) { cards(:hearts_7) }
-  #   let(:game) { Game.create!(trump_card: card) }
-  #   let(:game_state) { BuildGameState.new(game).call }
-  #   let!(:player_one) { game.players.create! }
-  #   let!(:player_two) { game.players.create! }
-  #
-  #   context 'when the step kind is not :discard or :pick_up_from_table' do
-  #     before do
-  #       player_one.steps.create!(kind: :draw_from_deck, card: card)
-  #     end
-  #
-  #     it 'does not call draw cards service' do
-  #       expect_any_instance_of(DrawCards).to_not receive(:call)
-  #
-  #       post_create(:attack)
-  #     end
-  #   end
-  #
-  #   context 'when the step kind is :pick_up_from_table' do
-  #     before do
-  #       player_one.steps.create!(kind: :deal, card: cards(:hearts_6))
-  #       player_one.steps.create!(kind: :attack, card: cards(:hearts_6))
-  #     end
-  #
-  #     it 'calls build game state service exactly once' do
-  #       expect_any_instance_of(BuildGameState).to receive(:call).once.and_return(game_state)
-  #
-  #       post_create(:pick_up_from_table, player_two)
-  #     end
-  #
-  #     it 'calls complete turn service exactly once' do
-  #       expect_any_instance_of(CompleteTurn).to receive(:call).once
-  #
-  #       post_create(:pick_up_from_table, player_two)
-  #     end
-  #   end
-  #
-  #   context 'when the step kind is :discard' do
-  #     before do
-  #       player_one.steps.create!(kind: :deal, card: cards(:hearts_6))
-  #       player_two.steps.create!(kind: :deal, card: cards(:hearts_7))
-  #       attack = player_one.steps.create!(kind: :attack, card: cards(:hearts_6))
-  #       player_two.steps.create!(kind: :defend, card: cards(:hearts_7), in_response_to_step: attack)
-  #     end
-  #
-  #     it 'calls build game state service exactly once' do
-  #       expect_any_instance_of(BuildGameState).to receive(:call).once.and_return(game_state)
-  #
-  #       post_create(:discard, player_one)
-  #     end
-  #
-  #     it 'calls complete turn service exactly once' do
-  #       expect_any_instance_of(CompleteTurn).to receive(:call).once
-  #
-  #       post_create(:discard, player_one)
-  #     end
-  #   end
-  # end
-  #
-  # def post_create(kind, player = player_one, in_response_to_step = nil)
-  #   post :create, game_id: game, player_id: player, step: { kind: kind,
-  #                                                           card_id: card,
-  #                                                           in_response_to_step: in_response_to_step }
-  # end
+  describe "POST create" do
+    context "player one is the attacker" do
+      before do
+        player_one.steps.create!(kind: :deal, card: cards(:hearts_10))
+        player_one.steps.create!(kind: :deal, card: cards(:spades_7))
+
+        player_two.steps.create!(kind: :deal, card: cards(:spades_8))
+        player_two.steps.create!(kind: :deal, card: cards(:spades_9))
+      end
+
+      context "there are no step params" do
+        context "there are cards on the table" do
+          before do
+            attacking_step = player_one.steps.create!(kind: :attack, card: cards(:spades_7))
+            player_two.steps.create!(kind: :defend, card: cards(:spades_8), in_response_to_step: attacking_step)
+          end
+
+          it "calls end turn" do
+            @request.session = { game_1_token: player_one.token }
+
+            expect_any_instance_of(EndTurn).to receive(:call)
+
+            post :create, game_id: game, player_id: player_one
+          end
+
+          it "renders nothing" do
+            @request.session = { game_1_token: player_one.token }
+            post :create, game_id: game, player_id: player_one
+
+            expect(response.body).to be_blank
+          end
+        end
+      end
+
+      context "there is a step param for card_id" do
+        it "calls play card" do
+          @request.session = { game_1_token: player_one.token }
+
+          expect_any_instance_of(PlayCard).to receive(:call)
+
+          post :create, game_id: game, player_id: player_one, step: {card_id: cards(:spades_7)}
+        end
+
+        it "renders nothing" do
+          @request.session = { game_1_token: player_one.token }
+
+          post :create, game_id: game, player_id: player_one, step: {card_id: cards(:spades_7)}
+
+          expect(response.body).to be_blank
+        end
+      end
+
+      context "attacker plays a trump and defender tries to defend with a non-trump" do
+        before do
+          player_one.steps.create!(kind: :attack, card: cards(:hearts_10))
+        end
+
+        it "returns errors" do
+          @request.session = { game_1_token: player_two.token }
+
+          post :create, game_id: game, player_id: player_one, step: {card_id: cards(:spades_8)}
+
+          expect(flash.alert).to eq ["You must defend with a card of higher rank or a trump!", "You must defend with a card of the same suit or a trump!"]
+        end
+      end
+    end
+  end
 end

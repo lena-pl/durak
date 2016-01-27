@@ -55,13 +55,13 @@ describe GamesHelper do
     end
   end
 
-  describe "#display_suit_entities" do
+  describe "#display_suit_entity" do
     it "returns the correct suit entity for a card other than diamonds" do
-      expect(helper.display_suit_entities("hearts")).to eq "&hearts;"
+      expect(helper.display_suit_entity("hearts")).to eq "&hearts;"
     end
 
     it "returns the correct suit entity for diamond card" do
-      expect(helper.display_suit_entities("diamonds")).to eq "&diams;"
+      expect(helper.display_suit_entity("diamonds")).to eq "&diams;"
     end
   end
 end

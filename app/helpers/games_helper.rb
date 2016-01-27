@@ -30,8 +30,7 @@ module GamesHelper
     CARD_NAMES.fetch(rank, rank)
   end
 
-  #TODO entities not ascii
-  def display_suit_ascii(suit)
+  def display_suit_entity(suit)
     if suit == "diamonds"
       "&diams;".html_safe
     else

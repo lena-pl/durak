@@ -74,6 +74,23 @@ RSpec.describe PlayCard do
 
           PlayCard.new(player_two, cards(:spades_8).id, game).call
         end
+
+        context "player two tries to move second time in a row" do
+          before do
+            player_two.steps.create!(kind: :defend, card: cards(:spades_8), in_response_to_step: game.steps.last)
+          end
+
+          it "returns correct errors" do
+            apply = instance_double(TryToApplyStep)
+
+            expect(TryToApplyStep).to receive(:new).with(game: game, player: player_two, step_kind: :defend, card_id: cards(:spades_9).id, in_response_to_step: game.steps.last).and_return(apply)
+
+            expect(apply).to receive(:call)
+            allow(apply).to receive(:errors).and_return(["It's not your turn right now!"])
+
+            PlayCard.new(player_two, cards(:spades_9).id, game).call
+          end
+        end
       end
     end
   end

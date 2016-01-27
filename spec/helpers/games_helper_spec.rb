@@ -10,7 +10,7 @@ describe GamesHelper do
 
   context "cards have been dealt and player one is attacker" do
     before do
-      player_one.steps.create!(kind: :deal, card: cards(:hearts_7))
+      player_one.steps.create!(kind: :deal, card: cards(:hearts_8))
       player_one.steps.create!(kind: :deal, card: cards(:spades_7))
 
       player_two.steps.create!(kind: :deal, card: cards(:spades_8))
@@ -18,19 +18,32 @@ describe GamesHelper do
     end
 
     describe "#player_name" do
-      it "returns the correct player name" do
+      it "returns player one's name" do
         assign(:game, game)
 
         expect(helper.player_name(player_one)).to eq "Player 1"
       end
+
+      it "returns player two's name" do
+        assign(:game, game)
+
+        expect(helper.player_name(player_two)).to eq "Player 2"
+      end
     end
 
     describe "#opponent" do
-      it "returns the correct player as the opponent" do
+      it "returns the player two as the opponent to player one" do
         assign(:current_player, player_one)
         assign(:game_state, game_state)
 
         expect(helper.opponent).to eq game_state.defender
+      end
+
+      it "returns the player one as the opponent to player two" do
+        assign(:current_player, player_two)
+        assign(:game_state, game_state)
+
+        expect(helper.opponent).to eq game_state.attacker
       end
     end
   end

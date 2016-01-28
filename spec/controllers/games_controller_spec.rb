@@ -81,6 +81,24 @@ RSpec.describe GamesController, type: :controller do
 
         subject
       end
+
+      context "the request is xhr and step id is a param" do
+        before do
+          player_one.steps.create!(kind: :deal, card: cards(:hearts_7))
+        end
+
+        it "returns head not modified when step ids match" do
+          xhr :get, :show, id: game.id, last_id: game.steps.last.id.to_i
+
+          expect(response).to have_http_status(:not_modified)
+        end
+
+        it "renders show when step ids don't match" do
+          expect(subject).to render_template(:show)
+
+          xhr :get, :show, id: game.id, last_id: game.steps.last.id.to_i + 1
+        end
+      end
     end
   end
 

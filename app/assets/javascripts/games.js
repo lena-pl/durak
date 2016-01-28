@@ -9,12 +9,14 @@ $(document).ready(function() {
       return setTimeout(this.request, 1000);
     },
     request: function() {
-      var request = $.get();
+      var request = $.get($('.content').data('url'), { last_id: $('.content').data('last-id') });
 
-      request.done(function(data) {
+      request.done(function(data, textStatus) {
         StepPoller.poll();
 
-        $(".wrapper").html(data);
+        if(textStatus != "notmodified"){
+          $(".wrapper").html(data);
+        }
       });
     }
   };

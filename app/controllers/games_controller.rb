@@ -18,8 +18,12 @@ class GamesController < ApplicationController
     @game_state = BuildGameState.new(@game).call
     @current_player = @game.players.find_by!(token: session["game_#{@game.id}_token".to_sym])
 
-    if @game.players.first.connected && @game.players.second.connected
-      render :show, layout: !request.xhr?
+    if request.xhr? && (params[:last_id] == @game.steps.last.id.to_s)
+      head :not_modified
+    elsif request.xhr? && (params[:last_id] != @game.steps.last.id.to_s)
+      render :show, layout: false
+    elsif @game.players.first.connected && @game.players.second.connected
+      render :show, layout: true
     else
       render :invite_friend
     end

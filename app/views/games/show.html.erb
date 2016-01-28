@@ -1,10 +1,12 @@
-<div class="content">
-  <div>
-    <h1>Durak / Game <%= @game.id %></h1>
+<div class="content" data-url="<%= game_path(@game) %>" data-last-id="<%= @game.steps.last.id %>">
+  <h1>Durak / Game <%= @game.id %></h1>
 
-    Current Player (SESSION):
-    <%= player_name(@current_player) %>
+  Current Player (SESSION):
+  <%= player_name(@current_player) %>
 
-    <%= !@game_state.over? ? (render "game_in_progress", game: @game, game_state: @game_state, current_player: @current_player) : (render "game_over", game_state: @game_state) %>
-  </div>
+  <% if !@game_state.over? %>
+    <%= render "game_in_progress", game: @game, game_state: @game_state, current_player: @current_player %>
+  <% else %>
+    <%= render "game_over", game_state: @game_state %>
+  <% end %>
 </div>

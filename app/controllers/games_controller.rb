@@ -4,7 +4,6 @@ class GamesController < ApplicationController
   end
 
   def create
-    # TODO dynamic session var name
     @game = CreateGame.new.call
     @current_player = @game.players.first
 

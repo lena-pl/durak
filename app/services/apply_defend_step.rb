@@ -11,15 +11,15 @@ class ApplyDefendStep
     player_state = @game_state.player_state_for_player(@step.player)
 
     if !player_state.hand.include?(defending_with)
-      raise "Card must be in player's hand to defend with"
+      raise BuildGameState::ApplyStepError, "Card must be in player's hand to defend with"
     end
 
     if already_defended_against?(defending_against)
-      raise "#{defending_against} has already been defended by another card"
+      raise BuildGameState::ApplyStepError, "#{defending_against} has already been defended by another card"
     end
 
     if !@game_state.table.include?(defending_against)
-      raise "Card must be on table to defend against"
+      raise BuildGameState::ApplyStepError, "Card must be on table to defend against"
     end
 
     player_state.hand.delete(defending_with)

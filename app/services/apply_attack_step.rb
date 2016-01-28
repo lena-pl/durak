@@ -9,12 +9,12 @@ class ApplyAttackStep
     card = @step.card
 
     if !player_state.hand.include?(card)
-      raise "Card must be in player's hand to attack"
+      raise BuildGameState::ApplyStepError, "Card must be in player's hand to attack"
     end
 
     player_state.hand.delete(card)
     @game_state.table.push(card)
-    
+
     @game_state
   end
 end

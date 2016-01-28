@@ -8,7 +8,7 @@ class ApplyDrawFromDeckStep
     card = @step.card
 
     if !@game_state.deck.include?(card)
-      raise "Card must be in deck to be drawn"
+      raise BuildGameState::ApplyStepError, "Card must be in deck to be drawn"
     end
 
     player_state = @game_state.player_state_for_player(@step.player)

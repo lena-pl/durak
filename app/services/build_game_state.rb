@@ -1,5 +1,5 @@
 class BuildGameState
-  ApplyStepError = StandardError.new
+  class ApplyStepError < StandardError; end
 
   APPLY_STEP = {
     deal: ApplyDealStep,
@@ -20,9 +20,7 @@ class BuildGameState
     steps.inject(base_state) do |current_game_state, step|
       begin
         APPLY_STEP[step.kind.to_sym].new(current_game_state, step).call
-      rescue StandardError => e
-        # binding.pry
-        puts e
+      rescue ApplyStepError
         current_game_state
       end
     end

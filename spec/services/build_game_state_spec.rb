@@ -34,7 +34,6 @@ RSpec.describe BuildGameState do
     it "does not apply that step" do
       initial_state = BuildGameState.new(test_game.game_model).call
       step = test_game.game_model.players.create!.steps.create!(kind: :deal, card: cards(:hearts_6))
-      expect(STDOUT).to receive(:puts).with(BuildGameState::ApplyStepError)
 
       expect(subject.call.deck.cards.count).to eq initial_state.deck.cards.count
     end

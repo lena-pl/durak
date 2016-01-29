@@ -20,7 +20,8 @@ class BuildGameState
     steps.inject(base_state) do |current_game_state, step|
       begin
         APPLY_STEP[step.kind.to_sym].new(current_game_state, step).call
-      rescue ApplyStepError => e
+      rescue StandardError => e
+        # binding.pry
         puts e
         current_game_state
       end

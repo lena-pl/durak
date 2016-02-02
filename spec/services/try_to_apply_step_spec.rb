@@ -32,16 +32,6 @@ RSpec.describe TryToApplyStep do
 
           expect(service.errors).to be_empty
         end
-
-        context "player one discards" do
-          it "removes any errors" do
-            service = TryToApplyStep.new(game: game, player: player_one, step_kind: :discard)
-
-            service.call
-
-            expect(service.errors).to be_empty
-          end
-        end
       end
 
       context "player two attacks" do
@@ -57,6 +47,37 @@ RSpec.describe TryToApplyStep do
           service.call
 
           expect(service.errors).to eq ["It's not your turn right now!"]
+        end
+      end
+
+      context "check rules comes back false" do
+        before do
+          allow_any_instance_of(CheckRules).to receive(:call).and_return false
+        end
+
+        it "returns no errors for discard step" do
+          service = TryToApplyStep.new(game: game, player: player_one, step_kind: :discard)
+
+          service.call
+
+          expect(service.errors).to be_empty
+        end
+
+        it "returns no errors for pick up from table step" do
+          service = TryToApplyStep.new(game: game, player: player_one, step_kind: :pick_up_from_table, card_id: cards(:spades_8).id)
+
+          service.call
+
+          expect(service.errors).to be_empty
+        end
+
+        it "returns no errors for deal step" do
+          service = TryToApplyStep.new(game: game, player: player_one, step_kind: :deal, card_id: cards(:spades_12).id)
+
+          binding.pry
+          service.call
+
+          expect(service.errors).to be_empty
         end
       end
     end

@@ -1,5 +1,8 @@
 <div class="content">
   <h1>Invite a friend</h1>
+  <% if flash.notice %>
+    <div class="alert"><%= flash.notice %></div>
+  <% end %>
 
   <p>Send this link to the person you want to play with. Your game will start as soon as they click on the link.</p>
   Current Player (SESSION):

@@ -41,6 +41,9 @@ class GamesController < ApplicationController
 
     if connect == :ok
       redirect_to @game
+    elsif connect == :game_owner
+      flash.notice = "You can't join your own game!"
+      redirect_to @game
     elsif connect == :full
       render :game_full
     end

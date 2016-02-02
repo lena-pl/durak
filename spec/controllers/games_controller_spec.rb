@@ -119,6 +119,17 @@ RSpec.describe GamesController, type: :controller do
       end
     end
 
+    context "when the current player is the game owner" do
+      it 'redirects to invite friend page with a notice' do
+        allow_any_instance_of(ConnectPlayer).to receive(:call).and_return :game_owner
+
+        get :join, id: game.id
+
+        expect(flash.notice).to eq "You can't join your own game!"
+        expect(response).to redirect_to(controller: 'games', action: 'show', id: game.id)
+      end
+    end
+
     context "when the game is full" do
       it 'redirects to game full page' do
         allow_any_instance_of(ConnectPlayer).to receive(:call).and_return :full

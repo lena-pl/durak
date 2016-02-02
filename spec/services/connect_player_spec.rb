@@ -18,6 +18,14 @@ RSpec.describe ConnectPlayer do
       it 'returns ok' do
         expect(subject).to eq :ok
       end
+
+      context "the link is clicked by the game owner" do
+        let(:session) { {"game_#{game.id}_token".to_sym => player_two.token} }
+
+        it 'returns game_owner' do
+          expect(subject).to eq :game_owner
+        end
+      end
     end
 
     context "when the game is full" do

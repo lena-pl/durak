@@ -23,7 +23,11 @@ class GamesController < ApplicationController
     elsif !params.has_key?(:last_id) && @game.players.first.connected && @game.players.second.connected
       render :show, layout: true
     elsif params[:last_id] == @game.steps.last.id.to_s
-      head :not_modified
+      if params[:submitted] == "true"
+        render :show, layout: false
+      else
+        head :not_modified
+      end
     elsif params[:last_id] != @game.steps.last.id.to_s
       render :show, layout: false
     end

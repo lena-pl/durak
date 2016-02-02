@@ -27,14 +27,13 @@ $(document).ready(function() {
       return setTimeout(this.request, 1000);
     },
     request: function() {
-      var request = $.get($('.in-progress').data('url'), { last_id: $('.in-progress').data('last-id') });
+      var request = $.get($('.in-progress').data('url'), { last_id: $('.in-progress').data('last-id'), submitted: hasBeenSubmitted });
 
       request.done(function(data, textStatus) {
         StepPoller.poll();
 
         if(textStatus != "notmodified"){
           $('.wrapper').html(data);
-          // $('.wrapper').load($('.in-progress').data('url'));
         }
       });
     }

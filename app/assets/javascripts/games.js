@@ -2,6 +2,7 @@
 // All this logic will automatically be available in application.js.
 var StepPoller;
 var hasBeenSubmitted = false;
+
 function submitter (e){
     var postData = $(this).serializeArray();
     var formURL = $(this).attr("action");
@@ -30,6 +31,7 @@ $(document).ready(function() {
       var request = $.get($('.in-progress').data('url'), { last_id: $('.in-progress').data('last-id'), submitted: hasBeenSubmitted });
 
       request.done(function(data, textStatus) {
+        hasBeenSubmitted = false;
         StepPoller.poll();
 
         if(textStatus != "notmodified"){

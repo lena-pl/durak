@@ -24,11 +24,13 @@ class GamesController < ApplicationController
       render :show, layout: true
     elsif params[:last_id] == @game.steps.last.id.to_s
       if params[:submitted] == "true"
+        params.delete :submitted
         render :show, layout: false
       else
         head :not_modified
       end
     elsif params[:last_id] != @game.steps.last.id.to_s
+      params.delete :submitted
       render :show, layout: false
     end
 

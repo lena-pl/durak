@@ -9,13 +9,14 @@ $(document).ready(function() {
       return setTimeout(this.request, 1000);
     },
     request: function() {
-      var request = $.get($('.content').data('url'), { last_id: $('.content').data('last-id') });
+      var request = $.get($('.in-progress').data('url'), { last_id: $('.in-progress').data('last-id') });
 
       request.done(function(data, textStatus) {
         StepPoller.poll();
 
         if(textStatus != "notmodified"){
-          $(".wrapper").html(data);
+          $('.wrapper').html(data);
+          // $('.wrapper').load($('.in-progress').data('url'));
         }
       });
     }
@@ -45,6 +46,7 @@ $(document).ready(function() {
       e.preventDefault();
     });
     cardSelect.closest("form").submit();
+    // $('.wrapper').load($('.in-progress').data('url'));
   });
 
   $('.wrapper').on('click', '.player-actions', function() {
@@ -66,5 +68,6 @@ $(document).ready(function() {
       e.preventDefault();
     });
     $('.player-actions .new_step').submit();
+    // $('.wrapper').load($('.in-progress').data('url'));
   });
 });

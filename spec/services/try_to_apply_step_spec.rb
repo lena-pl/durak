@@ -74,7 +74,6 @@ RSpec.describe TryToApplyStep do
         it "returns no errors for deal step" do
           service = TryToApplyStep.new(game: game, player: player_one, step_kind: :deal, card_id: cards(:spades_12).id)
 
-          binding.pry
           service.call
 
           expect(service.errors).to be_empty

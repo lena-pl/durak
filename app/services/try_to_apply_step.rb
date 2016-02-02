@@ -22,6 +22,10 @@ class TryToApplyStep
         CompleteTurn.new(step, game_state).call
       else
         @errors = check_rules_service.errors
+        if step.discard? || step.pick_up_from_table? || step.deal?
+          @errors = []
+        end
+
         raise ActiveRecord::Rollback
       end
     end

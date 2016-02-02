@@ -1,6 +1,24 @@
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
 var StepPoller;
+var hasBeenSubmitted = false;
+function submitter (e){
+    var postData = $(this).serializeArray();
+    var formURL = $(this).attr("action");
+    $.ajax({
+      url: formURL,
+      type: "POST",
+      data: postData,
+      success:function(data, textStatus, jqXHR)
+      {
+        hasBeenSubmitted = true;
+      },
+      error: function(jqXHR, textStatus, errorThrown)
+      {
+      }
+    });
+    e.preventDefault();
+}
 
 $(document).ready(function() {
 
@@ -28,46 +46,14 @@ $(document).ready(function() {
     var cardSelect = $('.card-select');
 
     cardSelect.val($(this).data('card-id'));
-    cardSelect.closest("form").submit(function(e) {
-      var postData = $(this).serializeArray();
-      var formURL = $(this).attr("action");
-
-      $.ajax({
-        url: formURL,
-        type: "POST",
-        data: postData,
-        success:function(data, textStatus, jqXHR)
-        {
-        },
-        error: function(jqXHR, textStatus, errorThrown)
-        {
-        }
-      });
-      e.preventDefault();
-    });
+    cardSelect.closest("form").submit(submitter
+  );
     cardSelect.closest("form").submit();
-    // $('.wrapper').load($('.in-progress').data('url'));
   });
 
   $('.wrapper').on('click', '.player-actions', function() {
-    $('.player-actions .new_step').submit(function(e) {
-      var postData = $(this).serializeArray();
-      var formURL = $(this).attr("action");
-
-      $.ajax({
-        url: formURL,
-        type: "POST",
-        data: postData,
-        success:function(data, textStatus, jqXHR)
-        {
-        },
-        error: function(jqXHR, textStatus, errorThrown)
-        {
-        }
-      });
-      e.preventDefault();
-    });
+    $('.player-actions .new_step').submit(submitter
+  );
     $('.player-actions .new_step').submit();
-    // $('.wrapper').load($('.in-progress').data('url'));
   });
 });

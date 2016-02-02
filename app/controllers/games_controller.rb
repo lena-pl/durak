@@ -17,7 +17,6 @@ class GamesController < ApplicationController
     @game_state = BuildGameState.new(@game).call
     @current_player = @game.players.find_by!(token: session["game_#{@game.id}_token".to_sym])
 
-    # binding.pry
     if !@game.players.second.connected
       render :invite_friend
     elsif !params.has_key?(:last_id) && @game.players.first.connected && @game.players.second.connected
@@ -33,18 +32,6 @@ class GamesController < ApplicationController
       params.delete :submitted
       render :show, layout: false
     end
-
-    # if @game.players.first.connected && @game.players.second.connected
-    #   if request.xhr? && (params[:last_id] == @game.steps.last.id.to_s)
-    #     head :not_modified
-    #   elsif request.xhr? && (params[:last_id] != @game.steps.last.id.to_s)
-    #     render :show, layout: !request.xhr?
-    #   elsif !request.xhr?
-    #     render :show, layout: !request.xhr?
-    #   end
-    # else
-    #   render :invite_friend
-    # end
   end
 
   def join

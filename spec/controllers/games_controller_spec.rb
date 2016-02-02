@@ -87,8 +87,14 @@ RSpec.describe GamesController, type: :controller do
           player_one.steps.create!(kind: :deal, card: cards(:hearts_7))
         end
 
-        it "returns head not modified when step ids match" do
-          xhr :get, :show, id: game.id, last_id: game.steps.last.id.to_i
+        it "renders show when step ids match but the submitted param is set to true" do
+          expect(subject).to render_template(:show)
+
+          xhr :get, :show, id: game.id, last_id: game.steps.last.id.to_i, submitted: "true"
+        end
+
+        it "returns head not modified when step ids match and the submitted param is set to false" do
+          xhr :get, :show, id: game.id, last_id: game.steps.last.id.to_i, submitted: "false"
 
           expect(response).to have_http_status(:not_modified)
         end

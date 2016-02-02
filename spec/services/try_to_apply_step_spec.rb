@@ -32,6 +32,16 @@ RSpec.describe TryToApplyStep do
 
           expect(service.errors).to be_empty
         end
+
+        context "player one discards" do
+          it "removes any errors" do
+            service = TryToApplyStep.new(game: game, player: player_one, step_kind: :discard)
+
+            service.call
+
+            expect(service.errors).to be_empty
+          end
+        end
       end
 
       context "player two attacks" do

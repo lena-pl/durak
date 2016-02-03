@@ -7,5 +7,9 @@
   <p>Send this link to the person you want to play with. Your game will start as soon as they click on the link.</p>
   Current Player (SESSION):
   <%= player_name(@current_player) %>
-  <%= link_to "Your Friend's Link", join_game_path(id: @game.id) %>
+
+  <p>
+    <input type="text" id="join-link" value="<%= join_game_url(id: @game.id) %>" />
+    <button data-copytarget="#join-link">Copy to clipboard</button>
+  </p>
 </div>

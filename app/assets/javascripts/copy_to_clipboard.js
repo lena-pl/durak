@@ -1,7 +1,5 @@
 // Copy to clipboard
-(function() {
-  // click events
-  document.body.addEventListener('click', copy, true);
+$(function() {
   // event handler
   function copy(e) {
     // find target element
@@ -26,4 +24,6 @@
       }
     }
   }
-})();
+
+  $(".wrapper").on('click', '#join-link-button', copy);
+});

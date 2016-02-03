@@ -20,7 +20,7 @@ class GamesController < ApplicationController
     @current_player = @game.players.find_by!(token: session["game_#{@game.id}_token".to_sym])
 
     if !@game.players.second.connected
-      render :invite_friend
+      render :invite_friend, layout: !request.xhr?
     elsif !params.has_key?(:last_id) && @game.players.first.connected && @game.players.second.connected
       render :show, layout: true
     elsif params[:last_id] == @game.steps.last.id.to_s

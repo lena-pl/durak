@@ -1,40 +1,39 @@
-// Place all the behaviors and hooks related to the matching controller here.
-// All this logic will automatically be available in application.js.
-var StepPoller;
-var hasBeenSubmitted = false;
+$(document).ready(function() {
+  if ($(".polling").length == 0) { return; }
 
-function submitter (e){
+  var StepPoller;
+  var hasBeenSubmitted = false;
+
+  function submitter(e) {
+    e.preventDefault();
+
     var postData = $(this).serializeArray();
     var formURL = $(this).attr("action");
-    $.ajax({
-      url: formURL,
+
+    var request = $.ajax({
+      url:  formURL,
       type: "POST",
       data: postData,
-      success:function(data, textStatus, jqXHR)
-      {
-        hasBeenSubmitted = true;
-      },
-      error: function(jqXHR, textStatus, errorThrown)
-      {
-      }
     });
-    e.preventDefault();
-}
 
-$(document).ready(function() {
+    request.done(function() { hasBeenSubmitted = true; });
+  }
 
   StepPoller = {
     poll: function() {
       return setTimeout(this.request, 1000);
     },
     request: function() {
-      var request = $.get($('.in-progress').data('url'), { last_id: $('.in-progress').data('last-id'), submitted: hasBeenSubmitted });
+      var lastID  = $('.in-progress').data('last-id'),
+          url     = $('.in-progress').data('url'),
+          params  = { last_id: lastID, submitted: hasBeenSubmitted },
+          request = $.get(url, params);
 
       request.done(function(data, textStatus) {
         hasBeenSubmitted = false;
         StepPoller.poll();
 
-        if(textStatus != "notmodified"){
+        if (textStatus != "notmodified") {
           $('.wrapper').html(data);
         }
       });
@@ -47,14 +46,10 @@ $(document).ready(function() {
     var cardSelect = $('.card-select');
 
     cardSelect.val($(this).data('card-id'));
-    cardSelect.closest("form").submit(submitter
-  );
-    cardSelect.closest("form").submit();
+    cardSelect.closest("form").submit(submitter).submit();
   });
 
   $('.wrapper').on('click', '.player-actions', function() {
-    $('.player-actions .new_step').submit(submitter
-  );
-    $('.player-actions .new_step').submit();
+    $('.player-actions .new_step').submit(submitter).submit();
   });
 });

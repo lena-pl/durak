@@ -1,6 +1,8 @@
 class GamesController < ApplicationController
   def new
     @game = Game.new
+
+    render :new, layout: !request.xhr?
   end
 
   def create

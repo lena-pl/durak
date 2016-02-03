@@ -1,18 +1,18 @@
 class TryToApplyStep
   attr_reader :errors
 
-  def initialize(game:, player:, step_kind:, card_id: nil, in_response_to_step: nil)
-    @game = game
+  def initialize(player:, step_kind:, card: nil, in_response_to_step: nil)
+    @game = player.game
     @player = player
     @step_kind = step_kind
-    @card_id = card_id
+    @card = card
     @in_response_to_step = in_response_to_step
     @errors = []
   end
 
   def call
     Step.transaction do
-      step = @player.steps.create!(kind: @step_kind, card_id: @card_id, in_response_to_step: @in_response_to_step)
+      step = @player.steps.create!(kind: @step_kind, card: @card, in_response_to_step: @in_response_to_step)
 
       game_state = BuildGameState.new(@game).call
 

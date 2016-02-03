@@ -1,18 +1,18 @@
 class EndTurn
   attr_reader :errors
 
-  def initialize(player, game)
+  def initialize(player)
     @player = player
-    @game = game
+    @game = player.game
     @game_state = BuildGameState.new(@game).call
     @errors = []
   end
 
   def call
-    try_to_apply_step_service = TryToApplyStep.new(game: @game, player: @player, step_kind: step_kind)
+    service = TryToApplyStep.new(player: @player, step_kind: step_kind)
+    service.call
 
-    try_to_apply_step_service.call
-    @errors = try_to_apply_step_service.errors ||= []
+    @errors = service.errors || []
   end
 
   private

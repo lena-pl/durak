@@ -4,20 +4,16 @@ class StepsController < ApplicationController
     game = Game.find(params[:game_id])
     player = game.players.where(token: session["game_#{game.id}_token".to_sym]).first
 
-    if !params[:step]
-      end_turn_service = EndTurn.new(player, game)
-
-      end_turn_service.call
-
-      flash.alert = end_turn_service.errors if end_turn_service.errors.present?
+    if params[:step].nil?
+      service = EndTurn.new(player)
+      service.call
     elsif params[:step].has_key?(:card_id)
-      play_card_service = PlayCard.new(player, params[:step][:card_id], game)
-
-      play_card_service.call
-
-      flash.alert = play_card_service.errors if play_card_service.errors.present?
+      card = Card.find(params[:step][:card_id])
+      service = PlayCard.new(player, card)
+      service.call
     end
 
+    flash.alert = service.errors if service.errors.present?
     render nothing: true
   end
 end

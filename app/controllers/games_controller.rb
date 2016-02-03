@@ -23,14 +23,14 @@ class GamesController < ApplicationController
       render :invite_friend, layout: !request.xhr?
     elsif !params.has_key?(:last_id) && @game.players.first.connected && @game.players.second.connected
       render :show, layout: true
-    elsif params[:last_id] == @game.steps.last.id.to_s
+    elsif params[:last_id] == @game.steps.last.to_param
       if params[:submitted] == "true"
         params.delete :submitted
         render :show, layout: false
       else
         head :not_modified
       end
-    elsif params[:last_id] != @game.steps.last.id.to_s
+    else
       params.delete :submitted
       render :show, layout: false
     end
@@ -39,14 +39,13 @@ class GamesController < ApplicationController
   def join
     @game = Game.find(params[:id])
 
-    connect = ConnectPlayer.new(@game, session).call
-
-    if connect == :ok
+    case ConnectPlayer.new(@game, session).call
+    when :ok
       redirect_to @game
-    elsif connect == :game_owner
+    when :game_owner
       flash.notice = "You can't join your own game!"
       redirect_to @game
-    elsif connect == :full
+    when :full
       render :game_full
     end
   end

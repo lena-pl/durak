@@ -21,11 +21,11 @@ RSpec.describe PlayCard do
         it "calls try to apply step service exactly once" do
           expect_any_instance_of(TryToApplyStep).to receive(:call).once
 
-          PlayCard.new(player_one, cards(:spades_7).id, game).call
+          PlayCard.new(player_one, cards(:spades_7)).call
         end
 
         it "does not return any errors" do
-          service = PlayCard.new(player_one, cards(:spades_7).id, game)
+          service = PlayCard.new(player_one, cards(:spades_7))
 
           service.call
 
@@ -35,12 +35,12 @@ RSpec.describe PlayCard do
         it "passes the correct arguments to try to apply step" do
           apply = instance_double(TryToApplyStep)
 
-          expect(TryToApplyStep).to receive(:new).with(game: game, player: player_one, step_kind: :attack, card_id: cards(:spades_7).id, in_response_to_step: nil).and_return(apply)
+          expect(TryToApplyStep).to receive(:new).with(player: player_one, step_kind: :attack, card: cards(:spades_7), in_response_to_step: nil).and_return(apply)
 
           expect(apply).to receive(:call)
           allow(apply).to receive(:errors).and_return([])
 
-          PlayCard.new(player_one, cards(:spades_7).id, game).call
+          PlayCard.new(player_one, cards(:spades_7)).call
         end
       end
 
@@ -52,11 +52,11 @@ RSpec.describe PlayCard do
         it "calls try to apply step service exactly once" do
           expect_any_instance_of(TryToApplyStep).to receive(:call).once
 
-          PlayCard.new(player_two, cards(:spades_8).id, game).call
+          PlayCard.new(player_two, cards(:spades_8)).call
         end
 
         it "does not return any errors" do
-          service = PlayCard.new(player_two, cards(:spades_8).id, game)
+          service = PlayCard.new(player_two, cards(:spades_8))
 
           service.call
 
@@ -66,12 +66,12 @@ RSpec.describe PlayCard do
         it "passes the correct arguments to try to apply step" do
           apply = instance_double(TryToApplyStep)
 
-          expect(TryToApplyStep).to receive(:new).with(game: game, player: player_two, step_kind: :defend, card_id: cards(:spades_8).id, in_response_to_step: game.steps.last).and_return(apply)
+          expect(TryToApplyStep).to receive(:new).with(player: player_two, step_kind: :defend, card: cards(:spades_8), in_response_to_step: game.steps.last).and_return(apply)
 
           expect(apply).to receive(:call)
           allow(apply).to receive(:errors).and_return([])
 
-          PlayCard.new(player_two, cards(:spades_8).id, game).call
+          PlayCard.new(player_two, cards(:spades_8)).call
         end
       end
     end

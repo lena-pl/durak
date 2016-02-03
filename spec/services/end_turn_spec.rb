@@ -26,11 +26,11 @@ RSpec.describe EndTurn do
         it "calls try to apply step service exactly once" do
           expect_any_instance_of(TryToApplyStep).to receive(:call).once
 
-          EndTurn.new(player_one, game).call
+          EndTurn.new(player_one).call
         end
 
         it "does not return any errors" do
-          service = EndTurn.new(player_one, game)
+          service = EndTurn.new(player_one)
 
           service.call
 
@@ -40,12 +40,12 @@ RSpec.describe EndTurn do
         it "passes the correct arguments to try to apply step" do
           apply = instance_double(TryToApplyStep)
 
-          expect(TryToApplyStep).to receive(:new).with(game: game, player: player_one, step_kind: :discard).and_return(apply)
+          expect(TryToApplyStep).to receive(:new).with(player: player_one, step_kind: :discard).and_return(apply)
 
           expect(apply).to receive(:call)
           allow(apply).to receive(:errors).and_return([])
 
-          EndTurn.new(player_one, game).call
+          EndTurn.new(player_one).call
         end
       end
 
@@ -57,11 +57,11 @@ RSpec.describe EndTurn do
         it "calls try to apply step service exactly once" do
           expect_any_instance_of(TryToApplyStep).to receive(:call).once
 
-          EndTurn.new(player_two, game).call
+          EndTurn.new(player_two).call
         end
 
         it "does not return any errors" do
-          service = EndTurn.new(player_two, game)
+          service = EndTurn.new(player_two)
 
           service.call
 
@@ -71,12 +71,12 @@ RSpec.describe EndTurn do
         it "passes the correct arguments to try to apply step" do
           apply = instance_double(TryToApplyStep)
 
-          expect(TryToApplyStep).to receive(:new).with(game: game, player: player_two, step_kind: :pick_up_from_table).and_return(apply)
+          expect(TryToApplyStep).to receive(:new).with(player: player_two, step_kind: :pick_up_from_table).and_return(apply)
 
           expect(apply).to receive(:call)
           allow(apply).to receive(:errors).and_return([])
 
-          EndTurn.new(player_two, game).call
+          EndTurn.new(player_two).call
         end
       end
     end

@@ -22,11 +22,11 @@ RSpec.describe TryToApplyStep do
         it "calls build game state service exactly once" do
           expect_any_instance_of(BuildGameState).to receive(:call).once.and_return(game_state)
 
-          TryToApplyStep.new(game: game, player: player_one, step_kind: :attack, card_id: cards(:spades_7).id).call
+          TryToApplyStep.new(player: player_one, step_kind: :attack, card: cards(:spades_7)).call
         end
 
         it "does not return any errors" do
-          service = TryToApplyStep.new(game: game, player: player_one, step_kind: :attack, card_id: cards(:spades_7).id)
+          service = TryToApplyStep.new(player: player_one, step_kind: :attack, card: cards(:spades_7))
 
           service.call
 
@@ -38,11 +38,11 @@ RSpec.describe TryToApplyStep do
         it "calls build game state service exactly once" do
           expect_any_instance_of(BuildGameState).to receive(:call).once.and_return(game_state)
 
-          TryToApplyStep.new(game: game, player: player_two, step_kind: :attack, card_id: cards(:spades_8).id).call
+          TryToApplyStep.new(player: player_two, step_kind: :attack, card: cards(:spades_8)).call
         end
 
         it "return correct errors" do
-          service = TryToApplyStep.new(game: game, player: player_two, step_kind: :attack, card_id: cards(:spades_8).id)
+          service = TryToApplyStep.new(player: player_two, step_kind: :attack, card: cards(:spades_8))
 
           service.call
 
@@ -56,7 +56,7 @@ RSpec.describe TryToApplyStep do
         end
 
         it "returns no errors for discard step" do
-          service = TryToApplyStep.new(game: game, player: player_one, step_kind: :discard)
+          service = TryToApplyStep.new(player: player_one, step_kind: :discard)
 
           service.call
 
@@ -64,7 +64,7 @@ RSpec.describe TryToApplyStep do
         end
 
         it "returns no errors for pick up from table step" do
-          service = TryToApplyStep.new(game: game, player: player_one, step_kind: :pick_up_from_table, card_id: cards(:spades_8).id)
+          service = TryToApplyStep.new(player: player_one, step_kind: :pick_up_from_table, card: cards(:spades_8))
 
           service.call
 
@@ -72,7 +72,7 @@ RSpec.describe TryToApplyStep do
         end
 
         it "returns no errors for deal step" do
-          service = TryToApplyStep.new(game: game, player: player_one, step_kind: :deal, card_id: cards(:spades_12).id)
+          service = TryToApplyStep.new(player: player_one, step_kind: :deal, card: cards(:spades_12))
 
           service.call
 

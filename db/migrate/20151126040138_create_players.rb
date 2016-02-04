@@ -3,7 +3,7 @@ class CreatePlayers < ActiveRecord::Migration
     create_table :players do |t|
       t.references :game, index: true, null: false
       t.string :token
-      t.index :token, unique: true
+      t.index :token
       t.timestamps null: false
     end
   end

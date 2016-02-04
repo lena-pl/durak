@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 20151126040731) do
   end
 
   add_index "players", ["game_id"], name: "index_players_on_game_id"
-  add_index "players", ["token"], name: "index_players_on_token", unique: true
+  add_index "players", ["token"], name: "index_players_on_token"
 
   create_table "steps", force: :cascade do |t|
     t.integer  "kind",                   null: false

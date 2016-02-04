@@ -7,7 +7,9 @@ RSpec.describe TableArrangement do
 
   describe "#arrange" do
     it "returns correctly arranged group of cards" do
-      expect(subject.arrange(card_group)).to eq [{ :attacking_card => card_group[0], :defending_card => card_group[1] }]
+      pair = TableArrangement::Pair.new(card_group[0], card_group[1])
+
+      expect(subject.arrange(card_group).first).to eql pair
     end
   end
 end

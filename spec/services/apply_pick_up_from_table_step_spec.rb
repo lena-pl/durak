@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe ApplyPickUpFromTableStep do
   fixtures :cards
 
-  let(:game) { CreateGame.new(cards(:hearts_7)).call }
+  let(:game) { CreateGame.new(cards(:hearts_7), session: { "player_token" => SecureRandom.hex }).call }
   let!(:attacker) { game.players.first }
   let!(:defender) { game.players.second }
 

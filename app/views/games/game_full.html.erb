@@ -1,0 +1,11 @@
+<div class="content">
+  <h1>This game is full!</h1>
+
+  <p>Two players are already playing this game. You can start a new one if you like!</p>
+
+  <div class="new-game">
+    <%= form_for Game.new do |f| %>
+      <%= f.submit "New Game", :class => 'button' %>
+    <% end %>
+  </div>
+</div>

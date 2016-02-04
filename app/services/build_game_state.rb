@@ -1,4 +1,6 @@
 class BuildGameState
+  class ApplyStepError < StandardError; end
+
   APPLY_STEP = {
     deal: ApplyDealStep,
     draw_from_deck: ApplyDrawFromDeckStep,
@@ -16,7 +18,11 @@ class BuildGameState
     steps = @game.steps.order(:id)
 
     steps.inject(base_state) do |current_game_state, step|
-      APPLY_STEP[step.kind.to_sym].new(current_game_state, step).call
+      begin
+        APPLY_STEP[step.kind.to_sym].new(current_game_state, step).call
+      rescue ApplyStepError
+        current_game_state
+      end
     end
   end
 

@@ -29,14 +29,14 @@ ActiveRecord::Schema.define(version: 20151126040731) do
   add_index "games", ["trump_card_id"], name: "index_games_on_trump_card_id"
 
   create_table "players", force: :cascade do |t|
-    t.integer  "game_id",                    null: false
-    t.string   "token",                      null: false
-    t.boolean  "connected",  default: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.integer  "game_id",    null: false
+    t.string   "token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "players", ["game_id"], name: "index_players_on_game_id"
+  add_index "players", ["token"], name: "index_players_on_token"
 
   create_table "steps", force: :cascade do |t|
     t.integer  "kind",                   null: false

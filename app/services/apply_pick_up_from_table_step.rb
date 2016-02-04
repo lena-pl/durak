@@ -6,11 +6,11 @@ class ApplyPickUpFromTableStep
 
   def call
     if @game_state.defender != @step.player
-      raise "Only the defender can pick up cards from the table"
+      raise BuildGameState::ApplyStepError, "Only the defender can pick up cards from the table"
     end
 
     if @game_state.table.empty?
-      raise "Must be at least one card on the table to pickup"
+      raise BuildGameState::ApplyStepError, "Must be at least one card on the table to pickup"
     end
 
     player_state = @game_state.player_state_for_player(@step.player)

@@ -6,11 +6,11 @@ class ApplyDiscardStep
 
   def call
     if @game_state.attacker != @step.player
-      raise "Only the attacker can discard cards from the table"
+      raise BuildGameState::ApplyStepError, "Only the attacker can discard cards from the table"
     end
 
     if @game_state.table.empty?
-      raise "Must be at least one card on the table to discard"
+      raise BuildGameState::ApplyStepError, "Must be at least one card on the table to discard"
     end
 
     @game_state.discard_pile.push(*@game_state.table.cards)

@@ -2,29 +2,18 @@ class StepsController < ApplicationController
 
   def create
     game = Game.find(params[:game_id])
-    player = game.players.find(params[:player_id])
+    player = game.players.where(token: session["player_token"]).first
 
-    Step.transaction do
-      step = player.steps.create!(step_params)
-
-      game_state = BuildGameState.new(game).call
-
-      follow_rules_service = FollowsRules.new(step, game_state, game)
-
-      if follow_rules_service.call
-        CompleteTurn.new(step, game_state).call
-      else
-        flash.alert = follow_rules_service.errors
-        raise ActiveRecord::Rollback
-      end
+    if params[:step].nil?
+      service = EndTurn.new(player)
+      service.call
+    elsif params[:step].has_key?(:card_id)
+      card = Card.find(params[:step][:card_id])
+      service = PlayCard.new(player, card)
+      service.call
     end
 
+    flash.alert = service.errors if service.errors.present?
     render nothing: true
-  end
-
-  private
-
-  def step_params
-    params.require(:step).permit(:kind, :card_id, :in_response_to_step_id)
   end
 end

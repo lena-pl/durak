@@ -43,7 +43,6 @@ class DrawCards
   end
 
   def split_remaining_cards_between_players(player_states)
-    #TODO generalise this for more than two players
     remaining_card_count = @game_state.deck.count
     amount_player_one = (remaining_card_count / player_states.count.to_f).ceil
     amount_player_two  = remaining_card_count - amount_player_one

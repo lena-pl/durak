@@ -4,7 +4,7 @@ describe DrawFromDeck do
   fixtures :cards
 
   let(:trump_card) { cards(:hearts_7) }
-  let(:game) { CreateGame.new(trump_card).call }
+  let(:game) { CreateGame.new(trump_card, session: { "player_token" => SecureRandom.hex }).call }
   let(:game_state) { BuildGameState.new(game).call }
 
   let(:player) { game.players.first }

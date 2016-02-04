@@ -1,10 +1,11 @@
-<% if @current_player == @game_state.attacker %>
-  <% opponent = @game_state.defender %>
-<% else %>
-  <% opponent = @game_state.attacker %>
-<% end %>
-
-<p><strong><%= render "player_name", game_state: @game_state, game: @game, player: opponent %> | Their Hand (<%= @game_state.player_state_for_player(opponent).hand.count %> cards):</strong></p>
+<p>
+  <strong>
+    <%= player_name(opponent) %>
+    |
+    Their Hand
+    (<%= pluralize @game_state.player_state_for_player(opponent).hand.count, 'card' %>):
+  </strong>
+</p>
 
 <div class="player-hand">
   <% @game_state.player_state_for_player(opponent).hand.cards.each do |card| %>

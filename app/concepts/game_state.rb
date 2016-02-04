@@ -17,6 +17,14 @@ class GameState
     @player_states.find { |player_state| player_state.player == player }
   end
 
+  def pick_up_allowed?(player)
+    player == defender && @table.count % 2 != 0
+  end
+
+  def discard_allowed?(player)
+    player == attacker && @table.count % 2 == 0
+  end
+
   def tie?
     final_phase? && hands_with_cards.empty?
   end
@@ -31,10 +39,10 @@ class GameState
     else
       last_attack_defend_pair = @table.arranged.last
 
-      if last_attack_defend_pair[:defending_card].nil?
-        defender
-      else
+      if last_attack_defend_pair.defended?
         attacker
+      else
+        defender
       end
     end
   end
@@ -44,14 +52,12 @@ class GameState
   end
 
   def durak
-    durak_found? ? hands_with_cards.first.player : nil
+    hands_with_cards.first.player if durak_found?
   end
 
   def winner
     if durak_found?
       @player_states.find { |player_state| player_state.player != durak }.player
-    else
-      nil
     end
   end
 
@@ -66,6 +72,6 @@ class GameState
   end
 
   def hands_with_cards
-    @player_states.select { |player_state| !player_state.hand.empty? }
+    @player_states.select { |player_state| player_state.hand.present? }
   end
 end

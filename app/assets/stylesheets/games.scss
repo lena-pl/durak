@@ -7,8 +7,24 @@
 $white: #FFFFFF;
 $red: #F44F49;
 
-$card-width: 90px;
-$card-height: 120px;
+// $card-width: 90px;
+// $card-height: 120px;
+
+$card-width: 6em;
+$card-height: 8em;
+
+// $card-width: 14vw;
+// $card-height: 20vh;
+
+h1 {
+  text-align: center;
+}
+
+.rules {
+  text-align: left;
+  border-top: 2px #333 solid;
+  margin-top: 30px;
+}
 
 .card {
   display: inline-block;
@@ -74,7 +90,7 @@ $card-height: 120px;
   }
 
   .card:not(:last-child) {
-    margin-bottom: -90px;
+    margin-bottom: -75px;
   }
 }
 
@@ -126,8 +142,12 @@ $card-height: 120px;
     .panel, {
       .rank,
       .suit {
-        font-size: 0.4em;
+        font-size: 0.6em;
       }
+    }
+
+    .content {
+      height: 107px;
     }
 }
 
@@ -146,5 +166,22 @@ $card-height: 120px;
 
   .table {
     width: 100%;
+  }
+}
+
+@media screen and (max-width: 600px){
+  .card, .table .card {
+    width: 55px;
+    height: 80px;
+
+    .content {
+      display: none;
+    }
+  }
+
+  .attack-defend-pair {
+    .card:not(:last-child) {
+      margin-bottom: -50px;
+    }
   }
 }

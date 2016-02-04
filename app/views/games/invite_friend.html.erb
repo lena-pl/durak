@@ -1,8 +1,15 @@
-<div class="content">
+<div class="polling content">
   <h1>Invite a friend</h1>
+  <% if flash.notice %>
+    <div class="alert"><%= flash.notice %></div>
+  <% end %>
 
   <p>Send this link to the person you want to play with. Your game will start as soon as they click on the link.</p>
   Current Player (SESSION):
-  <%= render "player_name", game_state: @game_state, game: @game, player: @current_player %>
-  <%= link_to "Your Friend's Link", join_game_path(id: @game.id) %>
+  <%= player_name(@current_player) %>
+
+  <p>
+    <input type="text" id="join-link" value="<%= join_game_url(id: @game.id) %>" />
+    <button id="join-link-button" data-copytarget="#join-link">Copy to clipboard</button>
+  </p>
 </div>

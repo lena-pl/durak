@@ -9,7 +9,7 @@ class ApplyDealStep
     card = @step.card
 
     if !@game_state.deck.include?(card)
-      raise "Card must be in deck in order to be dealt"
+      raise BuildGameState::ApplyStepError, "Card must be in deck in order to be dealt"
     end
 
     @game_state.deck.delete(card)
@@ -39,6 +39,6 @@ class ApplyDealStep
         lowest_trump: player_state.lowest_card_with_suit(@game_state.trump_card.suit) }
     end
 
-    lowest_trumps.reject { |lowest_trump| lowest_trump[:lowest_trump].nil? }
+    lowest_trumps.select { |lowest_trump| lowest_trump[:lowest_trump] }
   end
 end

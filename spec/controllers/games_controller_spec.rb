@@ -41,7 +41,8 @@ RSpec.describe GamesController, type: :controller do
     subject { get :show, id: game.id }
 
     before do
-      session[:current_player_token] = player_one.token
+      player_one.update_attributes(token: SecureRandom.hex)
+      request.session["player_token"] = player_one.token
     end
 
     it "assigns the current player" do
@@ -51,10 +52,6 @@ RSpec.describe GamesController, type: :controller do
     end
 
     context "the second player is not connected" do
-      before do
-        game.players.first.update_attributes(connected: true)
-      end
-
       it "renders the invite_friend template" do
         expect(subject).to render_template(:invite_friend)
       end
@@ -68,8 +65,10 @@ RSpec.describe GamesController, type: :controller do
 
     context "the second player is connected" do
       before do
-        game.players.first.update_attributes(connected: true)
-        game.players.second.update_attributes(connected: true)
+        player_one.update_attributes(token: SecureRandom.hex)
+        player_two.update_attributes(token: SecureRandom.hex)
+
+        session["player_token"] = player_one.token
       end
 
       it "renders the show template" do
@@ -81,21 +80,63 @@ RSpec.describe GamesController, type: :controller do
 
         subject
       end
+
+      context "the request is xhr and step id is a param" do
+        before do
+          player_one.steps.create!(kind: :deal, card: cards(:hearts_7))
+        end
+
+        it "renders show when step ids match but the submitted param is set to true" do
+          expect(subject).to render_template(:show)
+
+          xhr :get, :show, id: game.id, last_id: game.steps.last.id.to_i, submitted: "true"
+        end
+
+        it "returns head not modified when step ids match and the submitted param is set to false" do
+          xhr :get, :show, id: game.id, last_id: game.steps.last.id.to_i, submitted: "false"
+
+          expect(response).to have_http_status(:not_modified)
+        end
+
+        it "renders show when step ids don't match" do
+          expect(subject).to render_template(:show)
+
+          xhr :get, :show, id: game.id, last_id: game.steps.last.id.to_i + 1
+        end
+      end
     end
   end
 
   describe "GET #join" do
+    context "when the game is not full" do
+      it 'redirects to show page' do
+        allow_any_instance_of(ConnectPlayer).to receive(:call).and_return :ok
 
-    it "connects the second player" do
-      get :join, id: game.id
+        get :join, id: game.id
 
-      expect(game.players.second.connected).to eq true
+        expect(response).to redirect_to(controller: 'games', action: 'show', id: game.id)
+      end
     end
 
-    it 'redirects to show page' do
-      get :join, id: game.id
+    context "when the current player is the game owner" do
+      it 'redirects to invite friend page with a notice' do
+        allow_any_instance_of(ConnectPlayer).to receive(:call).and_return :game_owner
 
-      expect(response).to redirect_to(redirect_to controller: 'games', action: 'show', id: game.id)
+        get :join, id: game.id
+
+        expect(flash.notice).to eq "You can't join your own game!"
+        expect(response).to redirect_to(controller: 'games', action: 'show', id: game.id)
+      end
+    end
+
+    context "when the game is full" do
+      it 'redirects to game full page' do
+        allow_any_instance_of(ConnectPlayer).to receive(:call).and_return :full
+
+        get :join, id: game.id
+
+        expect(response).to render_template(:game_full)
+      end
     end
   end
 end

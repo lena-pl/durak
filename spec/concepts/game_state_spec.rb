@@ -70,6 +70,76 @@ RSpec.describe GameState do
     end
   end
 
+  describe "#pick_up_allowed?" do
+    context "when there is an odd number of cards on the table and player one is the attacker" do
+      before do
+        game_state.table.push(cards(:hearts_12))
+
+        game_state.attacker = player_one
+      end
+
+      it "does not let the attacker pick up" do
+        expect(game_state.pick_up_allowed?(player_one)).to eq false
+      end
+
+      it "lets the defender pick up" do
+        expect(game_state.pick_up_allowed?(player_two)).to eq true
+      end
+    end
+
+    context "when there is an even number of cards on the table and player one is the attacker" do
+      before do
+        game_state.table.push(cards(:hearts_12))
+        game_state.table.push(cards(:hearts_14))
+
+        game_state.attacker = player_one
+      end
+
+      it "does not let the attacker pick up" do
+        expect(game_state.pick_up_allowed?(player_one)).to eq false
+      end
+
+      it "does not let the defender pick up" do
+        expect(game_state.pick_up_allowed?(player_two)).to eq false
+      end
+    end
+  end
+
+  describe "#discard_allowed?" do
+    context "when there is an odd number of cards on the table and player one is the attacker" do
+      before do
+        game_state.table.push(cards(:hearts_12))
+
+        game_state.attacker = player_one
+      end
+
+      it "does not let the attacker discard" do
+        expect(game_state.discard_allowed?(player_one)).to eq false
+      end
+
+      it "does not let the defender discard" do
+        expect(game_state.discard_allowed?(player_two)).to eq false
+      end
+    end
+
+    context "when there is an even number of cards on the table and player one is the attacker" do
+      before do
+        game_state.table.push(cards(:hearts_12))
+        game_state.table.push(cards(:hearts_14))
+
+        game_state.attacker = player_one
+      end
+
+      it "lets the attacker discard" do
+        expect(game_state.discard_allowed?(player_one)).to eq true
+      end
+
+      it "does not let the defender discard" do
+        expect(game_state.discard_allowed?(player_two)).to eq false
+      end
+    end
+  end
+
   describe "#defender" do
     context "when player one is the attacker" do
       before do

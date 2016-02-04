@@ -2,15 +2,12 @@
 
   <div class="player-actions">
     <%= form_for [@game, @current_player, @current_player.steps.new] do |f| %>
-      <% if @current_player == @game_state.attacker %>
-        <% step_kind = :discard %>
+      <% if @game_state.discard_allowed?(@current_player) %>
         <% submit_text = "Discard" %>
-      <% elsif @game_state.table.count%2 != 0 %>
-        <% step_kind = :pick_up_from_table %>
+      <% elsif @game_state.pick_up_allowed?(@current_player) %>
         <% submit_text = "Pickup" %>
       <% end %>
 
-      <%= f.hidden_field :kind, :value => step_kind %>
       <% if submit_text == "Discard" || submit_text == "Pickup" %>
         <%= f.submit submit_text, data: { disable_with: 'Don\'t think about pushing me again.' }, :class => 'button' %>
       <% end %>

@@ -2,7 +2,7 @@ class StepsController < ApplicationController
 
   def create
     game = Game.find(params[:game_id])
-    player = game.players.where(token: session["game_#{game.id}_token".to_sym]).first
+    player = game.players.where(token: session["player_token"]).first
 
     if params[:step].nil?
       service = EndTurn.new(player)

@@ -1,11 +1,12 @@
 class CreateGame
-  def initialize(trump_card = SelectRandomTrumpCard.new.call)
+  def initialize(trump_card = SelectRandomTrumpCard.new.call, session:)
     @trump_card = trump_card
+    @session = session
   end
 
   def call
     game = Game.new(trump_card: @trump_card)
-    game.players.new(connected: true)
+    game.players.new(token: @session["player_token"])
     game.players.new
     game.save!
 

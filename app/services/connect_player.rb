@@ -5,14 +5,14 @@ class ConnectPlayer
   end
 
   def call
-    if @game.players.first.connected && @game.players.second.connected
+    @session["player_token"] ||= SecureRandom.hex
+
+    if @game.players.first.token && @game.players.second.token
       :full
-    elsif @session.has_key?("game_#{@game.id}_token".to_sym)
+    elsif @session["player_token"] == @game.players.first.token
       :game_owner
     else
-      @game.players.second.update_attributes!(connected: true)
-      @current_player = @game.players.second
-      @session["game_#{@game.id}_token".to_sym] = @current_player.token
+      @game.players.second.update_attributes!(token: @session["player_token"])
       :ok
     end
   end

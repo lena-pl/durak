@@ -6,10 +6,8 @@ class GamesController < ApplicationController
   end
 
   def create
-    @game = CreateGame.new.call
-    @current_player = @game.players.first
-
-    session["game_#{@game.id}_token".to_sym] = @current_player.token
+    session["player_token"] ||= SecureRandom.hex
+    @game = CreateGame.new(session: session).call
 
     redirect_to @game
   end
@@ -17,11 +15,11 @@ class GamesController < ApplicationController
   def show
     @game = Game.find(params[:id])
     @game_state = BuildGameState.new(@game).call
-    @current_player = @game.players.find_by!(token: session["game_#{@game.id}_token".to_sym])
+    @current_player = @game.players.find_by!(token: session.fetch("player_token"))
 
-    if !@game.players.second.connected
+    if !@game.players.second.token
       render :invite_friend, layout: !request.xhr?
-    elsif !params.has_key?(:last_id) && @game.players.first.connected && @game.players.second.connected
+    elsif !params.has_key?(:last_id) && @game.players.first.token && @game.players.second.token
       render :show, layout: true
     elsif params[:last_id] == @game.steps.last.to_param
       if params[:submitted] == "true"

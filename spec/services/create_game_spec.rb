@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe CreateGame do
   describe "#call" do
-    subject(:game) { CreateGame.new.call }
+    subject(:game) { CreateGame.new(session: { "player_token" => SecureRandom.hex }).call }
 
     it "creates a game" do
       expect(game).to eq Game.last

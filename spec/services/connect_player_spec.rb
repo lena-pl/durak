@@ -12,7 +12,7 @@ RSpec.describe ConnectPlayer do
   describe "#call" do
     context "when the game is not full" do
       before do
-        game.players.first.update_attributes!(connected: true)
+        player_one.update_attributes!(token: SecureRandom.hex)
       end
 
       it 'returns ok' do
@@ -20,7 +20,7 @@ RSpec.describe ConnectPlayer do
       end
 
       context "the link is clicked by the game owner" do
-        let(:session) { {"game_#{game.id}_token".to_sym => player_two.token} }
+        let(:session) { {"player_token" => player_one.token} }
 
         it 'returns game_owner' do
           expect(subject).to eq :game_owner
@@ -30,8 +30,8 @@ RSpec.describe ConnectPlayer do
 
     context "when the game is full" do
       before do
-        game.players.first.update_attributes!(connected: true)
-        game.players.second.update_attributes!(connected: true)
+        player_one.update_attributes!(token: SecureRandom.hex)
+        player_two.update_attributes!(token: SecureRandom.hex)
       end
 
       it 'returns full' do

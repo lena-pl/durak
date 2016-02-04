@@ -10,6 +10,9 @@ RSpec.describe StepsController, type: :controller do
   describe "POST create" do
     context "player one is the attacker" do
       before do
+        player_one.update_attributes(token: SecureRandom.hex)
+        player_two.update_attributes(token: SecureRandom.hex)
+
         player_one.steps.create!(kind: :deal, card: cards(:hearts_10))
         player_one.steps.create!(kind: :deal, card: cards(:spades_7))
 
@@ -22,18 +25,17 @@ RSpec.describe StepsController, type: :controller do
           before do
             attacking_step = player_one.steps.create!(kind: :attack, card: cards(:spades_7))
             player_two.steps.create!(kind: :defend, card: cards(:spades_8), in_response_to_step: attacking_step)
+
+            session["player_token"] = player_one.token
           end
 
           it "calls end turn" do
-            @request.session = { game_1_token: player_one.token }
-
             expect_any_instance_of(EndTurn).to receive(:call)
 
             post :create, game_id: game, player_id: player_one
           end
 
           it "renders nothing" do
-            @request.session = { game_1_token: player_one.token }
             post :create, game_id: game, player_id: player_one
 
             expect(response.body).to be_blank
@@ -42,17 +44,17 @@ RSpec.describe StepsController, type: :controller do
       end
 
       context "there is a step param for card_id" do
-        it "calls play card" do
-          @request.session = { game_1_token: player_one.token }
+        before do
+          session["player_token"] = player_one.token
+        end
 
+        it "calls play card" do
           expect_any_instance_of(PlayCard).to receive(:call)
 
           post :create, game_id: game, player_id: player_one, step: {card_id: cards(:spades_7)}
         end
 
         it "renders nothing" do
-          @request.session = { game_1_token: player_one.token }
-
           post :create, game_id: game, player_id: player_one, step: {card_id: cards(:spades_7)}
 
           expect(response.body).to be_blank
@@ -62,12 +64,12 @@ RSpec.describe StepsController, type: :controller do
       context "attacker plays a trump and defender tries to defend with a non-trump" do
         before do
           player_one.steps.create!(kind: :attack, card: cards(:hearts_10))
+
+          session["player_token"] = player_two.token
         end
 
         it "returns errors" do
-          @request.session = { game_1_token: player_two.token }
-
-          post :create, game_id: game, player_id: player_one, step: {card_id: cards(:spades_8)}
+          post :create, game_id: game, player_id: player_two, step: {card_id: cards(:spades_8)}
 
           expect(flash.alert).to eq ["You must defend with a card of higher rank or a trump!", "You must defend with a card of the same suit or a trump!"]
         end

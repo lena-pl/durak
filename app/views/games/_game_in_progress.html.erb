@@ -14,7 +14,9 @@
   </div>
 
   <% if flash.alert %>
-    <div class="alert"><%= flash.alert %></div>
+    <% flash.alert.each do |message| %>
+      <div class="alert"><%= message %></div>
+    <% end %>
   <% end %>
 
   <div class="current-player-hand">

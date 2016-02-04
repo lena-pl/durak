@@ -20,7 +20,7 @@ class GamesController < ApplicationController
     if !@game.players.second.token
       render :invite_friend, layout: !request.xhr?
     elsif !params.has_key?(:last_id) && @game.players.first.token && @game.players.second.token
-      render :show, layout: true
+      render :show, layout: !request.xhr?
     elsif params[:last_id] == @game.steps.last.to_param
       if params[:submitted] == "true"
         params.delete :submitted

@@ -29,3 +29,5 @@ Winning/Losing
 The game is finished when only one player has cards left in their hand and no more cards are in the deck. The player who got rid of their cards first is the winner. The player only wins once the last turn of the game is completed.
 
 If the same players decide to play another game, the winner from the previous game gets to attack first regardless of what cards they are holding.
+
+Copyright (c) Powershop 2016
